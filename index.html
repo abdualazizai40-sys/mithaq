@@ -488,7 +488,8 @@ function viewEmployee(){
     <div class="stack" id="targets" style="gap:16px"></div></section>
   <section class="card stack"><h2>بصمة أدائك</h2><div id="fp"></div></section>
   <section class="card row between"><div><h2>أعمال شهر ${esc(monthLabel(S.month))}</h2>
-    <p class="muted small">أدخل إجمالي أعمالك لهذا الشهر، وعدّلها متى شئت.</p></div>${monthPicker("شهر الإدخال")}</section>`;
+    <p class="muted small">أدخل إجمالي أعمالك لهذا الشهر، وعدّلها متى شئت.</p></div>${monthPicker("شهر الإدخال")}</section>
+  <div class="banner"><b>تنبيه:</b> أدخل أعمال شهر ${esc(monthLabel(S.month))} فقط، ولا تضف إليها أعمال الأشهر السابقة. النظام يجمع الأشهر تلقائياً ويحسب درجتك السنوية.</div>`;
   const qAxes = S.config.axes.filter(a => a.quality), lastQ = qAxes.length ? qAxes[qAxes.length-1].id : null;
   for (const a of S.config.axes){
     h += `<section class="card stack"><div class="axis-head"><h3>${esc(a.name)}</h3></div><div class="fields">` +
