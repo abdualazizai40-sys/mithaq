@@ -392,7 +392,7 @@ async function rpc(fn, args){
   return r.json();
 }
 const ERR = { no_session:"انتهت جلستك. ادخل من جديد.", forbidden:"لا تملك صلاحية هذا الإجراء.", closed:"الإرسال غير مفتوح لهذا الشهر الآن.", bad:"البيانات غير صالحة.",
-  wrong:"الرقم السري غير صحيح.", locked:"محاولات كثيرة خاطئة. انتظر 15 دقيقة ثم حاول.", short:"الرمز قصير.", unknown:"الاسم غير موجود." };
+  wrong:"الرقم السري غير صحيح.", nopin:"لم يُعيَّن لك رقم سري بعد. اطلبه من المدير.", must_change:"غيّر رقمك السري الأولي أولاً.", same:"اختر رقماً مختلفاً عن الرقم الأولي.", locked:"محاولات كثيرة خاطئة. انتظر 15 دقيقة ثم حاول.", short:"الرمز قصير.", unknown:"الاسم غير موجود." };
 function tokenGet(){ try { return localStorage.getItem("mithaq_token") || ""; } catch(e){ return ""; } }
 function tokenSet(t){ S.token = t || ""; try { if (t) localStorage.setItem("mithaq_token", t); else localStorage.removeItem("mithaq_token"); } catch(e){} }
 async function call(fn, args){
@@ -410,7 +410,7 @@ async function loadData(){
   if (!S.token){ S.me = null; return; }
   const d = await rpc("m_data", { p_token: S.token });
   if (d.error){ tokenSet(""); S.me = null; return; }
-  S.me = { id: d.me.id || "manager", manager: !!d.me.manager };
+  S.me = { id: d.me.id || "manager", manager: !!d.me.manager, mustChange: !!d.me.mustChange };
   S.charters = d.charters || {}; S.anon = d.anon || []; S.reviews = d.reviews || {};
 }
 async function refresh(){ try { await loadPublic(); await loadData(); S.slow = false; } catch(e){ S.slow = true; } S.loaded = true; if (!S.dirty && S.me) loadDraft(); }
@@ -433,6 +433,7 @@ function render(){
   if (!S.me){ document.getElementById("views").hidden = true; whoEl.innerHTML = "";
     app.innerHTML = (S.slow ? `<div class="banner">تعذر الاتصال بقاعدة البيانات. تحقق من الإنترنت ثم حدّث الصفحة.</div>` : "") + (S.loaded ? viewLogin() : `<div class="card muted">جارٍ التحميل…</div>`); return; }
   whoEl.innerHTML = `<span class="muted small">${esc(S.me.manager ? "المدير" : nameOf(S.me.id))}</span><button type="button" class="btn ghost" data-act="logout">خروج</button>`;
+  if (S.me.mustChange){ document.getElementById("views").hidden = true; app.innerHTML = viewChangePin(); return; }
   const views = allowedViews();
   if (!views.includes(S.view)) S.view = views[0];
   const labels = { manager:"المدير", supervisor:"المشرف", employee:"المراقب" };
@@ -447,9 +448,9 @@ function render(){
 }
 function viewLogin(){
   const emps = S.roster.filter(p => p.role !== "supervisor"), sups = S.roster.filter(p => p.role === "supervisor");
-  const opt = p => `<option value="${esc(p.id)}">${esc(p.name)}${p.hasPin ? "" : " (أول دخول)"}</option>`;
+  const opt = p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`;
   return `<section class="card stack" style="max-width:520px;margin-inline:auto;width:100%"><div><h2>دخول المراقب أو المشرف</h2>
-      <p class="muted small">اختر اسمك واكتب رقمك السري. في أول دخول، الرقم الذي تكتبه يصبح رقمك السري (4 أرقام على الأقل)، فاحفظه ولا تعطه لأحد.</p></div>
+      <p class="muted small">اختر اسمك واكتب رقمك السري. في أول دخول استخدم الرقم الأولي الذي سلّمه لك المدير، ثم يطلب منك النظام تغييره إلى رقم خاص بك.</p></div>
     <label class="fld">الاسم<select id="lg-person"><option value="">اختر اسمك</option><optgroup label="المراقبون">${emps.map(opt).join("")}</optgroup><optgroup label="المشرفون">${sups.map(opt).join("")}</optgroup></select></label>
     <label class="fld">الرقم السري<input type="password" inputmode="numeric" autocomplete="off" id="lg-pin" maxlength="20"></label>
     <div class="row"><button type="button" class="btn primary" data-act="login">دخول</button></div></section>
@@ -457,6 +458,13 @@ function viewLogin(){
       <p class="muted small">${S.managerSet ? "اكتب رمز المدير." : "لم يُعيَّن رمز المدير بعد. أول رمز يُكتب هنا يصبح رمز المدير (6 خانات على الأقل)."}</p></div>
     <label class="fld">رمز المدير<input type="password" autocomplete="off" id="lg-code" maxlength="60"></label>
     <div class="row"><button type="button" class="btn" data-act="login-mgr">دخول المدير</button></div></section>`;
+}
+function viewChangePin(){
+  return `<section class="card stack" style="max-width:520px;margin-inline:auto;width:100%"><div><h2>غيّر رقمك السري</h2>
+      <p class="muted small">دخلت بالرقم الأولي من المدير. اختر الآن رقماً خاصاً بك (4 أرقام على الأقل) لا يعرفه غيرك، ولن تُفتح صفحتك قبل ذلك.</p></div>
+    <label class="fld">الرقم السري الجديد<input type="password" inputmode="numeric" autocomplete="off" id="np-1" maxlength="20"></label>
+    <label class="fld">أعد كتابة الرقم الجديد<input type="password" inputmode="numeric" autocomplete="off" id="np-2" maxlength="20"></label>
+    <div class="row"><button type="button" class="btn primary" data-act="change-pin">حفظ الرقم الجديد</button></div></section>`;
 }
 function scheduleRender(){
   const a = document.activeElement;
@@ -668,13 +676,19 @@ function updateEquation(){
 function mgrMembers(){
   const sups = S.roster.filter(p => p.role === "supervisor");
   return `<section class="card stack"><h2>قائمة الأسماء</h2>
-    <p class="muted small">أسماء المشرفين والمراقبين. يدخل كل شخص باسمه ورقمه السري. إن نسي أحدهم رقمه فاضغط «تصفير الرقم» ليضع رقماً جديداً في دخوله التالي. أي تغيير هنا يُحفظ مباشرة.</p>
+    <p class="muted small">أسماء المشرفين والمراقبين. عيّن لكل شخص رقماً أولياً وسلّمه له بشكل خاص، وسيطلب منه النظام تغييره في أول دخول. لا يستطيع أحد الدخول باسم لم يُعيَّن له رقم. إن نسي أحدهم رقمه فعيّن له رقماً أولياً جديداً.</p>
+    <div class="row"><button type="button" class="btn primary" data-act="gen-pins">توليد أرقام أولية لمن ليس له رقم</button></div>
+    ${S.pinList && S.pinList.length ? `<div class="banner stack"><b>الأرقام الأولية الجديدة. انسخها الآن، فلن تظهر مرة أخرى بعد مغادرة الصفحة:</b>
+      <div class="scroll"><table><tbody>${S.pinList.map(x => `<tr><td>${esc(x.name)}</td><td class="num"><b>${esc(x.pin)}</b></td></tr>`).join("")}</tbody></table></div>
+      <div class="row"><button type="button" class="btn" data-act="copy-pins">نسخ القائمة</button><button type="button" class="btn ghost" data-act="hide-pins">إخفاء</button></div></div>` : ""}
     <div class="scroll"><table><thead><tr><th>الاسم</th><th>الدور</th><th>المشرف</th><th>الرقم السري</th><th></th></tr></thead><tbody>` +
     S.roster.map((p, i) => `<tr>
       <td><input type="text" style="min-width:170px" id="rn-${i}" aria-label="الاسم" data-rn="${i}" value="${esc(p.name)}"></td>
       <td><select id="rr-${i}" aria-label="الدور" data-rr="${i}"><option value="employee" ${p.role === "supervisor" ? "" : "selected"}>مراقب</option><option value="supervisor" ${p.role === "supervisor" ? "selected" : ""}>مشرف</option></select></td>
       <td>${p.role === "supervisor" ? `<span class="muted">لا ينطبق</span>` : `<select id="rs-${i}" aria-label="المشرف" data-rs="${i}"><option value="">غير محدد</option>${sups.map(x => `<option value="${esc(x.id)}" ${p.supervisorPid === x.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>`}</td>
-      <td>${p.hasPin ? `<span class="rem ok">مُعيَّن</span> <button type="button" class="btn ghost" data-act="reset-pin" data-id="${esc(p.id)}">تصفير الرقم</button>` : `<span class="muted">لم يدخل بعد</span>`}</td>
+      <td><div class="fld-row" style="flex-wrap:nowrap">${p.hasPin ? (p.mustChange ? `<span class="rem todo">أولي، لم يُغيَّر</span>` : `<span class="rem ok">خاص به</span>`) : `<span class="rem todo">بلا رقم</span>`}
+        <input class="num" style="width:110px;min-width:110px" type="text" inputmode="numeric" autocomplete="off" id="pin-${i}" aria-label="رقم أولي جديد" placeholder="رقم أولي" maxlength="20">
+        <button type="button" class="btn ghost" data-act="set-pin" data-i="${i}">تعيين</button></div></td>
       <td><button type="button" class="btn ghost danger" data-act="del-person" data-i="${i}">حذف</button></td></tr>`).join("") +
     `</tbody></table></div><div class="row"><button type="button" class="btn" data-act="add-person">إضافة اسم</button>
     <span class="muted small num">${S.roster.filter(p => p.role !== "supervisor").length} مراقب · ${sups.length} مشرف</span></div></section>
@@ -864,10 +878,23 @@ document.addEventListener("click", async e => {
     try { d = mgr ? await rpc("m_login_manager", { p_code: secret }) : await rpc("m_login", { p_person: pid, p_pin: secret }); } catch(e){ toast("تعذر الاتصال. تحقق من الإنترنت."); b.disabled = false; return; }
     if (d.error){ toast(ERR[d.error] || "تعذر الدخول."); b.disabled = false; return; }
     tokenSet(d.token); S.view = null; await refresh(); render();
-    if (d.first) toast(mgr ? "تم تعيين رمز المدير. احفظه جيداً." : "تم تعيين رقمك السري. احفظه جيداً.");
+    if (d.first) toast("تم تعيين رمز المدير. احفظه جيداً.");
   }
   else if (act === "logout"){ const t = S.token; tokenSet(""); S.me = null; S.charters = {}; S.anon = []; S.reviews = {}; S.draft = {}; render(); try { await rpc("m_logout", { p_token: t }); } catch(e){} refresh().then(render); }
-  else if (act === "reset-pin"){ if (await call("m_reset_pin", { p_person: b.dataset.id })){ await refresh(); toast("تم تصفير الرقم السري."); render(); } }
+  else if (act === "set-pin"){ const p = S.roster[+b.dataset.i], v = document.getElementById("pin-" + b.dataset.i).value.trim();
+    if (v.length < 4){ toast("الرقم الأولي 4 أرقام على الأقل."); return; }
+    if (await call("m_set_pin", { p_person: p.id, p_pin: v })){ await refresh(); toast("تم تعيين رقم أولي لـ " + p.name + "."); render(); } }
+  else if (act === "gen-pins"){
+    const todo = S.roster.filter(p => !p.hasPin); if (!todo.length){ toast("كل الأسماء لها أرقام."); return; }
+    b.disabled = true; const out = [];
+    for (const p of todo){ const a = new Uint32Array(1); crypto.getRandomValues(a); const pin = String(100000 + a[0] % 900000);
+      if (await call("m_set_pin", { p_person: p.id, p_pin: pin })) out.push({ name: p.name, pin }); else break; }
+    S.pinList = out; await refresh(); toast("تم توليد " + out.length + " رقماً أولياً."); render(); }
+  else if (act === "copy-pins"){ try { await navigator.clipboard.writeText(S.pinList.map(x => x.name + ": " + x.pin).join("\n")); toast("تم نسخ القائمة."); } catch(e){ toast("تعذر النسخ. انسخها يدوياً."); } }
+  else if (act === "hide-pins"){ S.pinList = []; render(); }
+  else if (act === "change-pin"){ const a = document.getElementById("np-1").value, c = document.getElementById("np-2").value;
+    if (a.length < 4){ toast("الرقم السري 4 أرقام على الأقل."); return; } if (a !== c){ toast("الرقمان غير متطابقين."); return; }
+    if (await call("m_change_pin", { p_new: a })){ await refresh(); toast("تم حفظ رقمك السري الجديد."); render(); } }
   else if (act === "change-code"){ const v = document.getElementById("new-code").value; if (v.length < 6){ toast("الرمز 6 خانات على الأقل."); return; }
     if (await call("m_change_manager_code", { p_new: v })){ toast("تم تغيير رمز المدير."); render(); } }
   else if (act === "add-field"){ S.cfgDraft.axes[+b.dataset.i].fields.push({ id: uid("f"), label: "خانة جديدة", w: 0 }); render(); }
