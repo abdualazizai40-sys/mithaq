@@ -567,7 +567,7 @@ function viewSupervisor(){
   if (!mine.length) return h + `<div class="card muted">لا يوجد مراقبون مرتبطون بك بعد. يربطهم المدير من تبويب «الأعضاء».</div>`;
   const dv = r => { const t = r && r.targets.find(x => x.ops); return !r ? Infinity : t ? t.diff : 0; };
   const rows = mine.map(id => ({ id, r: yearCalc(id, y) })).sort((a,b) => dv(a.r) - dv(b.r)), rk = rankMap(y), team = teamCalcs(y);
-  h += matrixHTML(rows);
+  h += statTiles(rows, y) + matrixHTML(rows);
   for (const x of rows){
     const key = x.id + "__" + S.month, mineRv = S.reviews[key];
     const note = S.notes[key] !== undefined ? S.notes[key] : (mineRv && mineRv.note) || "";
@@ -588,6 +588,18 @@ function viewManager(){
   let h = `<div class="seg" role="group" aria-label="أقسام المدير" style="align-self:flex-start">` + Object.keys(tabs).map(t => `<button type="button" data-act="tab" data-t="${t}" aria-pressed="${S.mgrTab === t}">${tabs[t]}</button>`).join("") + `</div>`;
   return h + (S.mgrTab === "equation" ? mgrEquation() : S.mgrTab === "members" ? mgrMembers() : mgrOverview());
 }
+/* عدّادات الملخص: تظهر للمدير عن الجميع وللمشرف عن فريقه */
+function statTiles(rows, y){
+  const done = rows.filter(x => x.r), avg = done.length ? done.reduce((s,x) => s + x.r.total, 0) / done.length : 0;
+  const cnt = i => done.filter(x => x.r.dIdx === i).length, max = calc(S.config, [], 1).max;
+  const behind = done.filter(x => paceClass(x.r) === "rem todo").length, met = done.filter(x => x.r.reqMet).length;
+  return `<div class="tiles">
+    <div class="tile"><span class="muted small">أدخلوا أعمالهم</span><b class="num">${done.length} / ${rows.length}</b></div>
+    <div class="tile"><span class="muted small">متوسط الدرجة</span><b class="num">${f2(avg)} / ${f0(max)}</b></div>
+    <div class="tile"><span class="muted small">حققوا المطلوب</span><b class="num">${met}</b></div>
+    <div class="tile"><span class="muted small">متأخرون عن المسار</span><b class="num">${behind}</b></div>
+  </div><div class="tiles">` + S.config.bands.map((b,i) => `<div class="tile"><span class="pill lv-${TONES[i]}">${esc(b.label)}</span><b class="num">${cnt(i)}</b></div>`).reverse().join("") + `</div>`;
+}
 function mgrOverview(){
   const y = yearOf(), dv = r => { const t = r && r.targets.find(x => x.ops); return !r ? Infinity : t ? t.diff : 0; };
   const rk = rankMap(y), rows = employeeIds().map(id => ({ id, r: yearCalc(id, y) })).sort((a,b) => (rk[a.id] || 1e9) - (rk[b.id] || 1e9) || dv(a.r) - dv(b.r));
@@ -597,12 +609,8 @@ function mgrOverview(){
   let h = `<section class="card row between"><div><h2>أداء المراقبين لسنة <span class="num">${esc(y)}</span></h2>
     <p class="muted small">الأرقام تراكمية من بداية السنة، والترتيب بالدرجة من الأعلى.</p>
     <div class="row" style="margin-top:10px"><button type="button" class="btn primary" data-act="pdf-team">تنزيل تقرير الجميع PDF</button></div></div>${monthPicker("الفترة")}</section>
-  <div class="tiles">
-    <div class="tile"><span class="muted small">أدخلوا أعمالهم</span><b class="num">${done.length} / ${rows.length}</b></div>
-    <div class="tile"><span class="muted small">متوسط الدرجة</span><b class="num">${f2(avg)} / ${f0(base.max)}</b></div>
-    <div class="tile"><span class="muted small">حققوا المطلوب</span><b class="num">${met}</b></div>
-    <div class="tile"><span class="muted small">متأخرون عن المسار</span><b class="num">${behind}</b></div>
-  </div><div class="tiles">` + S.config.bands.map((b,i) => `<div class="tile"><span class="pill lv-${TONES[i]}">${esc(b.label)}</span><b class="num">${cnt(i)}</b></div>`).reverse().join("") + `</div>`;
+`;
+  h += statTiles(rows, y);
   h += matrixHTML(rows);
   if (!rows.length) return h + `<div class="card muted">لا توجد أسماء بعد. أضفها من تبويب «الأعضاء».</div>`;
   h += `<section class="card scroll"><table><thead><tr><th>الترتيب</th><th>المراقب</th><th>المشرف</th><th>الدرجة</th><th>${base.fr > 0 && base.fr < 1 ? "المستوى المتوقع" : "المستوى"}</th><th>المسار</th>` + base.targets.map(t => `<th>${esc(t.label)}</th>`).join("") + `<th>المتوقع نهاية السنة</th><th>آخر حفظ</th></tr></thead><tbody>`;
