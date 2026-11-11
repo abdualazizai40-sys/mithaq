@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ميثاق الأداء للمراقبين</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one working column (max 980px), a sticky header with the role switch,
+   summary first, then one card per axis; tables scroll inside their own box. */
+:root{
+  --bg:#f3f6f4; --surface:#ffffff; --surface-2:#e9efec; --line:#d3ddd8;
+  --ink:#14211c; --muted:#5a6b64;
+  --accent:#0f6b4a; --accent-ink:#ffffff; --accent-soft:#dcefe6;
+  --gold:#a8791a; --gold-soft:#f6ecd2;
+  --good:#17794f; --warn:#a9670b; --bad:#b3382c; --warn-soft:#fbeed6; --bad-soft:#f9e1dd;
+  --font-display:"Readex Pro","IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  --font-body:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0e1613; --surface:#16211d; --surface-2:#1e2c27; --line:#2d3f38;
+    --ink:#e7efeb; --muted:#9bb0a7;
+    --accent:#3fb586; --accent-ink:#06261a; --accent-soft:#17382c;
+    --gold:#e0b354; --gold-soft:#3a2f14;
+    --good:#56c896; --warn:#e6a94a; --bad:#ef8377; --warn-soft:#3b2c12; --bad-soft:#41201c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1613; --surface:#16211d; --surface-2:#1e2c27; --line:#2d3f38;
+  --ink:#e7efeb; --muted:#9bb0a7;
+  --accent:#3fb586; --accent-ink:#06261a; --accent-soft:#17382c;
+  --gold:#e0b354; --gold-soft:#3a2f14;
+  --good:#56c896; --warn:#e6a94a; --bad:#ef8377; --warn-soft:#3b2c12; --bad-soft:#41201c;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;line-height:1.35}
+h1{font-size:1.25rem} h2{font-size:1.1rem} h3{font-size:1rem}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+.tn{font-variant-numeric:tabular-nums}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding-block:12px}
+.brand{display:flex;flex-direction:column;margin-inline-end:auto}
+.brand small{color:var(--muted);font-size:.8rem}
+.seg{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:999px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 .9rem var(--font-body);padding:6px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+main{padding-block:20px 48px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.row.between{justify-content:space-between}
+.stack{display:flex;flex-direction:column;gap:12px}
+.muted{color:var(--muted)} .small{font-size:.875rem}
+.banner{border-radius:var(--r);padding:10px 14px;background:var(--gold-soft);color:var(--ink);border:1px solid var(--gold);font-size:.9rem}
+label.fld{display:flex;flex-direction:column;gap:4px;font-size:.875rem;font-weight:500;color:var(--muted);min-width:0;justify-content:flex-end}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:0;width:100%}
+textarea{min-height:72px;resize:vertical}
+input[type="checkbox"]{width:auto}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .95rem var(--font-body);padding:9px 16px;border-radius:10px;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--bad)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:2px 12px;border-radius:999px;font-size:.85rem;font-weight:600;white-space:nowrap}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.lv-below{background:var(--bad-soft);color:var(--bad)}
+.lv-dev{background:var(--warn-soft);color:var(--warn)}
+.lv-meets{background:var(--accent-soft);color:var(--good)}
+.lv-above{background:var(--gold-soft);color:var(--gold)}
+.lv-ideal{background:var(--good);color:var(--surface)}
+.lv-none{background:var(--surface-2);color:var(--muted)}
+/* summary */
+.summary{display:grid;grid-template-columns:auto 1fr;gap:16px 24px;align-items:center}
+.score{font-family:var(--font-display);font-size:3rem;font-weight:700;line-height:1}
+.score small{font-size:1.1rem;color:var(--muted);font-weight:500}
+.track{position:relative;height:14px;border-radius:999px;background:var(--surface-2)}
+.fill{position:absolute;inset-block:0;inset-inline-start:0;border-radius:999px;background:var(--accent);width:0;transition:width .25s}
+.mark{position:absolute;inset-block:-5px;width:3px;background:var(--gold);border-radius:2px}
+.legend{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:6px}
+.legend b{color:var(--gold)}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.axis-head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline;justify-content:space-between}
+.opsbox{background:var(--accent-soft);border-color:var(--accent)}
+.opsbox .res{background:var(--surface)}
+.ops{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between}
+.res{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:center;justify-content:space-between;background:var(--surface-2);border-radius:10px;padding:10px 14px}
+.res .big{font-family:var(--font-display);font-size:1.6rem;line-height:1}
+.ops > b{font-family:var(--font-display);font-size:2rem;line-height:1}
+.fp{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+.fp ul{margin:4px 0 0;padding-inline-start:20px}
+.rem{font-size:.9rem;font-weight:500}
+.rem.ok{color:var(--good)} .rem.todo{color:var(--warn)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.tile b{display:block;margin-top:4px;font-family:var(--font-display);font-size:1.6rem}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:10px 12px;text-align:start;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:600;font-size:.82rem}
+td select{min-width:120px}
+details.emp{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+details.emp summary{cursor:pointer;padding:14px 18px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;list-style:none}
+details.emp summary::-webkit-details-marker{display:none}
+details.emp .body{padding:0 18px 18px;display:flex;flex-direction:column;gap:12px}
+.mini{display:grid;grid-template-columns:minmax(120px,1.2fr) 2fr auto;gap:10px;align-items:center;font-size:.9rem}
+.axis-edit{border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:12px;background:var(--bg)}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.fld-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fld-row > input[type="text"]{flex:1 1 180px;width:auto}
+footer{color:var(--muted);font-size:.82rem;text-align:center;padding:0 16px 32px}
+#toast{position:fixed;inset-inline:16px;bottom:16px;margin-inline:auto;max-width:420px;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;text-align:center;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+@media (max-width:520px){.summary{grid-template-columns:1fr}.mini{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.fill,#toast{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><h1>ميثاق الأداء للمراقبين</h1><small>إدارة الجودة والرقابة</small></div>
+  <div id="views" class="seg" role="group" aria-label="الواجهة"></div>
+  <div id="who" class="row" style="gap:8px"></div>
+</div></header>
+<main class="wrap" id="app"><div class="card muted">جارٍ التحميل…</div></main>
+<footer>إعداد: م. عبدالعزيز قمعي</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ---------- المعادلة الافتراضية (يعدّلها المدير من واجهته) ---------- */
+const DEFAULT_CONFIG = { year:2027, sendOpenDays:3, sendGraceDays:5, sendAlways:false, qualityTarget:100, showWeights:true, workDays:241, opsTarget:2410, groups:[{id:"g1",label:"الضبطيات",t:4}], maxScore:5, opsWeight:0.00104, bands:[
+  {from:0,label:"غير مرضي"},{from:1.5,label:"يحتاج لتطوير"},{from:2.5,label:"وافق التوقعات"},
+  {from:3.5,label:"فاق التوقعات"},{from:4.5,label:"مثالي"}], axes: [
+  { id:"vis", name:"الزيارات", quality:true, qt:98, fields:[
+    {id:"v1",label:"زيارات البلاغ"},{id:"v2",label:"الزيارات التصحيحية"},
+    {id:"v3",label:"المهام المسندة"},{id:"v4",label:"الجولات الوزارية"},{id:"v5",label:"الزيارات التموينية"}]},
+  { id:"rep", name:"البلاغات", quality:true, qt:95, fields:[
+    {id:"b1",label:"بلاغات الرقابة التجارية"},{id:"b2",label:"بلاغات الغش التجاري"},
+    {id:"b3",label:"بلاغات المعادن"},{id:"b6",label:"بلاغات سلامة المنتجات"},
+    {id:"b5",label:"بلاغات المتاجر الإلكترونية"},{id:"b4",label:"بلاغات الوكالات التجارية"}]},
+  { id:"rd", name:"القراءات التموينية", quality:false, fields:[
+    {id:"r1",label:"القراءات التموينية",w:0.00005,t:9600}]},
+  { id:"cs", name:"القضايا والمنتجات المضبوطة", quality:false, fields:[
+    {id:"c1",label:"عدد القضايا لغير المنتجات",w:0.1,g:"g1"},{id:"p1",label:"المنتجات المضبوطة",w:0.0001225},
+    {id:"c2",label:"قضايا المتاجر والوكالات",w:0.02,g:"g1"}]}
+]};
+const TONES = ["below","dev","meets","above","ideal"];
+function validConfig(d){ return !!(d && Array.isArray(d.axes) && d.axes.length && typeof d.opsWeight === "number" && typeof d.opsTarget === "number" && Array.isArray(d.bands) && d.bands.length === 5); }
+
+/* ---------- الحساب ----------
+   الميثاق سنوي تراكمي: تُجمع إدخالات أشهر السنة ثم تُحسب الدرجة على المجموع.
+   الدرجة = مجموع العمليات × وزن العملية + مجموع (كل خانة أخرى × وزنها)، بحد أقصى.
+   مجموع العمليات = ناتج الزيارات + ناتج البلاغات، وناتج كل منهما في الشهر = مجموع خاناته × نسبة جودة ذلك الشهر. */
+function n(v){ const x = parseFloat(v); return isFinite(x) && x > 0 ? x : 0; }
+function monthCalc(config, values){
+  values = values || {};
+  let ops = 0; const ax = {}, fl = {};
+  for (const a of config.axes){
+    if (a.quality){
+      const sum = a.fields.reduce((s,f) => s + n(values[f.id]), 0), rq = values[a.id + "_q"];
+      const q = (rq === undefined || rq === "") ? 1 : Math.min(100, n(rq)) / 100;
+      ax[a.id] = { sum, q, eff: sum * q }; ops += sum * q;
+    } else for (const f of a.fields) fl[f.id] = n(values[f.id]);
+  }
+  return { ops, ax, fl };
+}
+function bandIdx(bands, total){ let idx = 0; bands.forEach((b,i) => { if (total >= n(b.from) - 1e-9) idx = i; }); return idx; }
+function calc(config, list, fr){
+  if (!Array.isArray(list)) list = [list || {}];
+  if (fr === undefined) fr = 1;
+  const ms = list.map(v => monthCalc(config, v)), add = (f) => ms.reduce((s,m) => s + f(m), 0);
+  const ow = n(config.opsWeight), max = n(config.maxScore) || 5, bands = config.bands;
+  const exp = Math.min(n(bands[2].from), max), ideal = Math.min(n(bands[4].from), max);
+  let ops = 0, raw = 0; const targets = [];
+  const axes = config.axes.map(a => {
+    if (a.quality){
+      const sum = add(m => m.ax[a.id].sum), eff = add(m => m.ax[a.id].eff);
+      ops += eff; raw += eff * ow;
+      return { id:a.id, name:a.name, quality:true, qt:a.qt, sum, eff, q: sum > 0 ? eff / sum : 1, got: eff * ow, fields:[] };
+    }
+    const fields = a.fields.map(f => { const val = add(m => m.fl[f.id]); return { id:f.id, label:f.label, val, w:n(f.w), t:n(f.t), g:f.g || "", got: val * n(f.w) }; });
+    const got = fields.reduce((s,f) => s + f.got, 0); raw += got;
+    return { id:a.id, name:a.name, quality:false, got, fields };
+  });
+  const groups = (config.groups || []).filter(g => n(g.t) > 0), gids = groups.map(g => g.id), all = [];
+  for (const a of axes) for (const f of a.fields) all.push(f);
+  if (n(config.opsTarget) > 0) targets.push({ label:"مجموع العمليات", unit:"عملية", done:ops, target:n(config.opsTarget), wMin:ow, wMax:ow, ops:true });
+  for (const f of all) if (f.t > 0 && !gids.includes(f.g)) targets.push({ label:f.label, unit:"", done:f.val, target:f.t, wMin:f.w, wMax:f.w, ops:false });
+  for (const g of groups){ const fs = all.filter(f => f.g === g.id); if (!fs.length) continue;
+    targets.push({ label:g.label, unit:"", done:fs.reduce((s,f) => s + f.val, 0), target:n(g.t), wMin:Math.min(...fs.map(f => f.w)), wMax:Math.max(...fs.map(f => f.w)), ops:false, parts:fs.map(f => f.label) }); }
+  for (const f of all) f.hasT = gids.includes(f.g) ? true : f.t > 0;
+  for (const t of targets){ t.rem = Math.max(0, Math.ceil(t.target - t.done - 1e-9)); t.due = t.target * fr; t.diff = t.done - t.due; }
+  const qDef = config.qualityTarget === undefined ? 100 : Math.min(100, n(config.qualityTarget));
+  for (const a of axes) if (a.quality){ const qT = a.qt === undefined || a.qt === "" ? qDef : Math.min(100, n(a.qt)); if (!(qT > 0)) continue;
+    const done = a.sum > 0 ? a.eff / a.sum * 100 : 0;
+    targets.push({ label:"جودة " + a.name, unit:"", q:true, has:a.sum > 0, done, target:qT, wMin:0, wMax:0, ops:false, rem: Math.max(0, Math.round((qT - done) * 10) / 10), due:qT, diff:0 }); }
+  const total = Math.round(Math.min(max, raw) * 100) / 100, toExp = Math.max(0, exp - total), toIdeal = Math.max(0, ideal - total);
+  const idx = bandIdx(bands, total), next = bands[idx + 1], toNext = next ? Math.max(0, n(next.from) - total) : 0;
+  const rq = k => Math.round(Math.min(max, targets.reduce((s,t) => s + t.target * t[k], 0)) * 100) / 100, reqScore = rq("wMin"), reqMax = rq("wMax");
+  const proj = fr >= 0.05 && fr < 1 ? Math.round(Math.min(max, raw / fr) * 100) / 100 : null;
+  /* المستوى المعروض خلال السنة هو المتوقع لنهايتها بحسب الوتيرة، لأن الدرجة التراكمية تبدأ منخفضة للجميع */
+  let dIdx = idx, dLabel = bands[idx].label, dLevel = TONES[idx], projected = false;
+  if (fr < 1){ if (proj !== null){ dIdx = bandIdx(bands, proj); dLabel = bands[dIdx].label; dLevel = TONES[dIdx]; projected = true; }
+    else if (idx < 2){ dIdx = -1; dLabel = "بداية السنة"; dLevel = "none"; } }
+  return { axes, ops, opsGot: ops * ow, total, raw, max, expScore: exp, idealScore: ideal, idx, level: TONES[idx], levelLabel: bands[idx].label, dIdx, dLabel, dLevel, projected,
+    nextLabel: next ? next.label : "", toNext, opsToNext: ow > 0 ? Math.ceil(toNext / ow - 1e-9) : null, toExp, toIdeal,
+    targets, reqMet: targets.length > 0 && targets.every(t => t.rem === 0), reqScore, reqMax, reqLabel: bands[bandIdx(bands, reqScore)].label, reqMaxLabel: bands[bandIdx(bands, reqMax)].label,
+    fr, daysLeft: n(config.workDays) * (1 - fr), proj, projLabel: proj === null ? "" : bands[bandIdx(bands, proj)].label };
+}
+/* نسبة ما مضى من السنة (تقريبية: توزع أيام العمل بالتساوي على أيام السنة) */
+function yearFrac(year){
+  const now = new Date(), y = now.getFullYear(); year = +year;
+  if (year < y) return 1; if (year > y) return 0;
+  const start = new Date(y, 0, 1), end = new Date(y + 1, 0, 1);
+  return Math.min(1, Math.max(0, (now - start) / (end - start)));
+}
+const LEVELS = { none:"لم يُدخل" };
+
+/* ---------- الحالة ---------- */
+const S = { db:null, user:null, dl:null, me:{id:"local", manager:true}, online:false, readOnly:false, loaded:false, slow:false,
+  config:DEFAULT_CONFIG, roster:[], roles:{}, charters:{}, members:{}, reviews:{}, names:{},
+  view:null, mgrTab:"overview", month:"", monthTouched:false, draft:{}, dirty:false, myName:"", cfgDraft:null, notes:{}, pending:false };
+
+function charterYear(){ return Math.round(n(S.config.year)) || 2027; }
+function defaultMonth(yy){ const y = yy || charterYear(), cy = new Date().getFullYear(); return cy === y ? thisMonth() : cy < y ? y + "-01" : y + "-12"; }
+S.month = defaultMonth();
+function thisMonth(){ const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0"); }
+function monthLabel(m){ const [y,mo] = m.split("-").map(Number); try { return new Date(y, mo-1, 1).toLocaleDateString("ar-SA-u-ca-gregory-nu-latn",{month:"long",year:"numeric"}); } catch(e){ return m; } }
+function when(iso){ if(!iso) return ""; try { return new Date(iso).toLocaleString("ar-SA-u-ca-gregory-nu-latn",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}); } catch(e){ return ""; } }
+function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function f2(x){ return (Math.round(x*100)/100).toFixed(2); }
+function f3(x){ return (Math.round(x*1000)/1000).toFixed(3); }
+function f0(x){ return String(Math.round(x*10)/10); }
+function uid(p){ return p + Math.random().toString(36).slice(2,8); }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function toast(t){ const el = document.getElementById("toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2600); }
+
+/* قائمة الأسماء: يضعها المدير، ويربط كل شخص حسابه باسمه مرة واحدة */
+function claimOf(id){ return S.roster.find(p => p.id === id) || null; }
+function uidOfPid(pid){ return pid; }
+function refOfPid(pid){ return uidOfPid(pid) || "r:" + pid; }
+function personOf(id){ return String(id).startsWith("r:") ? S.roster.find(p => p.id === id.slice(2)) || null : claimOf(id); }
+function isSupervisor(id){ const p = personOf(id); return p ? p.role === "supervisor" : !!(S.roles[id] && S.roles[id].role === "supervisor"); }
+function supervisorOf(id){ const p = personOf(id); if (p) return p.supervisorPid ? refOfPid(p.supervisorPid) : ""; return (S.roles[id] && S.roles[id].supervisorId) || ""; }
+function myRole(){ if (S.me.manager) return "manager"; return isSupervisor(S.me.id) ? "supervisor" : "employee"; }
+function allowedViews(){ const r = myRole(); return r === "manager" ? ["manager","supervisor"] : r === "supervisor" ? ["supervisor"] : ["employee"]; }
+function nameOf(id){ const p = personOf(id); if (p) return p.name; const m = S.members[id]; return (m && m.displayName) || S.names[id] || "عضو بلا اسم"; }
+function valuesOf(id, month){ const c = S.charters[id]; return c && c.months && c.months[month] ? c.months[month] : null; }
+function yearOf(){ return S.month.slice(0, 4); }
+function yearList(id, year, overMonth, overValues){
+  const c = S.charters[id], out = [], ms = (c && c.months) || {};
+  for (const k in ms) if (k.slice(0, 4) === String(year) && k !== overMonth) out.push(ms[k].values || {});
+  if (overMonth) out.push(overValues || {});
+  return out;
+}
+function yearCalc(id, year){ const l = yearList(id, year); return l.length ? calc(S.config, l, yearFrac(year)) : null; }
+function lastSaved(id, year){ const c = S.charters[id], ms = (c && c.months) || {}; let b = ""; for (const k in ms) if (k.slice(0,4) === String(year) && (ms[k].updatedAt || "") > b) b = ms[k].updatedAt; return b; }
+function rankMap(year, selfId, selfTotal){
+  const ids = employeeIds(); if (selfId && !ids.includes(selfId)) ids.push(selfId);
+  const tot = {}; for (const id of ids){ if (id === selfId && selfTotal !== undefined) tot[id] = selfTotal; else { const r = yearCalc(id, year); if (r) tot[id] = r.total; } }
+  anonCalcs(year).forEach((r, i) => { tot["~" + i] = r.total; });
+  const out = { n: ids.length };
+  for (const id in tot) out[id] = 1 + Object.keys(tot).filter(k => tot[k] > tot[id] + 1e-9).length;
+  return out;
+}
+function paceText(r){
+  const t = r.targets.find(x => x.ops); if (!t) return "";
+  if (t.rem === 0) return "حقق هدف العمليات";
+  if (r.fr <= 0 || r.fr >= 1) return `باقي ${t.rem} عملية`;
+  return t.diff >= 0 ? `متقدم ${Math.round(t.diff)} عملية` : `متأخر ${Math.round(-t.diff)} عملية`;
+}
+function paceClass(r){ const t = r.targets.find(x => x.ops); return !t || t.rem === 0 || t.diff >= 0 ? "rem ok" : "rem todo"; }
+function targetsHTML(r){
+  if (!r.targets.length) return `<p class="muted small">لم يحدد المدير أهدافاً سنوية بعد.</p>`;
+  return r.targets.map(t => {
+    let msg;
+    if (t.q){
+      msg = !t.has ? "لم تُدخل أعمال في هذا المحور بعد." : t.rem === 0 ? "تحققت الجودة المطلوبة." : `نسبتك ${f0(t.done)}% والمطلوب ${f0(t.target)}%. باقي ${t.rem} نقطة.`;
+      return `<div class="stack" style="gap:6px"><div class="row between"><b>${esc(t.label)}</b><span class="num">${f0(t.done)}% / ${f0(t.target)}%</span></div>
+        <div class="track"><div class="fill" style="width:${Math.min(100, t.done / t.target * 100)}%"></div></div>
+        <p class="small rem ${t.has && t.rem === 0 ? "ok" : t.has ? "todo" : ""}">${esc(msg)}</p></div>`;
+    }
+    if (t.rem === 0) msg = "تحقق المطلوب. كل زيادة بعده تُحسب لك في الدرجة.";
+    else {
+      msg = `باقي ${t.rem}${t.unit ? " " + t.unit : ""}.`;
+      if (r.fr > 0 && r.fr < 1 && Math.abs(t.diff) >= 0.5) msg += t.diff >= 0 ? ` متقدم عن المسار بـ ${Math.round(t.diff)}.` : ` متأخر عن المسار بـ ${Math.round(-t.diff)}.`;
+      if (r.daysLeft >= 1){
+        if (t.ops) msg += ` تحتاج ${f0(t.rem / r.daysLeft)} عملية يومياً فيما تبقى من السنة.`;
+        else if (t.rem / (r.daysLeft / 5) >= 1) msg += ` أي نحو ${Math.ceil(t.rem / (r.daysLeft / 5))} في الأسبوع فيما تبقى.`;
+      }
+    }
+    const behind = t.rem > 0 && r.fr > 0 && r.fr < 1 && t.diff <= -0.5;
+    return `<div class="stack" style="gap:6px"><div class="row between"><span><b>${esc(t.label)}</b>${t.parts ? ` <span class="muted small">(${esc(t.parts.join(" + "))})</span>` : ""}</span><span class="num">${f0(t.done)} / ${f0(t.target)}</span></div>
+      <div class="track"><div class="fill" style="width:${Math.min(100, t.done / t.target * 100)}%"></div>${r.fr > 0 && r.fr < 1 ? `<div class="mark" style="inset-inline-start:${r.fr * 100}%"></div>` : ""}</div>
+      <p class="small rem ${t.rem === 0 ? "ok" : behind ? "todo" : ""}">${esc(msg)}</p></div>`;
+  }).join("");
+}
+/* بصمة الأداء: محاور من 100 لكل مراقب مقارنة بمتوسط الفريق */
+function fpAxes(r, team){
+  const out = [], pace = r.fr > 0 && r.fr < 1 ? r.fr : 1;
+  for (const t of r.targets) out.push({ key:"t:" + t.label, label:t.label, kind: t.q ? "q" : "t", t, v: Math.min(100, t.done / (t.target * (t.q ? 1 : pace)) * 100) });
+  return out;
+}
+function fingerprintHTML(r, team){
+  if (!(r.raw > 0)) return `<p class="muted small">تظهر بصمة الأداء بعد إدخال الأعمال.</p>`;
+  const ax = fpAxes(r, team), N = ax.length; if (N < 3) return "";
+  const others = team.map(x => fpAxes(x, team));
+  ax.forEach((a, i) => { const vs = others.map(o => o[i] ? o[i].v : 0); a.avg = vs.length ? vs.reduce((s,v) => s + v, 0) / vs.length : a.v; });
+  const C = 190, R = 86, pt = (i, v) => { const ang = -Math.PI / 2 + i * 2 * Math.PI / N, rr = R * v / 100; return [C + rr * Math.cos(ang), 130 + rr * Math.sin(ang)]; };
+  const poly = k => ax.map((a, i) => pt(i, a[k]).map(x => x.toFixed(1)).join(",")).join(" ");
+  let svg = `<svg viewBox="0 0 380 270" role="img" aria-label="مخطط بصمة الأداء" style="width:100%;max-width:420px;height:auto;font:500 11px var(--font-body)">`;
+  for (const g of [25, 50, 75, 100]) svg += `<polygon points="${ax.map((a, i) => pt(i, g).map(x => x.toFixed(1)).join(",")).join(" ")}" style="fill:none;stroke:var(--line);stroke-width:1"/>`;
+  ax.forEach((a, i) => { const [x, y] = pt(i, 100); svg += `<line x1="${C}" y1="130" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" style="stroke:var(--line);stroke-width:1"/>`; });
+  svg += `<polygon points="${poly("avg")}" style="fill:none;stroke:var(--gold);stroke-width:1.5;stroke-dasharray:4 3"/>`;
+  svg += `<polygon points="${poly("v")}" style="fill:var(--accent);fill-opacity:.18;stroke:var(--accent);stroke-width:2"/>`;
+  ax.forEach((a, i) => { const [x, y] = pt(i, a.v); svg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" style="fill:var(--accent)"/>`;
+    const [lx, ly] = pt(i, 128); svg += `<text x="${lx.toFixed(1)}" y="${(ly - 4).toFixed(1)}" text-anchor="middle" style="fill:var(--muted)">${esc(a.label.length > 22 ? a.label.slice(0, 21) + "…" : a.label)}</text><text x="${lx.toFixed(1)}" y="${(ly + 10).toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:700;font-size:13px">${Math.round(a.v)}</text>`; });
+  svg += `</svg>`;
+  const sorted = ax.slice().sort((a, b) => b.v - a.v), strong = sorted.filter(a => a.v >= 90).slice(0, 2), weak = sorted[sorted.length - 1];
+  const sLine = a => `${a.label}: ${Math.round(a.v)} من 100` + (others.length > 1 ? `، ومتوسط الفريق ${Math.round(a.avg)}` : "") + ".";
+  const wLine = a => a.kind === "t" ? `${a.label}: أنجزت ${f0(a.t.done)} من ${f0(a.t.target)}، باقي ${a.t.rem}.`
+    : a.kind === "q" ? `${a.label}: نسبتك ${f0(a.t.done)}% والمطلوب ${f0(a.t.target)}%. رفعها يزيد عملياتك المحتسبة دون عمل إضافي.`
+    : `${a.label}: ${f0(a.val)} مقابل ${f0(a.mx)} لأعلى مراقب.`;
+  return `<div class="fp">${svg}<div class="stack" style="flex:1 1 240px">
+    <div><b style="color:var(--good)">نقاط القوة</b><ul>${(strong.length ? strong : [sorted[0]]).map(a => `<li>${esc(sLine(a))}</li>`).join("")}</ul></div>
+    ${weak.v < 100 ? `<div><b style="color:var(--warn)">أولوية التحسين</b><ul><li>${esc(wLine(weak))}</li></ul></div>` : ""}
+    <p class="muted small">كل محور من 100. الخط الأخضر أداء المراقب، والمتقطع الذهبي متوسط الفريق. محاور الأهداف تُقاس بما يُفترض إنجازه حتى اليوم.</p></div></div>`;
+}
+/* مصفوفة الكم والجودة: نسبة تحقيق هدف العمليات (أفقي) مقابل نسبة الجودة (رأسي) */
+function matrixHTML(rows){
+  const pts = [];
+  for (const x of rows){ if (!x.r || !(x.r.raw > 0)) continue;
+    const t = x.r.targets.find(k => k.ops), qa = x.r.axes.filter(a => a.quality), sum = qa.reduce((s,a) => s + a.sum, 0), eff = qa.reduce((s,a) => s + a.eff, 0);
+    if (!t || !(sum > 0)) continue;
+    const pace = x.r.fr > 0 && x.r.fr < 1 ? x.r.fr : 1;
+    pts.push({ name: nameOf(x.id), x: t.done / (t.target * pace) * 100, y: eff / sum * 100 }); }
+  if (!pts.length) return `<section class="card stack"><h2>مصفوفة الكم والجودة</h2><p class="muted small">تظهر بعد أن يدخل المراقبون عملياتهم ونسب الجودة.</p></section>`;
+  const avg = pts.reduce((s,p) => s + p.y, 0) / pts.length;
+  const x0 = Math.min(40, Math.floor(Math.min(...pts.map(p => p.x)) / 10) * 10), x1 = Math.max(120, Math.ceil(Math.max(...pts.map(p => p.x)) / 10) * 10);
+  const y0 = Math.max(0, Math.floor(Math.min(avg, ...pts.map(p => p.y)) - 4)), y1 = 100 + (100 - y0) * 0.06;
+  const W = 680, H = 360, L = 46, Rm = 16, T = 16, B = 40, px = v => L + (v - x0) / (x1 - x0) * (W - L - Rm), py = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
+  let g = `<svg viewBox="0 0 ${W} ${H}" direction="ltr" role="img" aria-label="مصفوفة الكم والجودة" style="direction:ltr;width:100%;min-width:520px;height:auto;font:500 11px var(--font-body)">`;
+  g += `<rect x="${px(100).toFixed(1)}" y="${T}" width="${(W - Rm - px(100)).toFixed(1)}" height="${(py(avg) - T).toFixed(1)}" style="fill:var(--accent-soft)"/>`;
+  g += `<rect x="${L}" y="${T}" width="${W - L - Rm}" height="${H - T - B}" style="fill:none;stroke:var(--line)"/>`;
+  g += `<line x1="${px(100).toFixed(1)}" y1="${T}" x2="${px(100).toFixed(1)}" y2="${H - B}" style="stroke:var(--gold);stroke-dasharray:4 3"/><line x1="${L}" y1="${py(avg).toFixed(1)}" x2="${W - Rm}" y2="${py(avg).toFixed(1)}" style="stroke:var(--gold);stroke-dasharray:4 3"/>`;
+  for (let v = x0; v <= x1; v += (x1 - x0) > 120 ? 20 : 10) g += `<text x="${px(v).toFixed(1)}" y="${H - B + 16}" text-anchor="middle" style="fill:var(--muted)">${v}%</text>`;
+  for (const v of [y0, Math.round(avg), 100]) g += `<text x="${L - 6}" y="${(py(v) + 4).toFixed(1)}" text-anchor="end" style="fill:var(--muted)">${v}</text>`;
+  g += `<text x="${(L + W - Rm) / 2}" y="${H - 6}" text-anchor="middle" style="fill:var(--muted)">نسبة تحقيق هدف العمليات حتى اليوم</text>`;
+  const corner = (x, y, anchor, t) => `<text x="${x}" y="${y}" text-anchor="${anchor}" style="fill:var(--muted);font-size:10.5px">${t}</text>`;
+  g += corner(W - Rm - 8, T + 14, "end", "متميز: كم وجودة") + corner(L + 8, T + 14, "start", "جودة عالية وإنتاجية أقل") + corner(W - Rm - 8, H - B - 8, "end", "إنتاجية عالية وجودة أقل") + corner(L + 8, H - B - 8, "start", "فرص تحسين");
+  const placed = [];
+  for (const p of pts){ const cx = px(Math.min(x1, Math.max(x0, p.x))), cy = py(p.y); let ly = cy - 9;
+    while (placed.some(q => Math.abs(q.x - cx) < 90 && Math.abs(q.y - ly) < 13)) ly -= 13;
+    placed.push({ x: cx, y: ly });
+    g += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="4.5" style="fill:var(--accent)"/><text x="${cx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${esc(p.name)}</text>`; }
+  g += `</svg>`;
+  return `<section class="card stack"><div><h2>مصفوفة الكم والجودة</h2><p class="muted small">المحور الأفقي نسبة تحقيق هدف العمليات، والرأسي نسبة الجودة. الخطان المتقطعان هما حد المستهدف (100%) ومتوسط جودة الفريق (<span class="num">${Math.round(avg)}</span>).</p></div><div class="scroll" dir="ltr">${g}</div></section>`;
+}
+function teamCalcs(year, skipId){ return employeeIds().filter(id => id !== skipId).map(id => yearCalc(id, year)).filter(Boolean).concat(anonCalcs(year)); }
+/* ما يدخله المراقب لا يُحفظ: يحسب ويرى ثم يغلق. الإرسال للمشرف يفتح نهاية كل شهر فقط */
+function loadDraft(){ const rec = valuesOf(S.me.id, S.month); S.draft = rec ? clone(rec.values || {}) : {}; S.dirty = false; }
+function selfList(year, liveValues){ return yearList(S.me.id, year, S.month.slice(0,4) === String(year) ? S.month : null, liveValues); }
+function dayLabel(d){ try { return d.toLocaleDateString("ar-SA-u-ca-gregory-nu-latn", { day:"numeric", month:"long", year:"numeric" }); } catch(e){ return d.toDateString(); } }
+function sendWindow(month){
+  const [y, m] = month.split("-").map(Number), c = S.config, last = new Date(y, m, 0).getDate();
+  const od = Math.max(1, Math.round(c.sendOpenDays === undefined ? 3 : n(c.sendOpenDays))), gd = Math.round(c.sendGraceDays === undefined ? 5 : n(c.sendGraceDays));
+  const open = new Date(y, m - 1, Math.max(1, last - od + 1)), close = new Date(y, m - 1, last + gd, 23, 59, 59), now = new Date();
+  const state = c.sendAlways ? "open" : now < open ? "early" : now > close ? "late" : "open";
+  return { state, open, close, forced: !!c.sendAlways };
+}
+function cleanValues(){ const values = {}; for (const k in S.draft) if (S.draft[k] !== "") values[k] = n(S.draft[k]); return values; }
+function knownIds(){ return S.roster.map(p => p.id); }
+function employeeIds(){ return S.roster.filter(p => p.role !== "supervisor").map(p => p.id); }
+/* مواثيق بقية المراقبين بلا أسماء: تُستخدم للترتيب ومتوسط الفريق فقط */
+function anonCalcs(year){ return (S.anon || []).map(a => { const l = []; for (const k in a.months) if (k.slice(0,4) === String(year)) l.push(a.months[k].values || {}); return l.length ? calc(S.config, l, yearFrac(year)) : null; }).filter(Boolean); }
+function reviewFor(empId, month){ return S.reviews[empId + "__" + month] || null; }
+
+/* ---------- الاتصال بقاعدة البيانات ---------- */
+const SB_URL = "https://cpzsvlhouurgmhokrcxq.supabase.co", SB_KEY = "sb_publishable_obD68EhqVn4TyxOQRCQ07A_KIzDHHA-";
+async function rpc(fn, args){
+  const r = await fetch(SB_URL + "/rest/v1/rpc/" + fn, { method:"POST", headers:{ "Content-Type":"application/json", apikey:SB_KEY, Authorization:"Bearer " + SB_KEY }, body: JSON.stringify(args || {}) });
+  if (!r.ok) throw new Error("http " + r.status);
+  return r.json();
+}
+const ERR = { no_session:"انتهت جلستك. ادخل من جديد.", forbidden:"لا تملك صلاحية هذا الإجراء.", closed:"الإرسال غير مفتوح لهذا الشهر الآن.", bad:"البيانات غير صالحة.",
+  wrong:"الرقم السري غير صحيح.", locked:"محاولات كثيرة خاطئة. انتظر 15 دقيقة ثم حاول.", short:"الرمز قصير.", unknown:"الاسم غير موجود." };
+function tokenGet(){ try { return localStorage.getItem("mithaq_token") || ""; } catch(e){ return ""; } }
+function tokenSet(t){ S.token = t || ""; try { if (t) localStorage.setItem("mithaq_token", t); else localStorage.removeItem("mithaq_token"); } catch(e){} }
+async function call(fn, args){
+  try { const d = await rpc(fn, Object.assign({ p_token: S.token }, args || {}));
+    if (d && d.error){ if (d.error === "no_session"){ tokenSet(""); S.me = null; render(); } toast(ERR[d.error] || "تعذر تنفيذ الطلب."); return null; }
+    return d || {};
+  } catch(e){ toast("تعذر الاتصال. تحقق من الإنترنت ثم أعد المحاولة."); return null; }
+}
+async function loadPublic(){
+  const d = await rpc("m_public");
+  S.config = validConfig(d.config) ? d.config : DEFAULT_CONFIG; S.roster = d.people || []; S.managerSet = !!d.managerSet;
+  if (!S.monthTouched || S.month.slice(0,4) !== String(charterYear())) S.month = defaultMonth();
+}
+async function loadData(){
+  if (!S.token){ S.me = null; return; }
+  const d = await rpc("m_data", { p_token: S.token });
+  if (d.error){ tokenSet(""); S.me = null; return; }
+  S.me = { id: d.me.id || "manager", manager: !!d.me.manager };
+  S.charters = d.charters || {}; S.anon = d.anon || []; S.reviews = d.reviews || {};
+}
+async function refresh(){ try { await loadPublic(); await loadData(); S.slow = false; } catch(e){ S.slow = true; } S.loaded = true; if (!S.dirty && S.me) loadDraft(); }
+/* يوجّه كل حفظ إلى الإجراء المناسب في قاعدة البيانات */
+async function put(path, data, apply){
+  const [kind, id] = path.split("/"); let d = null;
+  if (path === "config/main") d = await call("m_save_config", { p_data: data });
+  else if (path === "config/roster") d = await call("m_save_people", { p_people: data.people });
+  else if (kind === "charters") d = await call("m_submit", { p_month: S.month, p_vals: data.months[S.month].values });
+  else if (kind === "reviews"){ const [pid, month] = id.split("__"); d = await call("m_review", { p_person: pid, p_month: month, p_note: data.note }); }
+  else return true;
+  if (!d) return false;
+  apply(); return true;
+}
+
+/* ---------- العرض ---------- */
+const app = document.getElementById("app");
+function render(){
+  const whoEl = document.getElementById("who");
+  if (!S.me){ document.getElementById("views").hidden = true; whoEl.innerHTML = "";
+    app.innerHTML = (S.slow ? `<div class="banner">تعذر الاتصال بقاعدة البيانات. تحقق من الإنترنت ثم حدّث الصفحة.</div>` : "") + (S.loaded ? viewLogin() : `<div class="card muted">جارٍ التحميل…</div>`); return; }
+  whoEl.innerHTML = `<span class="muted small">${esc(S.me.manager ? "المدير" : nameOf(S.me.id))}</span><button type="button" class="btn ghost" data-act="logout">خروج</button>`;
+  const views = allowedViews();
+  if (!views.includes(S.view)) S.view = views[0];
+  const labels = { manager:"المدير", supervisor:"المشرف", employee:"المراقب" };
+  document.getElementById("views").innerHTML = views.length > 1 ? views.map(v => `<button type="button" data-act="view" data-v="${v}" aria-pressed="${S.view === v}">${labels[v]}</button>`).join("") : "";
+  document.getElementById("views").hidden = views.length < 2;
+  let h = "";
+  if (S.slow) h += `<div class="banner">تعذر الوصول إلى البيانات حتى الآن. ما تراه قد لا يكون محدثاً.</div>`;
+  h += S.view === "manager" ? viewManager() : S.view === "supervisor" ? viewSupervisor() : viewEmployee();
+  app.innerHTML = h;
+  if (S.view === "employee") updateEmployee();
+  if (S.view === "manager" && S.mgrTab === "equation") updateEquation();
+}
+function viewLogin(){
+  const emps = S.roster.filter(p => p.role !== "supervisor"), sups = S.roster.filter(p => p.role === "supervisor");
+  const opt = p => `<option value="${esc(p.id)}">${esc(p.name)}${p.hasPin ? "" : " (أول دخول)"}</option>`;
+  return `<section class="card stack" style="max-width:520px;margin-inline:auto;width:100%"><div><h2>دخول المراقب أو المشرف</h2>
+      <p class="muted small">اختر اسمك واكتب رقمك السري. في أول دخول، الرقم الذي تكتبه يصبح رقمك السري (4 أرقام على الأقل)، فاحفظه ولا تعطه لأحد.</p></div>
+    <label class="fld">الاسم<select id="lg-person"><option value="">اختر اسمك</option><optgroup label="المراقبون">${emps.map(opt).join("")}</optgroup><optgroup label="المشرفون">${sups.map(opt).join("")}</optgroup></select></label>
+    <label class="fld">الرقم السري<input type="password" inputmode="numeric" autocomplete="off" id="lg-pin" maxlength="20"></label>
+    <div class="row"><button type="button" class="btn primary" data-act="login">دخول</button></div></section>
+  <section class="card stack" style="max-width:520px;margin-inline:auto;width:100%"><div><h2>دخول المدير</h2>
+      <p class="muted small">${S.managerSet ? "اكتب رمز المدير." : "لم يُعيَّن رمز المدير بعد. أول رمز يُكتب هنا يصبح رمز المدير (6 خانات على الأقل)."}</p></div>
+    <label class="fld">رمز المدير<input type="password" autocomplete="off" id="lg-code" maxlength="60"></label>
+    <div class="row"><button type="button" class="btn" data-act="login-mgr">دخول المدير</button></div></section>`;
+}
+function scheduleRender(){
+  const a = document.activeElement;
+  if (a && app.contains(a) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){ S.pending = true; return; }
+  render();
+}
+function monthPicker(lbl){ return `<label class="fld" style="max-width:190px">${lbl || "الفترة"}<input type="month" id="month" min="${charterYear()}-01" max="${charterYear()}-12" value="${esc(S.month)}"></label>`; }
+
+/* --- واجهة المراقب --- */
+function viewEmployee(){
+  const rec = valuesOf(S.me.id, S.month), rv = reviewFor(S.me.id, S.month);
+  const sw = sendWindow(S.month), sup = supervisorOf(S.me.id), me = claimOf(S.me.id);
+  let h = "";
+  h += `<section class="card stack">
+    <div class="row between"><div><h2>${me ? esc(me.name) + ": ميثاق سنة" : "ميثاقي لسنة"} <span class="num">${esc(yearOf())}</span></h2>
+      <p class="muted small">أدخل أعمالك في أي وقت لترى أين وصلت. ما تدخله لا يُحفظ ولا يراه أحد، ويختفي عند إغلاق الصفحة. الإرسال إلى ${sup ? "مشرفك " + esc(nameOf(sup)) : "المشرف"} يفتح نهاية كل شهر فقط.</p></div></div>
+    <div class="summary">
+      <div><div class="score num"><span id="sum-score">0.00</span> <small>/ <span id="sum-max">5</span></small></div><span id="sum-level" class="pill lv-none"></span></div>
+      <div><div class="track"><div class="fill" id="sum-fill"></div><div class="mark" id="sum-mark"></div><div class="mark" id="sum-mark2"></div></div>
+        <div class="legend"><span>0</span><b id="sum-exp"></b><b id="sum-ideal"></b></div></div>
+    </div>
+    <p id="sum-msg" style="font-weight:600"></p>
+    <p id="sum-eq" class="muted small"></p>
+    <p id="sum-rank" class="small" style="font-weight:600;color:var(--gold)"></p>
+    ${rv && (rv.note || rv.seen) ? `<div class="banner"><b>ملاحظة المشرف ${esc(nameOf(rv.by))}:</b> ${rv.note ? esc(rv.note) : "تم الاطلاع على ميثاقك."}</div>` : ""}
+  </section>
+  <section class="card stack"><div><h2>المطلوب منك هذه السنة</h2>
+    <p class="muted small">تحقيق هذه الأهداف مع الجودة المطلوبة هو ما يجعلك توافق التوقعات. ما زاد عنها يرفعك إلى المستويات الأعلى. العلامة الذهبية تبيّن أين يُفترض أن تكون اليوم.</p></div>
+    <div class="stack" id="targets" style="gap:16px"></div></section>
+  <section class="card stack"><h2>بصمة أدائك</h2><div id="fp"></div></section>
+  <section class="card row between"><div><h2>أعمال شهر ${esc(monthLabel(S.month))}</h2>
+    <p class="muted small">أدخل إجمالي أعمالك لهذا الشهر، وعدّلها متى شئت.</p></div>${monthPicker("شهر الإدخال")}</section>`;
+  const qAxes = S.config.axes.filter(a => a.quality), lastQ = qAxes.length ? qAxes[qAxes.length-1].id : null;
+  for (const a of S.config.axes){
+    h += `<section class="card stack"><div class="axis-head"><h3>${esc(a.name)}</h3></div><div class="fields">` +
+      a.fields.map(f => `<label class="fld">${esc(f.label)}<input class="num" type="number" min="0" inputmode="numeric" id="in-${esc(f.id)}" data-val="${esc(f.id)}" placeholder="0" value="${esc(S.draft[f.id] ?? "")}">${a.quality ? "" : `<span class="small tn" id="fg-${esc(f.id)}"></span>`}</label>`).join("") +
+      (a.quality ? `<label class="fld">أدخل نسبة الجودة المسجلة في مؤشر الأداء %<input class="num" type="number" min="0" max="100" inputmode="decimal" id="in-${esc(a.id)}_q" data-val="${esc(a.id)}_q" placeholder="100" value="${esc(S.draft[a.id + "_q"] ?? "")}"></label>` : "") +
+      `</div>` + (a.quality
+        ? `<div class="res"><div><b>ناتج ${esc(a.name)} هذا الشهر</b><p class="muted small tn" id="ax-${esc(a.id)}-how"></p></div><b class="num big" id="ax-${esc(a.id)}-res">0</b></div>`
+        : `<div class="res"><div><b>درجة ${esc(a.name)}</b><p class="muted small">تراكمي السنة</p></div><b class="num big" id="ax-${esc(a.id)}-res">0</b></div>`) + `</section>`;
+    if (a.id === lastQ) h += `<section class="card stack opsbox"><div class="ops"><div><h3>مجموع العمليات هذا الشهر</h3>
+      <p class="muted small" id="ops-parts"></p></div><b class="num" id="ops-total">0</b></div>
+      <div class="res"><div><b>درجة مجموع العمليات</b><p class="muted small tn" id="ops-how"></p></div><b class="num big" id="ops-got">0</b></div></section>`;
+  }
+  h += `<section class="card stack">
+    ${S.roster.length ? "" : `<label class="fld" style="max-width:320px">اسمك كما يظهر للمشرف والمدير<input type="text" id="my-name" maxlength="60" value="${esc(S.myName)}" placeholder="الاسم الثلاثي"></label>`}
+    <div class="row"><button type="button" class="btn primary" data-act="save" ${S.readOnly || sw.state !== "open" ? "disabled" : ""}>إرسال للمشرف</button>
+      <button type="button" class="btn ghost" data-act="reset">مسح الحقول</button></div>
+    <p class="small ${sw.state === "open" ? "rem ok" : "rem todo"}">${sw.state === "early" ? "إرسال أعمال هذا الشهر يفتح في " + esc(dayLabel(sw.open)) + ". حتى ذلك الحين تستطيع الإدخال لترى نتيجتك فقط."
+      : sw.state === "late" ? "انتهت مهلة إرسال هذا الشهر في " + esc(dayLabel(sw.close)) + ". راجع المدير إن احتجت إلى الإرسال."
+      : sw.forced ? "الإرسال مفتوح الآن باستثناء من المدير." : "الإرسال مفتوح حتى " + esc(dayLabel(sw.close)) + "."}</p>
+    <p class="small muted" id="saved-at">${rec ? "آخر ما وصل المشرف عن هذا الشهر كان في " + esc(when(rec.updatedAt)) + "." : "لم يُرسل شيء للمشرف عن هذا الشهر بعد."}</p>
+  </section>`;
+  return h;
+}
+function updateEmployee(){
+  const $ = id => document.getElementById(id), sw = S.config.showWeights !== false;
+  if (!$("sum-score")) return;
+  const m = monthCalc(S.config, S.draft), r = calc(S.config, selfList(yearOf(), S.draft), yearFrac(yearOf()));
+  $("sum-score").textContent = f2(r.total); $("sum-max").textContent = f0(r.max);
+  const lv = $("sum-level"); lv.className = "pill lv-" + r.dLevel; lv.textContent = (r.projected ? "المتوقع: " : "") + r.dLabel;
+  $("sum-fill").style.width = (r.max ? r.total / r.max * 100 : 0) + "%";
+  $("sum-mark").style.insetInlineStart = (r.max ? r.expScore / r.max * 100 : 0) + "%";
+  $("sum-mark2").style.insetInlineStart = (r.max ? r.idealScore / r.max * 100 : 0) + "%";
+  $("sum-exp").textContent = "التوقعات " + f2(r.expScore);
+  $("sum-ideal").textContent = "المثالي " + f2(r.idealScore);
+  let msg;
+  if (!r.targets.length) msg = r.toExp > 0 ? `باقي لك ${f2(r.toExp)} درجة لتوافق التوقعات.` : r.toIdeal > 0 ? `وافقت التوقعات. باقي ${f2(r.toIdeal)} درجة للمثالي.` : "وصلت إلى المثالي.";
+  else if (!r.reqMet) msg = "المطلوب منك أن توافق التوقعات بتحقيق أهدافك السنوية. باقي لك: " + r.targets.filter(t => t.rem > 0).map(t => t.q ? `${t.rem} نقطة في ${t.label}` : `${t.rem} في ${t.label}`).join("، ") + ".";
+  else if (r.toIdeal <= 0) msg = "حققت المطلوب منك وبلغت المثالي.";
+  else msg = `حققت المطلوب منك لهذه السنة. ما تنجزه بعد ذلك يرفعك: باقي ${f2(r.toNext)} درجة لتبلغ «${r.nextLabel}»` + (r.opsToNext ? `، أي نحو ${r.opsToNext} عملية.` : ".");
+  $("sum-msg").textContent = msg;
+  $("sum-eq").textContent = r.proj === null ? (r.dLevel === "none" ? "الدرجة تراكمية وتبدأ من الصفر. يظهر مستواك المتوقع بعد مرور أسابيع من بداية السنة." : "")
+    : `الدرجة تراكمية حتى اليوم. إذا استمررت على وتيرتك الحالية ستنهي السنة بدرجة ${f2(r.proj)}، أي «${r.projLabel}»، وهو المستوى المعروض.`;
+  const rk = rankMap(yearOf(), S.me.id, r.total);
+  $("sum-rank").textContent = rk.n > 1 && r.total > 0 ? `ترتيبك بين المراقبين: ${rk[S.me.id]} من ${rk.n}.` : "";
+  $("targets").innerHTML = targetsHTML(r);
+  if ($("fp")) $("fp").innerHTML = fingerprintHTML(r, teamCalcs(yearOf(), S.me.id).concat([r]));
+  if ($("ops-total")){
+    $("ops-total").textContent = f0(m.ops);
+    $("ops-parts").textContent = S.config.axes.filter(a => a.quality).map(a => `ناتج ${a.name} ${f0(m.ax[a.id].eff)}`).join(" + ");
+    $("ops-got").textContent = f3(r.opsGot);
+    $("ops-how").textContent = `تراكمي السنة ${f0(r.ops)} عملية` + (sw ? ` × وزن العملية ${n(S.config.opsWeight)}` : "");
+  }
+  for (const a of r.axes){
+    const res = $("ax-" + a.id + "-res"); if (!res) continue;
+    if (a.quality){ const x = m.ax[a.id]; res.textContent = f0(x.eff); $("ax-" + a.id + "-how").textContent = `المجموع ${f0(x.sum)} × نسبة الجودة ${f0(x.q*100)}%`; }
+    else { res.textContent = f3(a.got); for (const f of a.fields){ const el = $("fg-" + f.id); if (el) el.textContent = `تراكمي السنة ${f0(f.val)}` + (sw ? ` × ${f.w}` : "") + ` = ${f3(f.got)} درجة`; } }
+  }
+}
+
+/* --- تفاصيل ميثاق (للمشرف والمدير) --- */
+function breakdown(r, team){
+  let h = (team ? fingerprintHTML(r, team) : "") + `<div class="stack" style="gap:16px">${targetsHTML(r)}</div><div class="scroll"><table><thead><tr><th>البند (تراكمي السنة)</th><th>المنجز</th><th>المطلوب</th><th>الوزن</th><th>الدرجة</th></tr></thead><tbody>`;
+  for (const a of r.axes) if (a.quality) h += `<tr><td>ناتج ${esc(a.name)}</td><td class="num">${f0(a.eff)} (من ${f0(a.sum)})</td><td></td><td></td><td></td></tr>`;
+  h += `<tr><td><b>مجموع العمليات</b></td><td class="num"><b>${f0(r.ops)}</b></td><td class="num">${n(S.config.opsTarget) ? f0(n(S.config.opsTarget)) : ""}</td><td class="num">${n(S.config.opsWeight)}</td><td class="num"><b>${f3(r.opsGot)}</b></td></tr>`;
+  for (const a of r.axes) if (!a.quality) for (const f of a.fields) h += `<tr><td>${esc(f.label)}</td><td class="num">${f0(f.val)}</td><td class="num">${f.t && !f.g ? f0(f.t) : ""}</td><td class="num">${f.w}</td><td class="num">${f3(f.got)}</td></tr>`;
+  h += `</tbody></table></div>` + (r.proj === null ? "" : `<p class="small muted">على وتيرته الحالية سينهي السنة بدرجة ${f2(r.proj)} («${esc(r.projLabel)}»).</p>`);
+  return h;
+}
+
+/* --- واجهة المشرف --- */
+function viewSupervisor(){
+  const y = yearOf(), mine = S.me.manager ? employeeIds() : employeeIds().filter(id => supervisorOf(id) === S.me.id);
+  let h = `<section class="card row between"><div><h2>مواثيق فريقي لسنة <span class="num">${esc(y)}</span></h2>
+    <p class="muted small">${S.me.manager ? "تعرض هنا جميع المراقبين لأنك المدير." : "تصلك أعمال كل مراقب مرتبط بك عند إرسالها."} الأكثر تأخراً عن المسار يظهر أولاً.</p>
+    <div class="row" style="margin-top:10px"><button type="button" class="btn primary" data-act="pdf-team">تنزيل تقرير الفريق PDF</button></div></div>${monthPicker("الفترة")}</section>`;
+  if (!mine.length) return h + `<div class="card muted">لا يوجد مراقبون مرتبطون بك بعد. يربطهم المدير من تبويب «الأعضاء».</div>`;
+  const dv = r => { const t = r && r.targets.find(x => x.ops); return !r ? Infinity : t ? t.diff : 0; };
+  const rows = mine.map(id => ({ id, r: yearCalc(id, y) })).sort((a,b) => dv(a.r) - dv(b.r)), rk = rankMap(y), team = teamCalcs(y);
+  h += matrixHTML(rows);
+  for (const x of rows){
+    const key = x.id + "__" + S.month, mineRv = S.reviews[key];
+    const note = S.notes[key] !== undefined ? S.notes[key] : (mineRv && mineRv.note) || "";
+    h += `<details class="emp"><summary><b style="margin-inline-end:auto">${esc(nameOf(x.id))}</b>
+      ${x.r ? `<span class="muted small">الترتيب <span class="num">${rk[x.id]} / ${rk.n}</span></span><span class="${paceClass(x.r)}">${esc(paceText(x.r))}</span><span class="num"><b>${f2(x.r.total)}</b> / ${f0(x.r.max)}</span><span class="pill lv-${x.r.dLevel}">${esc(x.r.dLabel)}</span><span class="muted small">${esc(when(lastSaved(x.id, y)))}</span>` : `<span class="pill lv-none">${LEVELS.none}</span>`}
+      ${mineRv && mineRv.seen ? `<span class="muted small">تم الاطلاع</span>` : ""}</summary>
+      <div class="body">${x.r ? breakdown(x.r, team) + `
+        <label class="fld">ملاحظتك للمراقب عن شهر ${esc(monthLabel(S.month))}<textarea id="note-${esc(x.id)}" data-note="${esc(key)}" maxlength="600" placeholder="تظهر للمراقب في ميثاقه">${esc(note)}</textarea></label>
+        <div class="row"><button type="button" class="btn primary" data-act="review" data-key="${esc(key)}" ${S.readOnly ? "disabled" : ""}>حفظ الملاحظة وتأكيد الاطلاع</button>
+          <button type="button" class="btn" data-act="pdf-one" data-id="${esc(x.id)}">تنزيل ميثاقه PDF</button></div>` : `<p class="muted">لم يُدخل هذا المراقب أعمالاً في هذه السنة.</p>`}</div></details>`;
+  }
+  return h;
+}
+
+/* --- واجهة المدير --- */
+function viewManager(){
+  const tabs = { overview:"نظرة عامة", equation:"المعادلة والمستهدفات", members:"الأعضاء" };
+  let h = `<div class="seg" role="group" aria-label="أقسام المدير" style="align-self:flex-start">` + Object.keys(tabs).map(t => `<button type="button" data-act="tab" data-t="${t}" aria-pressed="${S.mgrTab === t}">${tabs[t]}</button>`).join("") + `</div>`;
+  return h + (S.mgrTab === "equation" ? mgrEquation() : S.mgrTab === "members" ? mgrMembers() : mgrOverview());
+}
+function mgrOverview(){
+  const y = yearOf(), dv = r => { const t = r && r.targets.find(x => x.ops); return !r ? Infinity : t ? t.diff : 0; };
+  const rk = rankMap(y), rows = employeeIds().map(id => ({ id, r: yearCalc(id, y) })).sort((a,b) => (rk[a.id] || 1e9) - (rk[b.id] || 1e9) || dv(a.r) - dv(b.r));
+  const done = rows.filter(x => x.r), avg = done.length ? done.reduce((s,x) => s + x.r.total, 0) / done.length : 0;
+  const cnt = i => done.filter(x => x.r.dIdx === i).length, base = calc(S.config, [], yearFrac(y));
+  const behind = done.filter(x => paceClass(x.r) === "rem todo").length, met = done.filter(x => x.r.reqMet).length;
+  let h = `<section class="card row between"><div><h2>أداء المراقبين لسنة <span class="num">${esc(y)}</span></h2>
+    <p class="muted small">الأرقام تراكمية من بداية السنة، والترتيب بالدرجة من الأعلى.</p>
+    <div class="row" style="margin-top:10px"><button type="button" class="btn primary" data-act="pdf-team">تنزيل تقرير الجميع PDF</button></div></div>${monthPicker("الفترة")}</section>
+  <div class="tiles">
+    <div class="tile"><span class="muted small">أدخلوا أعمالهم</span><b class="num">${done.length} / ${rows.length}</b></div>
+    <div class="tile"><span class="muted small">متوسط الدرجة</span><b class="num">${f2(avg)} / ${f0(base.max)}</b></div>
+    <div class="tile"><span class="muted small">حققوا المطلوب</span><b class="num">${met}</b></div>
+    <div class="tile"><span class="muted small">متأخرون عن المسار</span><b class="num">${behind}</b></div>
+  </div><div class="tiles">` + S.config.bands.map((b,i) => `<div class="tile"><span class="pill lv-${TONES[i]}">${esc(b.label)}</span><b class="num">${cnt(i)}</b></div>`).reverse().join("") + `</div>`;
+  h += matrixHTML(rows);
+  if (!rows.length) return h + `<div class="card muted">لا توجد أسماء بعد. أضفها من تبويب «الأعضاء».</div>`;
+  h += `<section class="card scroll"><table><thead><tr><th>الترتيب</th><th>المراقب</th><th>المشرف</th><th>الدرجة</th><th>${base.fr > 0 && base.fr < 1 ? "المستوى المتوقع" : "المستوى"}</th><th>المسار</th>` + base.targets.map(t => `<th>${esc(t.label)}</th>`).join("") + `<th>المتوقع نهاية السنة</th><th>آخر حفظ</th></tr></thead><tbody>`;
+  for (const x of rows){
+    const sup = supervisorOf(x.id);
+    h += `<tr><td class="num">${rk[x.id] || ""}</td><td><b>${esc(nameOf(x.id))}</b></td><td>${sup ? esc(nameOf(sup)) : `<span class="muted">غير محدد</span>`}</td>` +
+      (x.r ? `<td class="num"><b>${f2(x.r.total)}</b></td><td><span class="pill lv-${x.r.dLevel}">${esc(x.r.dLabel)}</span></td><td class="${paceClass(x.r)}">${esc(paceText(x.r))}</td>` + x.r.targets.map(t => `<td class="num">${f0(t.done)}${t.q ? "%" : ""} / ${f0(t.target)}${t.q ? "%" : ""}</td>`).join("") + `<td class="num">${x.r.proj === null ? "" : f2(x.r.proj)}</td><td class="muted">${esc(when(lastSaved(x.id, y)))}</td>`
+           : `<td class="num muted">0.00</td><td><span class="pill lv-none">${LEVELS.none}</span></td><td></td>` + base.targets.map(t => `<td class="num muted">0 / ${f0(t.target)}${t.q ? "%" : ""}</td>`).join("") + `<td></td><td></td>`) + `</tr>`;
+  }
+  return h + `</tbody></table></section>`;
+}
+function mgrEquation(){
+  if (!S.cfgDraft) S.cfgDraft = clone(S.config);
+  const c = S.cfgDraft; c.groups = c.groups || [];
+  let h = `<section class="card stack"><h2>المعادلة والمستهدفات</h2>
+    <p class="muted small">الدرجة سنوية تراكمية = مجموع العمليات × وزن العملية + كل خانة أخرى × وزنها، بحد أقصى. مجموع العمليات = ناتج المحاور التي لها نسبة جودة. الأهداف السنوية هي المطلوب من المراقب ليوافق التوقعات.</p>
+    <div class="grid4">
+      <label class="fld">سنة الميثاق<input class="num" type="number" min="2020" step="1" id="top-year" data-top="year" value="${esc(c.year || 2027)}"></label>
+      <label class="fld">وزن العملية<input class="num" type="number" min="0" step="any" id="top-ow" data-top="opsWeight" value="${esc(c.opsWeight)}"></label>
+      <label class="fld">الهدف السنوي للعمليات<input class="num" type="number" min="0" step="any" id="top-ot" data-top="opsTarget" value="${esc(c.opsTarget)}"></label>
+      <label class="fld">أيام العمل في السنة<input class="num" type="number" min="0" step="any" id="top-wd" data-top="workDays" value="${esc(c.workDays)}"></label>
+      <label class="fld">الحد الأقصى للدرجة<input class="num" type="number" min="0" step="any" id="top-max" data-top="maxScore" value="${esc(c.maxScore)}"></label></div>
+    <div class="grid4">
+      <label class="fld">يفتح الإرسال قبل نهاية الشهر بـ (أيام)<input class="num" type="number" min="1" step="1" id="top-od" data-top="sendOpenDays" value="${esc(c.sendOpenDays === undefined ? 3 : c.sendOpenDays)}"></label>
+      <label class="fld">ويبقى مفتوحاً بعد نهايته بـ (أيام)<input class="num" type="number" min="0" step="1" id="top-gd" data-top="sendGraceDays" value="${esc(c.sendGraceDays === undefined ? 5 : c.sendGraceDays)}"></label></div>
+    <label class="row small"><input type="checkbox" id="top-sa" data-topb="sendAlways" ${c.sendAlways ? "checked" : ""}> فتح الإرسال للجميع الآن استثناءً (لأي شهر)</label>
+    <label class="row small"><input type="checkbox" id="top-sw" data-topb="showWeights" ${c.showWeights !== false ? "checked" : ""}> إظهار الأوزان للمراقب في واجهته</label>
+    <div class="stack"><span class="muted small">مستويات التقييم: يبدأ كل مستوى من الدرجة المكتوبة أمامه</span>` +
+    c.bands.map((b,i) => `<div class="fld-row"><input class="num" style="max-width:110px" type="number" min="0" step="any" id="band${i}-from" aria-label="يبدأ من" data-bandf="${i}" value="${esc(b.from)}" ${i === 0 ? "disabled" : ""}><input type="text" id="band${i}-label" aria-label="اسم المستوى" data-bandl="${i}" value="${esc(b.label)}"></div>`).join("") + `</div>
+    <div class="stack"><span class="muted small">أهداف سنوية مشتركة بين عدة خانات: اسم الهدف ثم رقمه السنوي. اربط الخانات به من القائمة بجانب كل خانة.</span>` +
+    c.groups.map((g,i) => `<div class="fld-row"><input type="text" id="grp${i}-label" aria-label="اسم الهدف المشترك" data-grpl="${i}" value="${esc(g.label)}"><input class="num" style="max-width:110px" type="number" min="0" step="any" id="grp${i}-t" aria-label="الهدف السنوي" data-grpt="${i}" value="${esc(g.t)}"><button type="button" class="btn ghost danger" data-act="del-group" data-i="${i}">حذف</button></div>`).join("") +
+    `<div class="row"><button type="button" class="btn" data-act="add-group">إضافة هدف مشترك</button></div></div>
+    <p id="eq-sum" style="font-weight:600"></p>`;
+  c.axes.forEach((a, i) => {
+    h += `<div class="axis-edit">
+      <label class="fld">اسم المحور<input type="text" id="ax${i}-name" data-cfg="${i}:name" value="${esc(a.name)}"></label>
+      <label class="row small"><input type="checkbox" id="ax${i}-q" data-cfgq="${i}" ${a.quality ? "checked" : ""}> يدخل في مجموع العمليات (مجموع خاناته × نسبة الجودة)</label>
+      ${a.quality ? `<label class="fld" style="max-width:260px">الجودة المطلوبة % (صفر = غير مطلوبة)<input class="num" type="number" min="0" max="100" step="any" id="ax${i}-qt" data-cfgqt="${i}" value="${esc(a.qt === undefined ? (c.qualityTarget === undefined ? 100 : c.qualityTarget) : a.qt)}"></label>` : ""}
+      <div class="stack"><span class="muted small">${a.quality ? "الخانات التي يعبئها المراقب" : "الخانة، ثم وزنها، ثم هدفها السنوي: مستقل برقم (صفر = بلا هدف) أو ضمن هدف مشترك"}</span>` +
+      a.fields.map((f, j) => `<div class="fld-row"><input type="text" id="ax${i}-f${j}" aria-label="اسم الخانة" data-cfgf="${i}:${j}" value="${esc(f.label)}">${a.quality ? "" : `<input class="num" style="max-width:120px" type="number" min="0" step="any" id="ax${i}-w${j}" aria-label="وزن الخانة" title="الوزن" data-cfgw="${i}:${j}" value="${esc(f.w ?? 0)}"><select style="max-width:150px" id="ax${i}-g${j}" aria-label="نوع الهدف" data-cfgg="${i}:${j}"><option value="">هدف مستقل</option>${c.groups.map(g => `<option value="${esc(g.id)}" ${f.g === g.id ? "selected" : ""}>ضمن: ${esc(g.label)}</option>`).join("")}</select>${c.groups.some(g => g.id === f.g) ? "" : `<input class="num" style="max-width:110px" type="number" min="0" step="any" id="ax${i}-t${j}" aria-label="الهدف السنوي" title="الهدف السنوي" data-cfgt="${i}:${j}" value="${esc(f.t ?? 0)}">`}`}<button type="button" class="btn ghost danger" data-act="del-field" data-i="${i}" data-j="${j}" aria-label="حذف الخانة">حذف</button></div>`).join("") +
+      `</div><div class="row"><button type="button" class="btn" data-act="add-field" data-i="${i}">إضافة خانة</button><button type="button" class="btn ghost danger" data-act="del-axis" data-i="${i}">حذف المحور</button></div></div>`;
+  });
+  return h + `<div class="row"><button type="button" class="btn" data-act="add-axis">إضافة محور</button>
+    <button type="button" class="btn primary" data-act="save-cfg">حفظ المعادلة</button>
+    <button type="button" class="btn ghost" data-act="undo-cfg">تراجع عن التعديلات</button></div></section>`;
+}
+function updateEquation(){
+  const el = document.getElementById("eq-sum"); if (!el || !S.cfgDraft) return;
+  const r = calc(S.cfgDraft, [], 1);
+  el.textContent = !r.targets.length ? "لم تُحدَّد أهداف سنوية بعد."
+    : r.reqMax > r.reqScore ? `من يحقق الأهداف السنوية كلها ينال بين ${f2(r.reqScore)} («${r.reqLabel}») و${f2(r.reqMax)} («${r.reqMaxLabel}») درجة، حسب نوع ما ينجزه في الأهداف المشتركة.`
+    : `من يحقق الأهداف السنوية كلها ينال ${f2(r.reqScore)} درجة («${r.reqLabel}»).`;
+}
+function mgrMembers(){
+  const sups = S.roster.filter(p => p.role === "supervisor");
+  return `<section class="card stack"><h2>قائمة الأسماء</h2>
+    <p class="muted small">أسماء المشرفين والمراقبين. يدخل كل شخص باسمه ورقمه السري. إن نسي أحدهم رقمه فاضغط «تصفير الرقم» ليضع رقماً جديداً في دخوله التالي. أي تغيير هنا يُحفظ مباشرة.</p>
+    <div class="scroll"><table><thead><tr><th>الاسم</th><th>الدور</th><th>المشرف</th><th>الرقم السري</th><th></th></tr></thead><tbody>` +
+    S.roster.map((p, i) => `<tr>
+      <td><input type="text" style="min-width:170px" id="rn-${i}" aria-label="الاسم" data-rn="${i}" value="${esc(p.name)}"></td>
+      <td><select id="rr-${i}" aria-label="الدور" data-rr="${i}"><option value="employee" ${p.role === "supervisor" ? "" : "selected"}>مراقب</option><option value="supervisor" ${p.role === "supervisor" ? "selected" : ""}>مشرف</option></select></td>
+      <td>${p.role === "supervisor" ? `<span class="muted">لا ينطبق</span>` : `<select id="rs-${i}" aria-label="المشرف" data-rs="${i}"><option value="">غير محدد</option>${sups.map(x => `<option value="${esc(x.id)}" ${p.supervisorPid === x.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>`}</td>
+      <td>${p.hasPin ? `<span class="rem ok">مُعيَّن</span> <button type="button" class="btn ghost" data-act="reset-pin" data-id="${esc(p.id)}">تصفير الرقم</button>` : `<span class="muted">لم يدخل بعد</span>`}</td>
+      <td><button type="button" class="btn ghost danger" data-act="del-person" data-i="${i}">حذف</button></td></tr>`).join("") +
+    `</tbody></table></div><div class="row"><button type="button" class="btn" data-act="add-person">إضافة اسم</button>
+    <span class="muted small num">${S.roster.filter(p => p.role !== "supervisor").length} مراقب · ${sups.length} مشرف</span></div></section>
+  <section class="card stack" style="max-width:520px"><h2>تغيير رمز المدير</h2>
+    <label class="fld">الرمز الجديد (6 خانات على الأقل)<input type="password" autocomplete="off" id="new-code" maxlength="60"></label>
+    <div class="row"><button type="button" class="btn" data-act="change-code">حفظ الرمز الجديد</button></div></section>`;
+}
+async function saveRoster(people){ return put("config/roster", { people }, () => { S.roster = people; }); }
+let delArmed = null;
+
+/* ---------- تقرير PDF: تُرسم الصفحات على canvas ثم تُجمع في ملف PDF ---------- */
+const PW = 1240, PH = 1754, PM = 70, PR = PW - PM, PCW = PW - 2 * PM;
+const PF = (size, weight) => `${weight || 400} ${size}px "IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif`;
+function pdfPage(title, sub){
+  const c = document.createElement("canvas"); c.width = PW; c.height = PH;
+  const x = c.getContext("2d"); x.direction = "rtl"; x.textBaseline = "alphabetic";
+  x.fillStyle = "#ffffff"; x.fillRect(0, 0, PW, PH);
+  x.fillStyle = "#0f6b4a"; x.fillRect(0, 0, PW, 124);
+  x.fillStyle = "#ffffff"; x.textAlign = "right"; x.font = PF(34, 700); x.fillText(title, PR, 60);
+  x.font = PF(20, 400); x.fillText(sub, PR, 98);
+  x.textAlign = "left"; x.fillText("تاريخ الإصدار: " + dayLabel(new Date()), PM, 98);
+  return { c, x };
+}
+function pdfFit(x, t, w){ t = String(t); if (x.measureText(t).width <= w) return t; while (t.length > 2 && x.measureText(t + "…").width > w) t = t.slice(0, -1); return t + "…"; }
+function pdfTitle(x, y, t){ x.fillStyle = "#0f6b4a"; x.textAlign = "right"; x.font = PF(24, 700); x.fillText(t, PR, y); x.fillRect(PM, y + 12, PCW, 2); return y + 34; }
+function pdfTable(x, y, cols, head, rows, opt){
+  opt = opt || {}; const rh = opt.rh || 42, fs = opt.fs || 19;
+  const draw = (cells, yy, bold, fill) => {
+    if (fill){ x.fillStyle = fill; x.fillRect(PM, yy, PCW, rh); }
+    let xr = PR; x.fillStyle = "#14211c"; x.font = PF(fs, bold ? 700 : 400);
+    cols.forEach((col, i) => { const w = col.w * PCW; const t = pdfFit(x, cells[i] === undefined ? "" : cells[i], w - 16);
+      if (col.a === "c"){ x.textAlign = "center"; x.fillText(t, xr - w / 2, yy + rh * 0.66); } else { x.textAlign = "right"; x.fillText(t, xr - 8, yy + rh * 0.66); }
+      xr -= w; });
+    x.fillStyle = "#cfd8d3"; x.fillRect(PM, yy + rh - 1, PCW, 1);
+  };
+  /* رأس الجدول: يلتف النص على سطرين إن لم يتسع */
+  const hh = Math.round(rh * 1.5); x.fillStyle = "#e3efe9"; x.fillRect(PM, y, PCW, hh);
+  let hx = PR; x.fillStyle = "#14211c"; x.font = PF(fs - 1, 700);
+  cols.forEach((col, i) => { const w = col.w * PCW, t = String(head[i] === undefined ? "" : head[i]), words = t.split(" "); let lines = [t];
+    if (x.measureText(t).width > w - 12 && words.length > 1){ let best = 1, bw = Infinity; for (let k = 1; k < words.length; k++){ const m = Math.max(x.measureText(words.slice(0, k).join(" ")).width, x.measureText(words.slice(k).join(" ")).width); if (m < bw){ bw = m; best = k; } } lines = [words.slice(0, best).join(" "), words.slice(best).join(" ")]; }
+    lines.forEach((ln, li) => { const ty = y + (lines.length === 1 ? hh * 0.62 : hh * (0.42 + li * 0.38)), tt = pdfFit(x, ln, w - 12);
+      if (col.a === "c"){ x.textAlign = "center"; x.fillText(tt, hx - w / 2, ty); } else { x.textAlign = "right"; x.fillText(tt, hx - 8, ty); } });
+    hx -= w; });
+  y += hh;
+  rows.forEach((r, i) => { draw(r.cells || r, y, !!r.bold, r.bold ? "#f1f6f3" : null); y += rh; });
+  return y + 22;
+}
+function pdfStatus(r, t){ return t.rem === 0 ? "تحقق" : t.q ? (t.has ? "دون المطلوب" : "لا إدخال") : (r.fr > 0 && r.fr < 1 ? (t.diff >= -0.5 ? "على المسار" : "متأخر") : "لم يتحقق بعد"); }
+function pdfEmployee(id, r, rk, y0){
+  const y = String(y0), { c, x } = pdfPage("ميثاق الأداء للمراقبين", "سنة " + y + " · إدارة الجودة والرقابة");
+  let yy = 180; const sup = supervisorOf(id);
+  x.fillStyle = "#14211c"; x.textAlign = "right"; x.font = PF(32, 700); x.fillText(nameOf(id), PR, yy);
+  x.textAlign = "left"; x.font = PF(20, 400); x.fillStyle = "#5a6b64"; x.fillText((sup ? "المشرف: " + nameOf(sup) : "") + (rk[id] ? "   ·   الترتيب: " + rk[id] + " من " + rk.n : ""), PM, yy);
+  yy += 30;
+  if (!r){ x.fillStyle = "#5a6b64"; x.textAlign = "right"; x.font = PF(24, 400); x.fillText("لم يرسل هذا المراقب أعمالاً في سنة " + y + ".", PR, yy + 60); return c; }
+  x.fillStyle = "#eef4f1"; x.fillRect(PM, yy, PCW, 110);
+  const box = (cx, label, val) => { x.textAlign = "center"; x.fillStyle = "#5a6b64"; x.font = PF(18, 400); x.fillText(label, cx, yy + 38); x.fillStyle = "#0f6b4a"; x.font = PF(34, 700); x.fillText(val, cx, yy + 84); };
+  box(PR - PCW / 6, "الدرجة التراكمية", f2(r.total) + " / " + f0(r.max)); box(PW / 2, r.projected ? "المستوى المتوقع نهاية السنة" : "المستوى", r.dLabel); box(PM + PCW / 6, "المطلوب", r.reqMet ? "تحقق" : "لم يتحقق بعد");
+  yy += 150;
+  yy = pdfTitle(x, yy, "المطلوب السنوي");
+  yy = pdfTable(x, yy, [{w:.34},{w:.165,a:"c"},{w:.165,a:"c"},{w:.165,a:"c"},{w:.165,a:"c"}], ["الهدف","المنجز","المطلوب","الباقي","الحالة"],
+    r.targets.map(t => [t.label, f0(t.done) + (t.q ? "%" : ""), f0(t.target) + (t.q ? "%" : ""), t.rem + (t.q && t.rem ? " نقطة" : ""), pdfStatus(r, t)]));
+  yy += 10; yy = pdfTitle(x, yy, "تفاصيل الدرجة (تراكمي السنة)");
+  const det = [];
+  for (const a of r.axes) if (a.quality) det.push(["ناتج " + a.name, f0(a.eff) + " (من " + f0(a.sum) + " بجودة " + f0(a.q * 100) + "%)", ""]);
+  det.push({ cells:["مجموع العمليات", f0(r.ops), f3(r.opsGot)], bold:true });
+  for (const a of r.axes) if (!a.quality) for (const f of a.fields) det.push([f.label, f0(f.val), f3(f.got)]);
+  det.push({ cells:["الدرجة النهائية", "", f2(r.total) + " من " + f0(r.max)], bold:true });
+  yy = pdfTable(x, yy, [{w:.4},{w:.38,a:"c"},{w:.22,a:"c"}], ["البند","المنجز","الدرجة"], det);
+  yy += 10; yy = pdfTitle(x, yy, "الأعمال المرسلة شهرياً");
+  const ms = (S.charters[id] && S.charters[id].months) || {}, keys = Object.keys(ms).filter(k => k.slice(0,4) === y).sort();
+  const qa = S.config.axes.filter(a => a.quality), nf = []; for (const a of S.config.axes) if (!a.quality) for (const f of a.fields) nf.push(f);
+  const ncol = 1 + qa.length * 2 + 1 + nf.length, cw = (1 - .17) / (ncol - 1), cols = [{w:.17}]; for (let i = 1; i < ncol; i++) cols.push({ w:cw, a:"c" });
+  const head = ["الشهر"]; qa.forEach(a => { head.push(a.name); head.push("الجودة"); }); head.push("العمليات"); nf.forEach(f => head.push(f.label));
+  const mrows = keys.map(k => { const m = monthCalc(S.config, ms[k].values), row = [monthLabel(k)]; qa.forEach(a => { row.push(f0(m.ax[a.id].sum)); row.push(f0(m.ax[a.id].q * 100) + "%"); }); row.push(f0(m.ops)); nf.forEach(f => row.push(f0(m.fl[f.id]))); return row; });
+  yy = pdfTable(x, yy, cols, head, mrows, { rh:36, fs:16 });
+  x.fillStyle = "#14211c"; x.font = PF(20, 400); x.textAlign = "right"; x.fillText("توقيع المراقب: ..............................", PR, PH - 90);
+  x.textAlign = "left"; x.fillText("توقيع المشرف: ..............................", PM, PH - 90);
+  return c;
+}
+function pdfSummary(ids, calcs, rk, y, who){
+  const { c, x } = pdfPage("ملخص أداء المراقبين", "سنة " + y + (who ? " · " + who : ""));
+  let yy = 180; yy = pdfTitle(x, yy, "الترتيب بالدرجة");
+  const base = calc(S.config, [], yearFrac(y)), nt = base.targets.length, w0 = .05, w1 = .24, w2 = .09, w3 = .15, wt = (1 - w0 - w1 - w2 - w3) / Math.max(1, nt);
+  const cols = [{w:w0,a:"c"},{w:w1},{w:w2,a:"c"},{w:w3,a:"c"}].concat(base.targets.map(() => ({ w:wt, a:"c" })));
+  const rows = ids.map((id, i) => ({ id, r: calcs[i] })).sort((a,b) => (rk[a.id] || 1e9) - (rk[b.id] || 1e9)).map(o => o.r
+    ? [rk[o.id] || "", nameOf(o.id), f2(o.r.total), o.r.dLabel].concat(o.r.targets.map(t => f0(t.done) + (t.q ? "%" : "")))
+    : ["", nameOf(o.id), "0.00", "لم يُرسل"].concat(base.targets.map(() => "0")));
+  pdfTable(x, yy, cols, ["#","المراقب","الدرجة", base.fr > 0 && base.fr < 1 ? "المستوى المتوقع" : "المستوى"].concat(base.targets.map(t => t.label)), rows, { rh: rows.length > 30 ? 34 : 40, fs: rows.length > 30 ? 15 : 17 });
+  return c;
+}
+async function pdfBuild(canvases){
+  const enc = s => new TextEncoder().encode(s), parts = [], offs = []; let len = 0;
+  const push = b => { parts.push(b); len += b.length; }, obj = (n, body) => { offs[n] = len; push(enc(n + " 0 obj\n")); body.forEach(push); push(enc("\nendobj\n")); };
+  const imgs = [];
+  for (const c of canvases){ const blob = await new Promise(res => c.toBlob(res, "image/jpeg", 0.9)); imgs.push(new Uint8Array(await blob.arrayBuffer())); }
+  push(enc("%PDF-1.4\n%âãÏÓ\n".replace(/[\u0080-￿]/g, "?")));
+  const N = canvases.length, kids = []; for (let i = 0; i < N; i++) kids.push((3 + i * 3) + " 0 R");
+  obj(1, [enc("<< /Type /Catalog /Pages 2 0 R >>")]);
+  obj(2, [enc("<< /Type /Pages /Count " + N + " /Kids [" + kids.join(" ") + "] >>")]);
+  for (let i = 0; i < N; i++){
+    const p = 3 + i * 3, content = "q 595.28 0 0 841.89 0 0 cm /Im0 Do Q";
+    obj(p, [enc("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 " + (p + 2) + " 0 R >> >> /Contents " + (p + 1) + " 0 R >>")]);
+    obj(p + 1, [enc("<< /Length " + content.length + " >>\nstream\n" + content + "\nendstream")]);
+    obj(p + 2, [enc("<< /Type /XObject /Subtype /Image /Width " + canvases[i].width + " /Height " + canvases[i].height + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + imgs[i].length + " >>\nstream\n"), imgs[i], enc("\nendstream")]);
+  }
+  const total = 3 + N * 3, xref = len; let x = "xref\n0 " + total + "\n0000000000 65535 f \n";
+  for (let n = 1; n < total; n++) x += String(offs[n]).padStart(10, "0") + " 00000 n \n";
+  push(enc(x + "trailer\n<< /Size " + total + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n"));
+  return new Blob(parts, { type: "application/pdf" });
+}
+async function pdfExport(ids, withSummary, who, fname){
+  const y = yearOf(), rk = rankMap(y), calcs = ids.map(id => yearCalc(id, y)), pages = [];
+  try { if (document.fonts && document.fonts.load) await Promise.all([document.fonts.load(PF(20, 400)), document.fonts.load(PF(20, 700))]); } catch(e){}
+  if (withSummary) pages.push(pdfSummary(ids, calcs, rk, y, who));
+  ids.forEach((id, i) => { if (!withSummary || calcs[i]) pages.push(pdfEmployee(id, calcs[i], rk, y)); });
+  const blob = await pdfBuild(pages), filename = fname + "-" + y + ".pdf";
+  if (S.dl){ try { await S.dl.save({ filename, data: blob }); toast("تم تجهيز الملف."); } catch(e){ toast(e && e.code === "declined" ? "أُلغي التنزيل." : "تعذر تنزيل الملف الآن."); } return; }
+  try { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = filename; document.body.appendChild(a); a.click(); a.remove(); } catch(e){ toast("التنزيل غير متاح في هذا العرض."); }
+}
+
+/* ---------- الأحداث ---------- */
+app.addEventListener("input", e => {
+  const t = e.target;
+  if (t.dataset.val !== undefined){ S.draft[t.dataset.val] = t.value; S.dirty = true; updateEmployee(); }
+  else if (t.id === "my-name"){ S.myName = t.value; }
+  else if (t.dataset.note !== undefined){ S.notes[t.dataset.note] = t.value; }
+  else if (t.dataset.bandf){ S.cfgDraft.bands[+t.dataset.bandf].from = n(t.value); updateEquation(); }
+  else if (t.dataset.bandl){ S.cfgDraft.bands[+t.dataset.bandl].label = t.value; }
+  else if (t.dataset.grpl){ S.cfgDraft.groups[+t.dataset.grpl].label = t.value; }
+  else if (t.dataset.grpt){ S.cfgDraft.groups[+t.dataset.grpt].t = n(t.value); updateEquation(); }
+  else if (t.dataset.top){ S.cfgDraft[t.dataset.top] = n(t.value); updateEquation(); }
+  else if (t.dataset.cfgw){ const [i,j] = t.dataset.cfgw.split(":"); S.cfgDraft.axes[+i].fields[+j].w = n(t.value); updateEquation(); }
+  else if (t.dataset.cfgqt){ S.cfgDraft.axes[+t.dataset.cfgqt].qt = n(t.value); }
+  else if (t.dataset.cfgt){ const [i,j] = t.dataset.cfgt.split(":"); S.cfgDraft.axes[+i].fields[+j].t = n(t.value); updateEquation(); }
+  else if (t.dataset.cfg){ const [i,k] = t.dataset.cfg.split(":"); S.cfgDraft.axes[+i][k] = t.value; }
+  else if (t.dataset.cfgf){ const [i,j] = t.dataset.cfgf.split(":"); S.cfgDraft.axes[+i].fields[+j].label = t.value; }
+});
+app.addEventListener("change", async e => {
+  const t = e.target;
+  if (t.id === "month" && /^\d{4}-\d{2}$/.test(t.value)){ S.month = t.value; S.monthTouched = true; loadDraft(); render(); }
+  else if (t.dataset.topb){ S.cfgDraft[t.dataset.topb] = t.checked; }
+  else if (t.dataset.cfgg){ const [i,j] = t.dataset.cfgg.split(":"), f = S.cfgDraft.axes[+i].fields[+j]; if (t.value) f.g = t.value; else delete f.g; S.pending = false; render(); }
+  else if (t.dataset.cfgq !== undefined){ S.cfgDraft.axes[+t.dataset.cfgq].quality = t.checked; S.pending = false; render(); }
+  else if (t.dataset.rn !== undefined || t.dataset.rr !== undefined || t.dataset.rs !== undefined){
+    const people = clone(S.roster), i = +(t.dataset.rn ?? t.dataset.rr ?? t.dataset.rs), p = people[i]; if (!p) return;
+    if (t.dataset.rn !== undefined){ const v = t.value.trim(); if (!v || v === p.name) return; p.name = v; }
+    else if (t.dataset.rr !== undefined){ p.role = t.value; if (t.value === "supervisor") delete p.supervisorPid; else for (const q of people) if (q.supervisorPid === p.id) delete q.supervisorPid; }
+    else { if (t.value) p.supervisorPid = t.value; else delete p.supervisorPid; }
+    S.pending = false;
+    if (await saveRoster(people)){ toast("تم الحفظ."); scheduleRender(); }
+  }
+  else if (t.dataset.role || t.dataset.sup){
+    const roles = clone(S.roles), id = t.dataset.role || t.dataset.sup, cur = roles[id] || {};
+    if (t.dataset.role){ cur.role = t.value; if (t.value === "supervisor"){ delete cur.supervisorId; } }
+    else { if (t.value) cur.supervisorId = t.value; else delete cur.supervisorId; }
+    roles[id] = cur;
+    if (t.dataset.role && t.value !== "supervisor") for (const k in roles) if (roles[k].supervisorId === id) delete roles[k].supervisorId;
+    if (await put("config/roles", { map: roles }, () => { S.roles = roles; })) toast("تم حفظ الأدوار.");
+  }
+});
+app.addEventListener("focusout", () => setTimeout(() => { if (S.pending){ S.pending = false; scheduleRender(); } }, 0));
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act === "view"){ S.view = b.dataset.v; render(); }
+  else if (act === "tab"){ S.mgrTab = b.dataset.t; render(); }
+  else if (act === "reset"){ S.draft = {}; S.dirty = true; render(); }
+  else if (act === "save"){
+    if (sendWindow(S.month).state !== "open"){ toast("الإرسال غير مفتوح لهذا الشهر الآن."); return; }
+    const id = S.me.id, doc = clone(S.charters[id] || {}); doc.months = doc.months || {};
+    const values = cleanValues();
+    doc.months[S.month] = { values, updatedAt: new Date().toISOString() };
+    b.disabled = true;
+    const ok = await put("charters/" + id, doc, () => { S.charters[id] = doc; });
+    if (ok){ S.dirty = false; toast("تم إرسال أعمال هذا الشهر للمشرف."); render(); } else b.disabled = false;
+  }
+  else if (act === "review"){
+    const key = b.dataset.key, ta = app.querySelector(`[data-note="${key}"]`), note = (ta ? ta.value : "").trim();
+    if (await put("reviews/" + key, { note }, () => { S.reviews[key] = { note, by: S.me.manager ? null : S.me.id, at: new Date().toISOString(), seen: true }; })){ delete S.notes[key]; toast("تم حفظ الملاحظة."); scheduleRender(); }
+  }
+  else if (act === "login" || act === "login-mgr"){
+    const mgr = act === "login-mgr", pid = mgr ? "" : document.getElementById("lg-person").value, secret = document.getElementById(mgr ? "lg-code" : "lg-pin").value;
+    if (!mgr && !pid){ toast("اختر اسمك أولاً."); return; }
+    if (secret.length < (mgr ? 6 : 4)){ toast(mgr ? "رمز المدير 6 خانات على الأقل." : "الرقم السري 4 أرقام على الأقل."); return; }
+    b.disabled = true; let d = null;
+    try { d = mgr ? await rpc("m_login_manager", { p_code: secret }) : await rpc("m_login", { p_person: pid, p_pin: secret }); } catch(e){ toast("تعذر الاتصال. تحقق من الإنترنت."); b.disabled = false; return; }
+    if (d.error){ toast(ERR[d.error] || "تعذر الدخول."); b.disabled = false; return; }
+    tokenSet(d.token); S.view = null; await refresh(); render();
+    if (d.first) toast(mgr ? "تم تعيين رمز المدير. احفظه جيداً." : "تم تعيين رقمك السري. احفظه جيداً.");
+  }
+  else if (act === "logout"){ const t = S.token; tokenSet(""); S.me = null; S.charters = {}; S.anon = []; S.reviews = {}; S.draft = {}; render(); try { await rpc("m_logout", { p_token: t }); } catch(e){} refresh().then(render); }
+  else if (act === "reset-pin"){ if (await call("m_reset_pin", { p_person: b.dataset.id })){ await refresh(); toast("تم تصفير الرقم السري."); render(); } }
+  else if (act === "change-code"){ const v = document.getElementById("new-code").value; if (v.length < 6){ toast("الرمز 6 خانات على الأقل."); return; }
+    if (await call("m_change_manager_code", { p_new: v })){ toast("تم تغيير رمز المدير."); render(); } }
+  else if (act === "add-field"){ S.cfgDraft.axes[+b.dataset.i].fields.push({ id: uid("f"), label: "خانة جديدة", w: 0 }); render(); }
+  else if (act === "del-field"){ S.cfgDraft.axes[+b.dataset.i].fields.splice(+b.dataset.j, 1); render(); }
+  else if (act === "add-person"){ const people = clone(S.roster); people.push({ id: uid("p"), name: "اسم جديد", role: "employee" }); if (await saveRoster(people)) render(); }
+  else if (act === "del-person"){
+    if (delArmed !== b.dataset.i){ delArmed = b.dataset.i; b.textContent = "تأكيد الحذف مع أعماله"; return; } delArmed = null;
+    const people = clone(S.roster), gone = people.splice(+b.dataset.i, 1)[0]; for (const q of people) if (gone && q.supervisorPid === gone.id) delete q.supervisorPid; if (await saveRoster(people)) render(); }
+  else if (act === "pdf-one" || act === "pdf-team"){
+    b.disabled = true; toast("جارٍ تجهيز الملف…");
+    try {
+      if (act === "pdf-one") await pdfExport([b.dataset.id], false, "", "ميثاق-" + nameOf(b.dataset.id).replace(/\s+/g, "-"));
+      else { const all = S.me.manager, ids = all ? employeeIds() : employeeIds().filter(id => supervisorOf(id) === S.me.id);
+        await pdfExport(ids, true, all ? "جميع المراقبين" : "فريق المشرف " + nameOf(S.me.id), all ? "تقرير-المراقبين" : "تقرير-الفريق"); }
+    } catch(e){ toast("تعذر تجهيز الملف."); }
+    b.disabled = false;
+  }
+  else if (act === "add-group"){ S.cfgDraft.groups.push({ id: uid("g"), label: "هدف مشترك", t: 0 }); render(); }
+  else if (act === "del-group"){ const g = S.cfgDraft.groups.splice(+b.dataset.i, 1)[0]; for (const a of S.cfgDraft.axes) for (const f of a.fields) if (g && f.g === g.id) delete f.g; render(); }
+  else if (act === "add-axis"){ S.cfgDraft.axes.push({ id: uid("a"), name: "محور جديد", quality: false, fields: [{ id: uid("f"), label: "خانة جديدة", w: 0 }] }); render(); }
+  else if (act === "del-axis"){ S.cfgDraft.axes.splice(+b.dataset.i, 1); render(); }
+  else if (act === "undo-cfg"){ S.cfgDraft = null; render(); }
+  else if (act === "save-cfg"){
+    const cfg = clone(S.cfgDraft);
+    cfg.axes = cfg.axes.filter(a => a.fields.length);
+    for (let i = 1; i < cfg.bands.length; i++) if (!(n(cfg.bands[i].from) > n(cfg.bands[i-1].from))){ toast("رتّب المستويات تصاعدياً: كل مستوى يبدأ من درجة أعلى من الذي قبله."); return; }
+    if (!cfg.axes.length || !(n(cfg.maxScore) > 0)){ toast("أضف محوراً واحداً على الأقل فيه خانة، وحدد الدرجة المثالية."); return; }
+    cfg.updatedAt = new Date().toISOString();
+    if (await put("config/main", cfg, () => { S.config = cfg; })){ if (S.month.slice(0,4) !== String(Math.round(n(cfg.year)) || 2027)){ S.month = defaultMonth(Math.round(n(cfg.year)) || 2027); S.monthTouched = false; loadDraft(); } S.cfgDraft = null; toast("تم حفظ المعادلة."); render(); }
+  }
+});
+
+/* ---------- التشغيل ---------- */
+S.me = null; S.token = tokenGet(); S.anon = []; S.managerSet = false; S.online = true;
+async function start(){
+  await refresh(); render();
+  setInterval(async () => { if (document.hidden || !S.me) return; await refresh(); scheduleRender(); }, 90000);
+}
+start();
+</script>
+</body>
+</html>
