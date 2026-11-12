@@ -182,7 +182,7 @@ body.is-login main{max-width:none;padding:0}
 <script>
 "use strict";
 /* ---------- المعادلة الافتراضية (يعدّلها المدير من واجهته) ---------- */
-const DEFAULT_CONFIG = { year:2027, sendOpenDays:3, sendGraceDays:5, sendAlways:false, qualityTarget:100, showWeights:true, workDays:241, opsTarget:2410, groups:[{id:"g1",label:"الضبطيات",t:4}], maxScore:5, opsWeight:0.00104, bands:[
+const DEFAULT_CONFIG = { quotaIdeal:0, quotaAbove:0, productsTotal:330, year:2027, sendOpenDays:3, sendGraceDays:5, sendAlways:false, qualityTarget:100, showWeights:true, workDays:241, opsTarget:2410, groups:[{id:"g1",label:"الضبطيات",t:4}], maxScore:5, opsWeight:0.00104, bands:[
   {from:0,label:"غير مرضي"},{from:1.5,label:"يحتاج لتطوير"},{from:2.5,label:"وافق التوقعات"},
   {from:3.5,label:"فاق التوقعات"},{from:4.5,label:"مثالي"}], axes: [
   { id:"vis", name:"الزيارات", quality:true, qt:98, fields:[
@@ -309,13 +309,68 @@ function yearList(id, year, overMonth, overValues){
 }
 function yearCalc(id, year){ const l = yearList(id, year); return l.length ? calc(S.config, l, yearFrac(year)) : null; }
 function lastSaved(id, year){ const c = S.charters[id], ms = (c && c.months) || {}; let b = ""; for (const k in ms) if (k.slice(0,4) === String(year) && (ms[k].updatedAt || "") > b) b = ms[k].updatedAt; return b; }
-function rankMap(year, selfId, selfTotal){
+/* ---------- المفاضلة عند تساوي الدرجة، وحصص المستويات ---------- */
+const TIE_CRIT = [{ key:"rep", label:"مجموع البلاغات" }, { key:"repq", label:"جودة البلاغ" }, { key:"cov", label:"شمولية قراءات المنتجات" }, { key:"seize", label:"الضبطيات" }, { key:"visT", label:"شمولية الزيارات" }];
+function productsTotal(){ return Math.max(1, Math.floor(n(S.config.productsTotal)) || 330); }
+function coverageOf(id, year){ const c = (S.coverage || {})[id + "__" + year]; return c && c.products !== null && c.products !== undefined ? n(c.products) : null; }
+function tieStats(r, list, cov){
+  const rp = r.axes.find(a => a.id === "rep"), va = S.config.axes.find(a => a.id === "vis"), gids = (S.config.groups || []).map(g => g.id);
+  let seize = 0; for (const a of r.axes) if (!a.quality) for (const f of a.fields) if (gids.includes(f.g)) seize += f.val;
+  const visT = va ? va.fields.filter(f => list.reduce((t,v) => t + n(v[f.id]), 0) > 0).length : 0;
+  return { rep: rp ? rp.sum : 0, repq: rp && rp.sum > 0 ? Math.round(rp.q * 1000) / 10 : 0, cov: cov === null ? -1 : cov, seize, visT, visN: va ? va.fields.length : 0 };
+}
+/* يعيد [الفرق، رقم المعيار الذي حسم]: -1 الدرجة نفسها حسمت، -2 تساويا في كل شيء */
+function cmpTie(a, b){
+  if (Math.abs(a.total - b.total) > 1e-9) return [b.total - a.total, -1];
+  for (let i = 0; i < TIE_CRIT.length; i++){ const d = b.s[TIE_CRIT[i].key] - a.s[TIE_CRIT[i].key]; if (Math.abs(d) > 1e-9) return [d, i]; }
+  return [0, -2];
+}
+function rankMap(year, selfId, selfR, selfL){
   const ids = employeeIds(); if (selfId && !ids.includes(selfId)) ids.push(selfId);
-  const tot = {}; for (const id of ids){ if (id === selfId && selfTotal !== undefined) tot[id] = selfTotal; else { const r = yearCalc(id, year); if (r) tot[id] = r.total; } }
-  anonCalcs(year).forEach((r, i) => { tot["~" + i] = r.total; });
-  const out = { n: ids.length };
-  for (const id in tot) out[id] = 1 + Object.keys(tot).filter(k => tot[k] > tot[id] + 1e-9).length;
+  const E = [], fr = yearFrac(year);
+  for (const id of ids){ let r, l; if (id === selfId && selfR){ r = selfR; l = selfL || []; } else { l = yearList(id, year); r = l.length ? calc(S.config, l, fr) : null; }
+    if (r) E.push({ id, r, total: r.total, s: tieStats(r, l, coverageOf(id, year)) }); }
+  (S.anon || []).forEach((a, i) => { const l = []; for (const k in a.months) if (k.slice(0,4) === String(year)) l.push(a.months[k].values || {});
+    if (l.length){ const r = calc(S.config, l, fr); E.push({ id: "~" + i, r, total: r.total, s: tieStats(r, l, null) }); } });
+  E.sort((a, b) => cmpTie(a, b)[0]);
+  const out = { n: ids.length, info: {} };
+  const qI = Math.max(0, Math.floor(n(S.config.quotaIdeal))), qA = Math.max(0, Math.floor(n(S.config.quotaAbove))); let ci = 0, ca = 0;
+  E.forEach((e, i) => {
+    const k = i ? cmpTie(E[i-1], e)[1] : -1;
+    e.rank = k === -2 ? E[i-1].rank : i + 1;
+    if (k >= 0){ e.lostTo = E[i-1].id; e.crit = k; if (E[i-1].beat === undefined){ E[i-1].beat = e.id; E[i-1].beatCrit = k; } }
+    if (k === -2) e.same = E[i-1].id;
+    let lv = e.r.dIdx; const orig = lv;
+    if (lv === 4){ if (qI > 0 && ci >= qI) lv = 3; else ci++; }
+    if (lv === 3){ if (qA > 0 && ca >= qA) lv = 2; else ca++; }
+    e.fIdx = lv; e.demoted = lv !== orig ? orig : null;
+    out[e.id] = e.rank; out.info[e.id] = e;
+  });
   return out;
+}
+function finalIdx(id, r, rk){ const e = rk && rk.info && rk.info[id]; return e ? e.fIdx : r.dIdx; }
+function finalLabel(id, r, rk){ const i = finalIdx(id, r, rk); return i < 0 ? r.dLabel : S.config.bands[i].label; }
+function finalTone(id, r, rk){ const i = finalIdx(id, r, rk); return i < 0 ? r.dLevel : TONES[i]; }
+function tieName(id){ return String(id).charAt(0) === "~" ? "مراقب آخر" : nameOf(id); }
+function tieNote(id, rk){
+  const e = rk && rk.info && rk.info[id]; if (!e) return "";
+  const out = [];
+  if (e.lostTo !== undefined) out.push(`تساوى في الدرجة مع ${tieName(e.lostTo)}، وقُدِّم ${tieName(e.lostTo)} بمعيار «${TIE_CRIT[e.crit].label}».`);
+  else if (e.beat !== undefined) out.push(`تساوى في الدرجة مع ${tieName(e.beat)}، وتقدّم عليه بمعيار «${TIE_CRIT[e.beatCrit].label}».`);
+  if (e.same !== undefined) out.push(`متساوٍ مع ${tieName(e.same)} في الدرجة وفي كل معايير المفاضلة.`);
+  if (e.demoted !== null && e.demoted !== undefined) out.push(`يستحق «${S.config.bands[e.demoted].label}» بدرجته، ونزل إلى «${S.config.bands[e.fIdx].label}» لاكتمال الحصة.`);
+  return out.length ? `<div class="small rem todo" style="white-space:normal;min-width:260px;max-width:360px">${esc(out.join(" "))}</div>` : "";
+}
+function tieDetail(id, rk){
+  const e = rk && rk.info && rk.info[id]; if (!e) return "";
+  const s = e.s; return `<p class="muted small">أرقام المفاضلة: البلاغات <span class="num">${f0(s.rep)}</span> · جودة البلاغ <span class="num">${f0(s.repq)}%</span> · المنتجات المقروءة <span class="num">${s.cov < 0 ? "لم تُدخل" : f0(s.cov) + " / " + productsTotal()}</span> · الضبطيات <span class="num">${f0(s.seize)}</span> · أنواع الزيارات <span class="num">${s.visT} / ${s.visN}</span></p>`;
+}
+function covInput(id, year){ const v = coverageOf(id, year); return `<input class="num" style="width:96px;min-width:96px" type="number" min="0" max="${productsTotal()}" step="1" inputmode="numeric" id="cov-${esc(id)}" data-cov="${esc(id)}" aria-label="عدد المنتجات المختلفة المقروءة" placeholder="من ${productsTotal()}" value="${v === null ? "" : esc(v)}">`; }
+async function saveCoverage(id, raw){
+  const y = yearOf(), v = raw === "" ? null : Math.floor(n(raw));
+  if (v !== null && (v < 0 || v > productsTotal())){ toast("اكتب عدداً بين 0 و" + productsTotal() + "."); return; }
+  const d = await call("m_set_coverage", { p_person: id, p_year: String(y), p_products: v }); if (!d) return;
+  S.coverage[id + "__" + y] = { products: v }; toast("حُفظت شمولية المنتجات."); scheduleRender();
 }
 function paceText(r){
   const t = r.targets.find(x => x.ops); if (!t) return "";
@@ -456,7 +511,7 @@ async function loadData(){
   const d = await rpc("m_data", { p_token: S.token });
   if (d.error){ tokenSet(""); S.me = null; return; }
   S.me = { id: d.me.id || "manager", manager: !!d.me.manager, mustChange: !!d.me.mustChange };
-  S.charters = d.charters || {}; S.anon = d.anon || []; S.reviews = d.reviews || {};
+  S.charters = d.charters || {}; S.anon = d.anon || []; S.reviews = d.reviews || {}; S.coverage = d.coverage || {};
 }
 async function refresh(){ try { await loadPublic(); await loadData(); S.slow = false; } catch(e){ S.slow = true; } S.loaded = true; if (!S.dirty && S.me) loadDraft(); }
 /* يوجّه كل حفظ إلى الإجراء المناسب في قاعدة البيانات */
@@ -602,7 +657,7 @@ function updateEmployee(){
   $("sum-msg").textContent = msg;
   $("sum-eq").textContent = r.proj === null ? (r.dLevel === "none" ? "الدرجة تراكمية وتبدأ من الصفر. يظهر مستواك المتوقع بعد مرور أسابيع من بداية السنة." : "")
     : `الدرجة تراكمية حتى اليوم. إذا استمررت على وتيرتك الحالية ستنهي السنة بدرجة ${f2(r.proj)}، أي «${r.projLabel}»، وهو المستوى المعروض.`;
-  const rk = rankMap(yearOf(), S.me.id, r.total);
+  const rk = rankMap(yearOf(), S.me.id, r, selfList(yearOf(), S.draft));
   $("sum-rank").textContent = rk.n > 1 && r.total > 0 ? `ترتيبك بين المراقبين: ${rk[S.me.id]} من ${rk.n}.` : "";
   $("targets").innerHTML = targetsHTML(r);
   if ($("fp")) $("fp").innerHTML = fingerprintHTML(r, teamCalcs(yearOf(), S.me.id).concat([r]));
@@ -643,9 +698,10 @@ function viewSupervisor(){
     const key = x.id + "__" + S.month, mineRv = S.reviews[key];
     const note = S.notes[key] !== undefined ? S.notes[key] : (mineRv && mineRv.note) || "";
     h += `<details class="emp"><summary><b style="margin-inline-end:auto">${esc(nameOf(x.id))}</b>
-      ${x.r ? `<span class="muted small">الترتيب <span class="num">${rk[x.id]} / ${rk.n}</span></span><span class="${paceClass(x.r)}">${esc(paceText(x.r))}</span><span class="num"><b>${f2(x.r.total)}</b> / ${f0(x.r.max)}</span><span class="pill lv-${x.r.dLevel}">${esc(x.r.dLabel)}</span><span class="muted small">${esc(when(lastSaved(x.id, y)))}</span>` : `<span class="pill lv-none">${LEVELS.none}</span>`}
+      ${x.r ? `<span class="muted small">الترتيب <span class="num">${rk[x.id]} / ${rk.n}</span></span><span class="${paceClass(x.r)}">${esc(paceText(x.r))}</span><span class="num"><b>${f2(x.r.total)}</b> / ${f0(x.r.max)}</span><span class="pill lv-${finalTone(x.id, x.r, rk)}">${esc(finalLabel(x.id, x.r, rk))}</span><span class="muted small">${esc(when(lastSaved(x.id, y)))}</span>` : `<span class="pill lv-none">${LEVELS.none}</span>`}
       ${mineRv && mineRv.seen ? `<span class="muted small">تم الاطلاع</span>` : ""}</summary>
-      <div class="body">${x.r ? breakdown(x.r, team) + `
+      <div class="body">${x.r ? breakdown(x.r, team) + tieNote(x.id, rk) + tieDetail(x.id, rk) + `
+        <label class="fld" style="max-width:420px">عدد المنتجات المختلفة التي قرأها في سنة ${esc(y)} (من ${productsTotal()})، بعد التأكد من نظام العمل. تُستخدم للمفاضلة فقط${covInput(x.id, y)}</label>
         <label class="fld">ملاحظتك للمراقب عن شهر ${esc(monthLabel(S.month))}<textarea id="note-${esc(x.id)}" data-note="${esc(key)}" maxlength="600" placeholder="تظهر للمراقب في ميثاقه">${esc(note)}</textarea></label>
         <div class="row"><button type="button" class="btn primary" data-act="review" data-key="${esc(key)}" ${S.readOnly ? "disabled" : ""}>حفظ الملاحظة وتأكيد الاطلاع</button>
           <button type="button" class="btn" data-act="pdf-one" data-id="${esc(x.id)}">تنزيل ميثاقه PDF</button></div>` : `<p class="muted">لم يُدخل هذا المراقب أعمالاً في هذه السنة.</p>`}</div></details>`;
@@ -662,7 +718,7 @@ function viewManager(){
 /* عدّادات الملخص: تظهر للمدير عن الجميع وللمشرف عن فريقه */
 function statTiles(rows, y){
   const done = rows.filter(x => x.r), avg = done.length ? done.reduce((s,x) => s + x.r.total, 0) / done.length : 0;
-  const cnt = i => done.filter(x => x.r.dIdx === i).length, max = calc(S.config, [], 1).max;
+  const rkT = rankMap(y), cnt = i => done.filter(x => finalIdx(x.id, x.r, rkT) === i).length, max = calc(S.config, [], 1).max;
   const behind = done.filter(x => paceClass(x.r) === "rem todo").length, met = done.filter(x => x.r.reqMet).length;
   return `<div class="tiles">
     <div class="tile"><span class="muted small">أدخلوا أعمالهم</span><b class="num">${done.length} / ${rows.length}</b></div>
@@ -678,18 +734,19 @@ function mgrOverview(){
   const cnt = i => done.filter(x => x.r.dIdx === i).length, base = calc(S.config, [], yearFrac(y));
   const behind = done.filter(x => paceClass(x.r) === "rem todo").length, met = done.filter(x => x.r.reqMet).length;
   let h = `<section class="card row between"><div><h2>أداء المراقبين لسنة <span class="num">${esc(y)}</span></h2>
-    <p class="muted small">الأرقام تراكمية من بداية السنة، والترتيب بالدرجة من الأعلى.</p>
+    <p class="muted small">الأرقام تراكمية من بداية السنة، والترتيب بالدرجة من الأعلى. عند تساوي الدرجة تُطبَّق المفاضلة بالترتيب: ${TIE_CRIT.map(c => c.label).join("، ثم ")}.${n(S.config.quotaIdeal) > 0 || n(S.config.quotaAbove) > 0 ? ` حصص هذه السنة: «${esc(S.config.bands[4].label)}» ${n(S.config.quotaIdeal) > 0 ? f0(S.config.quotaIdeal) : "بلا حد"}، «${esc(S.config.bands[3].label)}» ${n(S.config.quotaAbove) > 0 ? f0(S.config.quotaAbove) : "بلا حد"}.` : ""}</p>
     <div class="row" style="margin-top:10px"><button type="button" class="btn primary" data-act="pdf-team">تنزيل تقرير الجميع PDF</button></div></div>${monthPicker("الفترة")}</section>
 `;
   h += statTiles(rows, y);
   h += matrixHTML(rows);
   if (!rows.length) return h + `<div class="card muted">لا توجد أسماء بعد. أضفها من تبويب «الأعضاء».</div>`;
-  h += `<section class="card scroll"><table><thead><tr><th>الترتيب</th><th>المراقب</th><th>المشرف</th><th>الدرجة</th><th>${base.fr > 0 && base.fr < 1 ? "المستوى المتوقع" : "المستوى"}</th><th>المسار</th>` + base.targets.map(t => `<th>${esc(t.label)}</th>`).join("") + `<th>المتوقع نهاية السنة</th><th>آخر حفظ</th></tr></thead><tbody>`;
+  h += `<section class="card scroll"><table><thead><tr><th>الترتيب</th><th>المراقب</th><th>المشرف</th><th>الدرجة</th><th>${base.fr > 0 && base.fr < 1 ? "المستوى المتوقع" : "المستوى"}</th><th>المسار</th>` + base.targets.map(t => `<th>${esc(t.label)}</th>`).join("") + `<th>المنتجات المقروءة</th><th>أنواع الزيارات</th><th>المتوقع نهاية السنة</th><th>آخر حفظ</th></tr></thead><tbody>`;
   for (const x of rows){
     const sup = supervisorOf(x.id);
-    h += `<tr><td class="num">${rk[x.id] || ""}</td><td><b>${esc(nameOf(x.id))}</b></td><td>${sup ? esc(nameOf(sup)) : `<span class="muted">غير محدد</span>`}</td>` +
-      (x.r ? `<td class="num"><b>${f2(x.r.total)}</b></td><td><span class="pill lv-${x.r.dLevel}">${esc(x.r.dLabel)}</span></td><td class="${paceClass(x.r)}">${esc(paceText(x.r))}</td>` + x.r.targets.map(t => `<td class="num">${f0(t.done)}${t.q ? "%" : ""} / ${f0(t.target)}${t.q ? "%" : ""}</td>`).join("") + `<td class="num">${x.r.proj === null ? "" : f2(x.r.proj)}</td><td class="muted">${esc(when(lastSaved(x.id, y)))}</td>`
-           : `<td class="num muted">0.00</td><td><span class="pill lv-none">${LEVELS.none}</span></td><td></td>` + base.targets.map(t => `<td class="num muted">0 / ${f0(t.target)}${t.q ? "%" : ""}</td>`).join("") + `<td></td><td></td>`) + `</tr>`;
+    const ti = rk.info[x.id];
+    h += `<tr><td class="num">${rk[x.id] || ""}</td><td><b>${esc(nameOf(x.id))}</b>${tieNote(x.id, rk)}</td><td>${sup ? esc(nameOf(sup)) : `<span class="muted">غير محدد</span>`}</td>` +
+      (x.r ? `<td class="num"><b>${f2(x.r.total)}</b></td><td><span class="pill lv-${finalTone(x.id, x.r, rk)}">${esc(finalLabel(x.id, x.r, rk))}</span></td><td class="${paceClass(x.r)}">${esc(paceText(x.r))}</td>` + x.r.targets.map(t => `<td class="num">${f0(t.done)}${t.q ? "%" : ""} / ${f0(t.target)}${t.q ? "%" : ""}</td>`).join("") + `<td>${covInput(x.id, y)}</td><td class="num">${ti ? ti.s.visT + " / " + ti.s.visN : ""}</td><td class="num">${x.r.proj === null ? "" : f2(x.r.proj)}</td><td class="muted">${esc(when(lastSaved(x.id, y)))}</td>`
+           : `<td class="num muted">0.00</td><td><span class="pill lv-none">${LEVELS.none}</span></td><td></td>` + base.targets.map(t => `<td class="num muted">0 / ${f0(t.target)}${t.q ? "%" : ""}</td>`).join("") + `<td></td><td></td><td></td><td></td>`) + `</tr>`;
   }
   return h + `</tbody></table></section>`;
 }
@@ -707,6 +764,11 @@ function mgrEquation(){
     <div class="grid4">
       <label class="fld">يفتح الإرسال قبل نهاية الشهر بـ (أيام)<input class="num" type="number" min="1" step="1" id="top-od" data-top="sendOpenDays" value="${esc(c.sendOpenDays === undefined ? 3 : c.sendOpenDays)}"></label>
       <label class="fld">ويبقى مفتوحاً بعد نهايته بـ (أيام)<input class="num" type="number" min="0" step="1" id="top-gd" data-top="sendGraceDays" value="${esc(c.sendGraceDays === undefined ? 5 : c.sendGraceDays)}"></label></div>
+    <div class="stack"><span class="muted small">حصص المستويات لهذه السنة: أقصى عدد من المراقبين في كل مستوى (صفر = بلا حد). من يستحق مستوى اكتملت حصته ينزل إلى الذي يليه. عند تساوي الدرجة تُطبَّق المفاضلة: ${TIE_CRIT.map(x => x.label).join("، ثم ")}.</span>
+    <div class="grid4">
+      <label class="fld">حصة «${esc(c.bands[4].label)}»<input class="num" type="number" min="0" step="1" id="top-qi" data-top="quotaIdeal" value="${esc(c.quotaIdeal || 0)}"></label>
+      <label class="fld">حصة «${esc(c.bands[3].label)}»<input class="num" type="number" min="0" step="1" id="top-qa" data-top="quotaAbove" value="${esc(c.quotaAbove || 0)}"></label>
+      <label class="fld">عدد المنتجات الكلي للقراءات<input class="num" type="number" min="1" step="1" id="top-pt" data-top="productsTotal" value="${esc(c.productsTotal || 330)}"></label></div></div>
     <label class="row small"><input type="checkbox" id="top-sa" data-topb="sendAlways" ${c.sendAlways ? "checked" : ""}> فتح الإرسال للجميع الآن استثناءً (لأي شهر)</label>
     <label class="row small"><input type="checkbox" id="top-sw" data-topb="showWeights" ${c.showWeights !== false ? "checked" : ""}> إظهار الأوزان للمراقب في واجهته</label>
     <div class="stack"><span class="muted small">مستويات التقييم: يبدأ كل مستوى من الدرجة المكتوبة أمامه</span>` +
@@ -808,7 +870,7 @@ function pdfEmployee(id, r, rk, y0){
   if (!r){ x.fillStyle = "#5a6b64"; x.textAlign = "right"; x.font = PF(24, 400); x.fillText("لم يرسل هذا المراقب أعمالاً في سنة " + y + ".", PR, yy + 60); return c; }
   x.fillStyle = "#eef4f1"; x.fillRect(PM, yy, PCW, 110);
   const box = (cx, label, val) => { x.textAlign = "center"; x.fillStyle = "#5a6b64"; x.font = PF(18, 400); x.fillText(label, cx, yy + 38); x.fillStyle = "#0f6b4a"; x.font = PF(34, 700); x.fillText(val, cx, yy + 84); };
-  box(PR - PCW / 6, "الدرجة التراكمية", f2(r.total) + " / " + f0(r.max)); box(PW / 2, r.projected ? "المستوى المتوقع نهاية السنة" : "المستوى", r.dLabel); box(PM + PCW / 6, "المطلوب", r.reqMet ? "تحقق" : "لم يتحقق بعد");
+  box(PR - PCW / 6, "الدرجة التراكمية", f2(r.total) + " / " + f0(r.max)); box(PW / 2, r.projected ? "المستوى المتوقع نهاية السنة" : "المستوى", finalLabel(id, r, rk)); box(PM + PCW / 6, "المطلوب", r.reqMet ? "تحقق" : "لم يتحقق بعد");
   yy += 150;
   yy = pdfTitle(x, yy, "المطلوب السنوي");
   yy = pdfTable(x, yy, [{w:.34},{w:.165,a:"c"},{w:.165,a:"c"},{w:.165,a:"c"},{w:.165,a:"c"}], ["الهدف","المنجز","المطلوب","الباقي","الحالة"],
@@ -837,7 +899,7 @@ function pdfSummary(ids, calcs, rk, y, who){
   const base = calc(S.config, [], yearFrac(y)), nt = base.targets.length, w0 = .05, w1 = .24, w2 = .09, w3 = .15, wt = (1 - w0 - w1 - w2 - w3) / Math.max(1, nt);
   const cols = [{w:w0,a:"c"},{w:w1},{w:w2,a:"c"},{w:w3,a:"c"}].concat(base.targets.map(() => ({ w:wt, a:"c" })));
   const rows = ids.map((id, i) => ({ id, r: calcs[i] })).sort((a,b) => (rk[a.id] || 1e9) - (rk[b.id] || 1e9)).map(o => o.r
-    ? [rk[o.id] || "", nameOf(o.id), f2(o.r.total), o.r.dLabel].concat(o.r.targets.map(t => f0(t.done) + (t.q ? "%" : "")))
+    ? [rk[o.id] || "", nameOf(o.id), f2(o.r.total), finalLabel(o.id, o.r, rk)].concat(o.r.targets.map(t => f0(t.done) + (t.q ? "%" : "")))
     : ["", nameOf(o.id), "0.00", "لم يُرسل"].concat(base.targets.map(() => "0")));
   pdfTable(x, yy, cols, ["#","المراقب","الدرجة", base.fr > 0 && base.fr < 1 ? "المستوى المتوقع" : "المستوى"].concat(base.targets.map(t => t.label)), rows, { rh: rows.length > 30 ? 34 : 40, fs: rows.length > 30 ? 15 : 17 });
   return c;
@@ -889,6 +951,7 @@ app.addEventListener("input", e => {
   else if (t.dataset.cfg){ const [i,k] = t.dataset.cfg.split(":"); S.cfgDraft.axes[+i][k] = t.value; }
   else if (t.dataset.cfgf){ const [i,j] = t.dataset.cfgf.split(":"); S.cfgDraft.axes[+i].fields[+j].label = t.value; }
 });
+app.addEventListener("change", e => { const t = e.target; if (t && t.dataset && t.dataset.cov) saveCoverage(t.dataset.cov, t.value); });
 app.addEventListener("change", async e => {
   const t = e.target;
   if (t.id === "month" && /^\d{4}-\d{2}$/.test(t.value)){ S.month = t.value; S.monthTouched = true; loadDraft(); render(); }
@@ -991,7 +1054,7 @@ document.addEventListener("click", async e => {
 });
 
 /* ---------- التشغيل ---------- */
-S.me = null; S.token = tokenGet(); S.anon = []; S.managerSet = false; S.online = true;
+S.me = null; S.token = tokenGet(); S.anon = []; S.coverage = {}; S.managerSet = false; S.online = true;
 async function start(){
   await refresh(); render();
   setInterval(async () => { if (document.hidden || !S.me) return; await refresh(); scheduleRender(); }, 90000);

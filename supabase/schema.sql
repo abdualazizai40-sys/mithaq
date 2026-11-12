@@ -64,6 +64,17 @@ create table if not exists public.m_reviews(
   at timestamptz not null default now(),
   primary key (person_id, month));
 
+-- شمولية قراءات المنتجات: يدخلها المدير أو المشرف لكل مراقب عن السنة، وتُستخدم للمفاضلة فقط
+create table if not exists public.m_coverage(
+  person_id text not null references public.m_people(id) on delete cascade,
+  year text not null,
+  products int,
+  by_id text,
+  at timestamptz not null default now(),
+  primary key (person_id, year));
+
+alter table public.m_coverage enable row level security;
+revoke all on public.m_coverage from anon, authenticated;
 alter table public.m_config   enable row level security;
 alter table public.m_people   enable row level security;
 alter table public.m_admin    enable row level security;
@@ -210,7 +221,7 @@ begin
   begin select * into w from m__who(p_token); exception when others then return jsonb_build_object('error', 'no_session'); end;
   if w.person_id is not null then select must_change into mc from m_people where id = w.person_id; end if;
   if mc then return jsonb_build_object('me', jsonb_build_object('id', w.person_id, 'manager', false, 'role', w.role, 'mustChange', true),
-    'charters', '{}'::jsonb, 'anon', '[]'::jsonb, 'reviews', '{}'::jsonb, 'now', now()); end if;
+    'charters', '{}'::jsonb, 'anon', '[]'::jsonb, 'reviews', '{}'::jsonb, 'coverage', '{}'::jsonb, 'now', now()); end if;
   if w.is_manager then select coalesce(array_agg(id), '{}') into vis from m_people;
   elsif w.role = 'supervisor' then select coalesce(array_agg(id), '{}') into vis from m_people where supervisor_id = w.person_id;
   else vis := array[w.person_id]; end if;
@@ -225,6 +236,8 @@ begin
         where p.role = 'employee' and not (c.person_id = any(vis)) group by c.person_id) q), '[]'::jsonb),
     'reviews', coalesce((select jsonb_object_agg(person_id || '__' || month, jsonb_build_object('note', note, 'by', by_id, 'at', at, 'seen', true))
         from m_reviews where person_id = any(vis)), '{}'::jsonb),
+    'coverage', case when w.is_manager or w.role = 'supervisor' then coalesce((select jsonb_object_agg(person_id || '__' || year, jsonb_build_object('products', products, 'by', by_id, 'at', at))
+        from m_coverage where person_id = any(vis)), '{}'::jsonb) else '{}'::jsonb end,
     'now', now());
 end $$;
 
@@ -266,6 +279,21 @@ begin
   return jsonb_build_object('ok', true);
 end $$;
 
+-- المدير أو المشرف (لمراقبيه فقط) يسجل عدد المنتجات المختلفة التي قرأها المراقب في السنة
+create or replace function public.m_set_coverage(p_token uuid, p_person text, p_year text, p_products int) returns jsonb
+language plpgsql security definer set search_path = public, extensions as $$
+declare w record;
+begin
+  begin select * into w from m__who(p_token); exception when others then return jsonb_build_object('error', 'no_session'); end;
+  if not (w.is_manager or exists (select 1 from m_people where id = p_person and supervisor_id = w.person_id and w.role = 'supervisor')) then
+    return jsonb_build_object('error', 'forbidden'); end if;
+  if not exists (select 1 from m_people where id = p_person and role = 'employee') or p_year !~ '^\d{4}$' or p_products < 0 or p_products > 100000 then
+    return jsonb_build_object('error', 'bad'); end if;
+  insert into m_coverage(person_id, year, products, by_id) values (p_person, p_year, p_products, w.person_id)
+    on conflict (person_id, year) do update set products = excluded.products, by_id = excluded.by_id, at = now();
+  return jsonb_build_object('ok', true);
+end $$;
+
 -- المدير يحفظ المعادلة والإعدادات
 create or replace function public.m_save_config(p_token uuid, p_data jsonb) returns jsonb
 language plpgsql security definer set search_path = public, extensions as $$
@@ -302,11 +330,11 @@ revoke all on function
   public.m_public(), public.m_login(text,text), public.m_login_manager(text), public.m_logout(uuid),
   public.m_set_pin(uuid,text,text), public.m_change_pin(uuid,text), public.m_reset_pin(uuid,text), public.m_change_manager_code(uuid,text),
   public.m_data(uuid), public.m_submit(uuid,text,jsonb), public.m_review(uuid,text,text,text),
-  public.m_save_config(uuid,jsonb), public.m_save_people(uuid,jsonb)
+  public.m_save_config(uuid,jsonb), public.m_save_people(uuid,jsonb), public.m_set_coverage(uuid,text,text,int)
 from public;
 grant execute on function
   public.m_public(), public.m_login(text,text), public.m_login_manager(text), public.m_logout(uuid),
   public.m_set_pin(uuid,text,text), public.m_change_pin(uuid,text), public.m_reset_pin(uuid,text), public.m_change_manager_code(uuid,text),
   public.m_data(uuid), public.m_submit(uuid,text,jsonb), public.m_review(uuid,text,text,text),
-  public.m_save_config(uuid,jsonb), public.m_save_people(uuid,jsonb)
+  public.m_save_config(uuid,jsonb), public.m_save_people(uuid,jsonb), public.m_set_coverage(uuid,text,text,int)
 to anon, authenticated;
