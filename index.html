@@ -352,15 +352,16 @@ function finalIdx(id, r, rk){ const e = rk && rk.info && rk.info[id]; return e ?
 function finalLabel(id, r, rk){ const i = finalIdx(id, r, rk); return i < 0 ? r.dLabel : S.config.bands[i].label; }
 function finalTone(id, r, rk){ const i = finalIdx(id, r, rk); return i < 0 ? r.dLevel : TONES[i]; }
 function tieName(id){ return String(id).charAt(0) === "~" ? "مراقب آخر" : nameOf(id); }
-function tieNote(id, rk){
-  const e = rk && rk.info && rk.info[id]; if (!e) return "";
+function tieLines(id, rk){
+  const e = rk && rk.info && rk.info[id]; if (!e) return [];
   const out = [];
   if (e.lostTo !== undefined) out.push(`تساوى في الدرجة مع ${tieName(e.lostTo)}، وقُدِّم ${tieName(e.lostTo)} بمعيار «${TIE_CRIT[e.crit].label}».`);
   else if (e.beat !== undefined) out.push(`تساوى في الدرجة مع ${tieName(e.beat)}، وتقدّم عليه بمعيار «${TIE_CRIT[e.beatCrit].label}».`);
   if (e.same !== undefined) out.push(`متساوٍ مع ${tieName(e.same)} في الدرجة وفي كل معايير المفاضلة.`);
   if (e.demoted !== null && e.demoted !== undefined) out.push(`يستحق «${S.config.bands[e.demoted].label}» بدرجته، ونزل إلى «${S.config.bands[e.fIdx].label}» لاكتمال الحصة.`);
-  return out.length ? `<div class="small rem todo" style="white-space:normal;min-width:260px;max-width:360px">${esc(out.join(" "))}</div>` : "";
+  return out;
 }
+function tieNote(id, rk){ const out = tieLines(id, rk); return out.length ? `<div class="small rem todo" style="white-space:normal;min-width:260px;max-width:360px">${esc(out.join(" "))}</div>` : ""; }
 function tieDetail(id, rk){
   const e = rk && rk.info && rk.info[id]; if (!e) return "";
   const s = e.s; return `<p class="muted small">أرقام المفاضلة: البلاغات <span class="num">${f0(s.rep)}</span> · جودة البلاغ <span class="num">${f0(s.repq)}%</span> · المنتجات المقروءة <span class="num">${s.cov < 0 ? "لم تُدخل" : f0(s.cov) + " / " + productsTotal()}</span> · الضبطيات <span class="num">${f0(s.seize)}</span> · أنواع الزيارات <span class="num">${s.visT} / ${s.visN}</span></p>`;
@@ -872,6 +873,12 @@ function pdfEmployee(id, r, rk, y0){
   const box = (cx, label, val) => { x.textAlign = "center"; x.fillStyle = "#5a6b64"; x.font = PF(18, 400); x.fillText(label, cx, yy + 38); x.fillStyle = "#0f6b4a"; x.font = PF(34, 700); x.fillText(val, cx, yy + 84); };
   box(PR - PCW / 6, "الدرجة التراكمية", f2(r.total) + " / " + f0(r.max)); box(PW / 2, r.projected ? "المستوى المتوقع نهاية السنة" : "المستوى", finalLabel(id, r, rk)); box(PM + PCW / 6, "المطلوب", r.reqMet ? "تحقق" : "لم يتحقق بعد");
   yy += 150;
+  { const e = rk.info && rk.info[id], ln = tieLines(id, rk);
+    if (e && (ln.length || n(S.config.quotaIdeal) > 0 || n(S.config.quotaAbove) > 0)){
+      yy = pdfTitle(x, yy, "المفاضلة والحصة"); x.fillStyle = "#14211c"; x.textAlign = "right"; x.font = PF(19, 400);
+      ln.forEach(l => { x.fillText(pdfFit(x, l, PCW), PR, yy + 8); yy += 32; });
+      x.fillStyle = "#5a6b64"; x.font = PF(17, 400);
+      x.fillText(pdfFit(x, "أرقام المفاضلة: البلاغات " + f0(e.s.rep) + " · جودة البلاغ " + f0(e.s.repq) + "% · المنتجات المقروءة " + (e.s.cov < 0 ? "لم تُدخل" : f0(e.s.cov) + " من " + productsTotal()) + " · الضبطيات " + f0(e.s.seize) + " · أنواع الزيارات " + e.s.visT + " من " + e.s.visN, PCW), PR, yy + 8); yy += 44; } }
   yy = pdfTitle(x, yy, "المطلوب السنوي");
   yy = pdfTable(x, yy, [{w:.34},{w:.165,a:"c"},{w:.165,a:"c"},{w:.165,a:"c"},{w:.165,a:"c"}], ["الهدف","المنجز","المطلوب","الباقي","الحالة"],
     r.targets.map(t => [t.label, f0(t.done) + (t.q ? "%" : ""), f0(t.target) + (t.q ? "%" : ""), t.rem + (t.q && t.rem ? " نقطة" : ""), pdfStatus(r, t)]));
