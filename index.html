@@ -6,37 +6,20 @@
 <title>ميثاق الأداء للمراقبين</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 /* Layout idea: one working column (max 980px), a sticky header with the role switch,
    summary first, then one card per axis; tables scroll inside their own box. */
 :root{
-  --bg:#f3f6f4; --surface:#ffffff; --surface-2:#e9efec; --line:#d3ddd8;
-  --ink:#14211c; --muted:#5a6b64;
-  --accent:#0f6b4a; --accent-ink:#ffffff; --accent-soft:#dcefe6;
-  --gold:#a8791a; --gold-soft:#f6ecd2;
-  --good:#17794f; --warn:#a9670b; --bad:#b3382c; --warn-soft:#fbeed6; --bad-soft:#f9e1dd;
-  --font-display:"Readex Pro","IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  color-scheme:light;
+  --bg:#F3F6F5; --surface:#ffffff; --surface-2:#EEF3F2; --line:#D5E0DE;
+  --ink:#12302D; --muted:#5A6E6B;
+  --accent:#00524D; --accent-ink:#ffffff; --accent-soft:#E3EFEC;
+  --gold:#8A6A2A; --gold-line:#C9A45C; --gold-soft:#F6F1E6;
+  --good:#00524D; --warn:#9A5B0B; --bad:#B3382C; --warn-soft:#FBEED6; --bad-soft:#F9E1DD;
+  --font-display:"Tajawal","IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
   --font-body:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
-  --r:14px;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#0e1613; --surface:#16211d; --surface-2:#1e2c27; --line:#2d3f38;
-    --ink:#e7efeb; --muted:#9bb0a7;
-    --accent:#3fb586; --accent-ink:#06261a; --accent-soft:#17382c;
-    --gold:#e0b354; --gold-soft:#3a2f14;
-    --good:#56c896; --warn:#e6a94a; --bad:#ef8377; --warn-soft:#3b2c12; --bad-soft:#41201c;
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#0e1613; --surface:#16211d; --surface-2:#1e2c27; --line:#2d3f38;
-  --ink:#e7efeb; --muted:#9bb0a7;
-  --accent:#3fb586; --accent-ink:#06261a; --accent-soft:#17382c;
-  --gold:#e0b354; --gold-soft:#3a2f14;
-  --good:#56c896; --warn:#e6a94a; --bad:#ef8377; --warn-soft:#3b2c12; --bad-soft:#41201c;
+  --r:16px;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -120,18 +103,80 @@ details.emp .body{padding:0 18px 18px;display:flex;flex-direction:column;gap:12p
 footer{color:var(--muted);font-size:.82rem;text-align:center;padding:0 16px 32px}
 #toast{position:fixed;inset-inline:16px;bottom:16px;margin-inline:auto;max-width:420px;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;text-align:center;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .2s}
 #toast.on{opacity:1}
+
+/* ---- هوية الوزارة ---- */
+h1,h2,h3{font-weight:800;color:var(--accent)}
+h2{font-size:1.2rem}
+header.top{border-bottom:3px solid var(--gold-line);box-shadow:0 2px 10px rgba(0,40,36,.06)}
+.brand{flex-direction:row;align-items:center;gap:10px}
+.brand img{width:44px;height:44px;flex:none}
+.brand h1{font-size:1.2rem}
+.brand .bt{display:flex;flex-direction:column;line-height:1.35}
+.card{border-color:#E1E9E7;box-shadow:0 1px 3px rgba(0,40,36,.05)}
+.btn{border-radius:12px;min-height:44px}
+.btn.primary{font-family:var(--font-display);font-weight:700}
+.btn.primary:hover{background:#003B37}
+input,select,textarea{border-radius:12px;background:#F7FAF9;min-height:44px}
+:focus-visible{outline-color:var(--gold-line)}
+.seg button{min-height:38px}
+.mark{background:var(--gold-line)}
+.legend b{color:var(--gold)}
+.banner{border-color:var(--gold-line)}
+.tile{border-color:#E1E9E7;box-shadow:0 1px 3px rgba(0,40,36,.05);border-top:3px solid var(--accent)}
+.tile b{color:var(--accent);font-weight:800}
+.lv-ideal{background:var(--accent);color:#fff}
+.lv-above{background:var(--gold-soft);color:var(--gold)}
+th{background:var(--surface-2)}
+footer{padding-top:8px}
+/* بطاقة الملخص الخضراء */
+.hero-card{position:relative;overflow:hidden;background:var(--accent);color:#fff;border:0}
+.hero-card::before{content:"";position:absolute;top:-80px;left:-80px;width:200px;height:200px;background:#0B6A63;border-radius:30px;transform:rotate(45deg)}
+.hero-card::after{content:"";position:absolute;bottom:-110px;left:60px;width:180px;height:180px;border:1.5px solid #2EC4B6;border-radius:28px;transform:rotate(45deg);opacity:.45}
+.hero-card > *{position:relative;z-index:1}
+.hero-card h2{color:#fff}
+.hero-card .muted,.hero-card .score small,.hero-card .legend{color:#BFE0DB}
+.hero-card .legend b,.hero-card #sum-rank{color:#E9CF94 !important}
+.hero-card .track{background:rgba(255,255,255,.18)}
+.hero-card .fill{background:#fff}
+.hero-card .banner{color:var(--ink)}
+/* شاشة الدخول */
+body.is-login{background:#04242A}
+body.is-login header.top,body.is-login footer.site{display:none}
+body.is-login main{max-width:none;padding:0}
+.login-hero{position:relative;min-height:100vh;overflow:hidden;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:40px;padding:48px clamp(16px,6vw,80px);color:#fff;
+  background-image:linear-gradient(to left,rgba(4,36,42,.97) 0%,rgba(4,36,42,.9) 38%,rgba(4,40,46,.5) 75%,rgba(4,40,46,.25) 100%),url(assets/login-bg.jpg);background-size:cover;background-position:left center}
+.login-hero .d1{position:absolute;top:-140px;left:-120px;width:420px;height:420px;border:2px solid #2EC4B6;border-radius:48px;transform:rotate(45deg);opacity:.5}
+.login-hero .d2{position:absolute;top:-260px;left:-330px;width:520px;height:520px;background:#0E7C74;border-radius:56px;transform:rotate(45deg);opacity:.5}
+.login-card{position:relative;flex:0 1 440px;background:#fff;color:var(--ink);border-radius:22px;padding:32px 32px 24px;box-shadow:0 24px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:18px}
+.login-card .logo{height:96px;align-self:center}
+.login-card .ttl{text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.login-card .ttl h1{font-size:1.6rem}
+.goldbar{width:56px;height:3px;background:var(--gold-line);border-radius:2px;margin-top:6px}
+.lg-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--surface-2);border-radius:12px}
+.lg-tabs button{min-height:44px;border:0;border-radius:9px;background:transparent;color:#3C5452;font:600 .95rem var(--font-body);cursor:pointer}
+.lg-tabs button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.login-card .btn.primary{min-height:52px;font-size:1.1rem;width:100%}
+.login-card .note{font-size:.82rem;line-height:1.7;color:var(--muted);background:var(--gold-soft);border-radius:10px;padding:10px 12px}
+.login-card .by{text-align:center;font-size:.78rem;color:var(--muted)}
+.login-side{position:relative;flex:1 1 360px;max-width:560px;display:flex;flex-direction:column;gap:16px}
+.login-side img{height:90px;align-self:flex-start}
+.login-side h2{color:#fff;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.3}
+.login-side p{color:#BFE0DB;font-size:1.05rem}
+.login-side ul{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-wrap:wrap;gap:10px}
+.login-side li{border:1px solid rgba(201,164,92,.6);color:#E9CF94;border-radius:999px;padding:4px 14px;font-size:.9rem}
+@media (max-width:760px){.login-side{order:-1}.login-side img{height:64px}}
 @media (max-width:520px){.summary{grid-template-columns:1fr}.mini{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.fill,#toast{transition:none}}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <div class="brand"><h1>ميثاق الأداء للمراقبين</h1><small>الشؤون الرقابية بمنطقة جازان</small></div>
+  <div class="brand"><img src="assets/moc-emblem.svg" alt="شعار وزارة التجارة"><div class="bt"><h1>ميثاق الأداء للمراقبين</h1><small>الشؤون الرقابية بمنطقة جازان</small></div></div>
   <div id="views" class="seg" role="group" aria-label="الواجهة"></div>
   <div id="who" class="row" style="gap:8px"></div>
 </div></header>
 <main class="wrap" id="app"><div class="card muted">جارٍ التحميل…</div></main>
-<footer>إعداد: م. عبدالعزيز قمعي</footer>
+<footer class="site">إعداد: م. عبدالعزيز قمعي</footer>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -431,7 +476,9 @@ const app = document.getElementById("app");
 function render(){
   const whoEl = document.getElementById("who");
   if (!S.me){ document.getElementById("views").hidden = true; whoEl.innerHTML = "";
+    document.body.classList.toggle("is-login", !!S.loaded);
     app.innerHTML = (S.slow ? `<div class="banner">تعذر الاتصال بقاعدة البيانات. تحقق من الإنترنت ثم حدّث الصفحة.</div>` : "") + (S.loaded ? viewLogin() : `<div class="card muted">جارٍ التحميل…</div>`); return; }
+  document.body.classList.remove("is-login");
   whoEl.innerHTML = `<span class="muted small">${esc(S.me.manager ? "المدير" : nameOf(S.me.id))}</span><button type="button" class="btn ghost" data-act="logout">خروج</button>`;
   if (S.me.mustChange){ document.getElementById("views").hidden = true; app.innerHTML = viewChangePin(); return; }
   const views = allowedViews();
@@ -448,16 +495,30 @@ function render(){
 }
 function viewLogin(){
   const emps = S.roster.filter(p => p.role !== "supervisor"), sups = S.roster.filter(p => p.role === "supervisor");
-  const opt = p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`;
-  return `<section class="card stack" style="max-width:520px;margin-inline:auto;width:100%"><div><h2>دخول المراقب أو المشرف</h2>
-      <p class="muted small">اختر اسمك واكتب رقمك السري. في أول دخول استخدم الرقم الأولي الذي سلّمه لك المدير، ثم يطلب منك النظام تغييره إلى رقم خاص بك.</p></div>
-    <label class="fld">الاسم<select id="lg-person"><option value="">اختر اسمك</option><optgroup label="المراقبون">${emps.map(opt).join("")}</optgroup><optgroup label="المشرفون">${sups.map(opt).join("")}</optgroup></select></label>
-    <label class="fld">الرقم السري<input type="password" inputmode="numeric" autocomplete="off" id="lg-pin" maxlength="20"></label>
-    <div class="row"><button type="button" class="btn primary" data-act="login">دخول</button></div></section>
-  <section class="card stack" style="max-width:520px;margin-inline:auto;width:100%"><div><h2>دخول المدير</h2>
-      <p class="muted small">${S.managerSet ? "اكتب رمز المدير." : "لم يُعيَّن رمز المدير بعد. أول رمز يُكتب هنا يصبح رمز المدير (6 خانات على الأقل)."}</p></div>
-    <label class="fld">رمز المدير<input type="password" autocomplete="off" id="lg-code" maxlength="60"></label>
-    <div class="row"><button type="button" class="btn" data-act="login-mgr">دخول المدير</button></div></section>`;
+  const opt = p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`, mgr = S.lgMode === "mgr";
+  const form = mgr ? `
+      <label class="fld">رمز المدير<input type="password" autocomplete="off" id="lg-code" maxlength="60"></label>
+      <button type="button" class="btn primary" data-act="login-mgr">دخول المدير</button>
+      <p class="note">${S.managerSet ? "للاستخدام الداخلي: اكتب رمز المدير." : "لم يُعيَّن رمز المدير بعد. أول رمز يُكتب هنا يصبح رمز المدير (6 خانات على الأقل)."}</p>` : `
+      <label class="fld">الاسم<select id="lg-person"><option value="">اختر اسمك</option><optgroup label="المراقبون">${emps.map(opt).join("")}</optgroup><optgroup label="المشرفون">${sups.map(opt).join("")}</optgroup></select></label>
+      <label class="fld">الرقم السري<input type="password" inputmode="numeric" autocomplete="off" id="lg-pin" maxlength="20" placeholder="••••••"></label>
+      <button type="button" class="btn primary" data-act="login">دخول</button>
+      <p class="note">أول دخول: استخدم الرقم الأولي الذي سلّمه لك المدير، وسيطلب منك النظام تغييره إلى رقم خاص بك.</p>`;
+  return `<div class="login-hero"><div class="d2" aria-hidden="true"></div><div class="d1" aria-hidden="true"></div>
+    <section class="login-card" aria-label="تسجيل الدخول">
+      <img class="logo" src="assets/moc-logo.svg" alt="وزارة التجارة">
+      <div class="ttl"><h1>ميثاق الأداء للمراقبين</h1><p class="muted small">الشؤون الرقابية بمنطقة جازان</p><span class="goldbar" aria-hidden="true"></span></div>
+      <div class="lg-tabs" role="group" aria-label="نوع الدخول">
+        <button type="button" data-act="lg-mode" data-m="staff" aria-pressed="${!mgr}">مراقب أو مشرف</button>
+        <button type="button" data-act="lg-mode" data-m="mgr" aria-pressed="${mgr}">المدير</button></div>
+      <div class="stack" style="gap:14px">${form}</div>
+      <p class="by">إعداد: م. عبدالعزيز قمعي</p>
+    </section>
+    <div class="login-side"><img src="assets/moc-logo-white.svg" alt="" aria-hidden="true">
+      <h2>تابع أداءك واعرف أين وصلت</h2>
+      <p>أدخل أعمالك متى شئت لترى درجتك وما بقي لك من المطلوب السنوي، وأرسل أعمال الشهر إلى مشرفك في نهايته.</p>
+      <ul><li>معايير واضحة</li><li>أداء مستمر</li><li>جودة وموثوقية</li></ul></div>
+  </div>`;
 }
 function viewChangePin(){
   return `<section class="card stack" style="max-width:520px;margin-inline:auto;width:100%"><div><h2>غيّر رقمك السري</h2>
@@ -471,14 +532,15 @@ function scheduleRender(){
   if (a && app.contains(a) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){ S.pending = true; return; }
   render();
 }
-function monthPicker(lbl){ return `<label class="fld" style="max-width:190px">${lbl || "الفترة"}<input type="month" id="month" min="${charterYear()}-01" max="${charterYear()}-12" value="${esc(S.month)}"></label>`; }
+function monthPicker(lbl){ const y = charterYear(); let o = ""; for (let m = 1; m <= 12; m++){ const k = y + "-" + String(m).padStart(2, "0"); o += `<option value="${k}"${k === S.month ? " selected" : ""}>${esc(monthLabel(k))}</option>`; }
+  return `<label class="fld" style="max-width:190px">${lbl || "الفترة"}<select id="month">${o}</select></label>`; }
 
 /* --- واجهة المراقب --- */
 function viewEmployee(){
   const rec = valuesOf(S.me.id, S.month), rv = reviewFor(S.me.id, S.month);
   const sw = sendWindow(S.month), sup = supervisorOf(S.me.id), me = claimOf(S.me.id);
   let h = "";
-  h += `<section class="card stack">
+  h += `<section class="card stack hero-card">
     <div class="row between"><div><h2>${me ? esc(me.name) + ": ميثاق سنة" : "ميثاقي لسنة"} <span class="num">${esc(yearOf())}</span></h2>
       <p class="muted small">أدخل أعمالك في أي وقت لترى أين وصلت. ما تدخله لا يُحفظ ولا يراه أحد، ويختفي عند إغلاق الصفحة. الإرسال إلى ${sup ? "مشرفك " + esc(nameOf(sup)) : "المشرف"} يفتح نهاية كل شهر فقط.</p></div></div>
     <div class="summary">
@@ -855,6 +917,7 @@ document.addEventListener("click", async e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act;
   if (act === "view"){ S.view = b.dataset.v; render(); }
+  else if (act === "lg-mode"){ S.lgMode = b.dataset.m; render(); }
   else if (act === "tab"){ S.mgrTab = b.dataset.t; render(); }
   else if (act === "reset"){ S.draft = {}; S.dirty = true; render(); }
   else if (act === "save"){
