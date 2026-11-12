@@ -126,7 +126,7 @@ footer{color:var(--muted);font-size:.82rem;text-align:center;padding:0 16px 32px
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <div class="brand"><h1>ميثاق الأداء للمراقبين</h1><small>إدارة الجودة والرقابة</small></div>
+  <div class="brand"><h1>ميثاق الأداء للمراقبين</h1><small>الشؤون الرقابية بمنطقة جازان</small></div>
   <div id="views" class="seg" role="group" aria-label="الواجهة"></div>
   <div id="who" class="row" style="gap:8px"></div>
 </div></header>
@@ -738,7 +738,7 @@ function pdfTable(x, y, cols, head, rows, opt){
 }
 function pdfStatus(r, t){ return t.rem === 0 ? "تحقق" : t.q ? (t.has ? "دون المطلوب" : "لا إدخال") : (r.fr > 0 && r.fr < 1 ? (t.diff >= -0.5 ? "على المسار" : "متأخر") : "لم يتحقق بعد"); }
 function pdfEmployee(id, r, rk, y0){
-  const y = String(y0), { c, x } = pdfPage("ميثاق الأداء للمراقبين", "سنة " + y + " · إدارة الجودة والرقابة");
+  const y = String(y0), { c, x } = pdfPage("ميثاق الأداء للمراقبين", "سنة " + y + " · الشؤون الرقابية بمنطقة جازان");
   let yy = 180; const sup = supervisorOf(id);
   x.fillStyle = "#14211c"; x.textAlign = "right"; x.font = PF(32, 700); x.fillText(nameOf(id), PR, yy);
   x.textAlign = "left"; x.font = PF(20, 400); x.fillStyle = "#5a6b64"; x.fillText((sup ? "المشرف: " + nameOf(sup) : "") + (rk[id] ? "   ·   الترتيب: " + rk[id] + " من " + rk.n : ""), PM, yy);
