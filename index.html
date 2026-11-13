@@ -165,18 +165,186 @@ body.is-login main{max-width:none;padding:0}
 .login-side ul{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-wrap:wrap;gap:10px}
 .login-side li{border:1px solid rgba(201,164,92,.6);color:#E9CF94;border-radius:999px;padding:4px 14px;font-size:.9rem}
 @media (max-width:760px){.login-side{order:-1}.login-side img{height:64px}}
+
+/* ---- مطابقة تصميم الدليل ---- */
+.wrap{max-width:1200px;padding:0 24px}
+main{gap:22px;padding-block:24px 48px}
+header.top{box-shadow:none}
+.top .wrap{padding-block:12px;gap:10px 16px}
+.brand img{width:48px;height:48px}
+.brand .wm{height:30px;width:auto}
+.brand .vr{width:1px;height:36px;background:var(--line)}
+.brand h1{font-size:1.19rem}
+.who{display:flex;align-items:center;gap:8px;font-size:.875rem;font-weight:600}
+.who .av{width:36px;height:36px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700}
+.btn.out{min-height:40px;padding:0 16px;color:var(--accent);background:#fff;border-radius:10px}
+.seg{background:#fff;border:1px solid #E2EAE8}
+footer.site{border-top:1px solid #E2EAE8;padding:20px 16px;color:#7A8C89;font-size:.75rem}
+.card{border-radius:20px;border-color:#E2EAE8;box-shadow:none;padding:20px}
+.banner{background:#F6F1E6;border:1px solid #E6D3AC;border-radius:12px;color:#4A3A1A;font-size:.82rem;line-height:1.7}
+/* عناوين الأقسام المرقمة */
+.sec{display:flex;align-items:center;gap:10px}
+.sec .nu{width:34px;height:34px;flex:none;background:var(--accent);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:1rem}
+.sec .st{display:flex;flex-direction:column;gap:4px;margin-inline-end:auto}
+.sec h2{font-size:1.28rem}
+.sec .st::after,.gbar{content:"";display:block;width:60px;height:3px;background:var(--gold-line);border-radius:2px}
+.sec select{width:auto;min-height:40px;background:#fff;font-weight:600;font-size:.85rem}
+.lead{font-size:.8rem;line-height:1.7;color:var(--muted)}
+/* الشارات */
+.pill{padding:3px 12px;font-size:.78rem;font-weight:700}
+.pill::before{display:none}
+.lv-ideal{background:#0E3B36;color:#fff}
+.lv-above{background:#DFE8F2;color:#1E4E79}
+.lv-meets{background:#DCEFE9;color:#00524D}
+.lv-dev{background:#F6E7C8;color:#6B4A0E}
+.lv-below{background:#F7DEDA;color:#8E2A20}
+.lv-none{background:#EEF1F0;color:#5A6E6B}
+.rem.ok{color:#17794F;font-weight:600} .rem.todo{color:#A9670B;font-weight:600}
+/* الجداول */
+table{font-size:.875rem;border-collapse:separate;border-spacing:0}
+th{background:var(--accent);color:#fff;font-weight:600;font-size:.8rem;padding:12px 14px;border-bottom:0}
+th.g{background:#0E3B36}
+th:first-child{border-start-start-radius:12px} th:last-child{border-start-end-radius:12px}
+td{padding:12px 14px;border-bottom:1px solid #E6ECEB}
+tbody tr:nth-child(even) td{background:#F8FAF9}
+td input,td select{background:#fff}
+/* بطاقة الملخص الخضراء */
+.hero{position:relative;overflow:hidden;background:var(--accent);color:#fff;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.hero > *{position:relative}
+.hero .dA{position:absolute;top:-70px;left:-70px;width:170px;height:170px;background:#0B6A63;border-radius:28px;transform:rotate(45deg)}
+.hero .dB{position:absolute;bottom:-90px;left:40px;width:150px;height:150px;border:1.5px solid #2EC4B6;border-radius:26px;transform:rotate(45deg);opacity:.5}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.hero-name{display:block;font-size:.82rem;color:#BFE0DB}
+.hero-ttl{font-family:var(--font-display);font-weight:700;font-size:1.13rem}
+.hero-rank{font-size:.75rem;font-weight:600;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.hero-score{display:flex;align-items:baseline;gap:8px}
+.hero-score .num{font-family:var(--font-display);font-weight:800;font-size:3.75rem;line-height:1}
+.hero-score .of{font-size:1.13rem;color:#BFE0DB}
+.hero-level{align-self:flex-start;background:var(--gold-line);color:#2A1F08;font-weight:700;font-size:.85rem;border-radius:999px;padding:5px 14px}
+.hero-level.none{background:rgba(255,255,255,.14);color:#fff}
+.hero .track{height:10px;background:rgba(255,255,255,.18)}
+.hero .fill{background:#7FE3D8}
+.hero .mark{inset-block:-4px;background:var(--gold-line)}
+.hero #sum-mark2{background:#fff}
+.hero .legend{font-size:.72rem;color:#BFE0DB;margin-top:6px}
+.hero .legend b{color:#BFE0DB;font-weight:400}
+.hero p{font-size:.85rem;line-height:1.8;color:#E3F2F0}
+.hero .banner{color:#4A3A1A}
+/* واجهة المراقب */
+.emp-view{max-width:720px;width:100%;margin-inline:auto;display:flex;flex-direction:column;gap:18px}
+.emp-view > section.blk{display:flex;flex-direction:column;gap:12px}
+.box{background:#fff;border:1px solid #E2EAE8;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.box h3{font-weight:700;font-size:1rem;color:var(--ink)}
+.tg{background:#fff;border:1px solid #E2EAE8;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.tg-h{display:flex;align-items:center;gap:10px}
+.tg-h .ic{width:36px;height:36px;flex:none;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center}
+.tg-h strong{flex:1;font-size:.94rem}
+.tg-h .num{font-weight:600;font-size:.875rem}
+.tg .track{height:8px;background:#E6EEEC}
+.tg .mark{inset-block:-4px}
+.tg .msg{font-size:.78rem;font-weight:500;color:var(--muted)}
+.tg .msg.ok{color:#17794F} .tg .msg.todo{color:#A9670B}
+.tg-q{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tg-q .tg{gap:6px}
+.tg-q .lb{font-size:.78rem;color:var(--muted);font-weight:600}
+.tg-q .pc{font-family:var(--font-display);font-weight:800;font-size:1.63rem;color:var(--accent)}
+.tg-q .pc.todo{color:#A9670B}
+.fp{flex-direction:column;align-items:stretch;gap:10px}
+.fp svg{align-self:center;overflow:visible}
+.fp-ok,.fp-warn{border-radius:12px;padding:10px 12px;font-size:.82rem;line-height:1.7}
+.fp-ok{background:#EEF6F4} .fp-ok strong{color:#17794F}
+.fp-warn{background:#FBF3E6} .fp-warn strong{color:#A9670B}
+.fp-lg{display:flex;gap:14px;font-size:.72rem;color:var(--muted)} .fp-lg span + span{color:#A07A35}
+.fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fields label.fld{font-size:.78rem;font-weight:600;color:#3C5452}
+.fields label.fld.wide{grid-column:1/-1}
+.fields input{height:42px;min-height:42px;background:#fff;border-radius:10px;font-weight:500;font-size:.94rem;text-align:left}
+.res{background:#EEF3F2;border-radius:12px;padding:10px 12px}
+.res .big{font-weight:800;font-size:1.5rem;color:var(--accent)}
+.opsbox{position:relative;overflow:hidden;background:#003B37;color:#fff;border:0;border-radius:16px;padding:16px;gap:10px}
+.opsbox::before{content:"";position:absolute;top:-40px;left:-40px;width:110px;height:110px;border:1.5px solid #2EC4B6;border-radius:20px;transform:rotate(45deg);opacity:.45}
+.opsbox > *{position:relative}
+.opsbox h3{color:#fff;font-size:1.06rem}
+.opsbox .muted{color:#BFE0DB}
+.opsbox .ops > b{font-weight:800;font-size:2rem}
+.opsbox .res{background:rgba(255,255,255,.1);border-radius:10px}
+.opsbox .res .big{color:#fff;font-size:1.1rem}
+.send .btn.primary{width:100%;min-height:52px;font-size:1.13rem}
+.send .st{text-align:center;font-size:.78rem;font-weight:600}
+/* شريط المشرف الأخضر */
+.band{position:relative;overflow:hidden;background:var(--accent);color:#fff;border-radius:22px;padding:28px 32px;display:flex;flex-wrap:wrap;align-items:center;gap:20px}
+.band > *{position:relative}
+.band .dA{position:absolute;top:-120px;left:-60px;width:260px;height:260px;background:#0B6A63;border-radius:40px;transform:rotate(45deg)}
+.band .dB{position:absolute;top:-40px;left:170px;width:160px;height:160px;border:1.5px solid #2EC4B6;border-radius:28px;transform:rotate(45deg);opacity:.45}
+.band .tt{display:flex;flex-direction:column;gap:8px;margin-inline-end:auto;min-width:0;flex:1 1 320px}
+.band h1{color:#fff;font-size:clamp(1.5rem,3vw,2rem)}
+.band p{font-size:.9rem;color:#BFE0DB}
+.band label.fld{color:#BFE0DB;font-size:.78rem}
+.band select{background:#fff;border:0;font-weight:600;font-size:.875rem;border-radius:10px}
+.btn.gold{align-self:flex-end;border:0;background:var(--gold-line);color:#2A1F08;font-weight:700;border-radius:10px;display:inline-flex;align-items:center;gap:8px}
+/* عنوان المدير */
+.mgr-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px}
+.mgr-head .tt{display:flex;align-items:center;gap:12px;margin-inline-end:auto}
+.mgr-head .yr{width:48px;height:44px;background:var(--accent);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:1.06rem}
+.mgr-head h1{font-size:1.88rem}
+.mgr-head .st{display:flex;flex-direction:column;gap:6px}
+.mgr-head select{background:#fff;font-weight:600;font-size:.875rem;border-radius:10px}
+.mgr-head .btn{border-radius:10px}
+/* بطاقات الأرقام */
+.tiles{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.tile{position:relative;overflow:hidden;border:1px solid #E2EAE8;border-top:1px solid #E2EAE8;border-radius:18px;padding:18px;box-shadow:none;display:flex;align-items:center;gap:14px}
+.tile .ic{width:48px;height:48px;flex:none;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center}
+.tile .tx{display:flex;flex-direction:column;min-width:0}
+.tile .tx span{font-size:.82rem;color:var(--muted)}
+.tile b{margin:0;font-size:1.75rem;line-height:1.3;color:var(--ink)}
+.tile.warn{border-color:#F0D9B8} .tile.warn .ic{background:#A9670B} .tile.warn b{color:#A9670B}
+.tile.plain{flex-direction:column;align-items:stretch;gap:4px;padding:18px 20px} .tile.plain b{font-size:2.1rem}
+.tile.green{background:var(--accent);border:0;color:#fff}
+.tile.green::before{content:"";position:absolute;top:-40px;left:-40px;width:110px;height:110px;background:#0B6A63;border-radius:20px;transform:rotate(45deg)}
+.tile.green > *{position:relative} .tile.green .tx span{color:#BFE0DB} .tile.green b{color:#fff}
+.lvls{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.lvl{background:#fff;border:1px solid #E2EAE8;border-radius:16px;overflow:hidden}
+.lvl .hd{padding:10px 14px;font-weight:700;font-size:.9rem}
+.lvl .bd{padding:12px 14px;display:flex;justify-content:space-between;align-items:baseline}
+.lvl .bd b{font-family:var(--font-display);font-size:1.88rem;line-height:1.2}
+.lvl .bd span{font-size:.75rem;color:var(--muted)}
+.dist{display:flex;height:18px;border-radius:999px;overflow:hidden;gap:2px;background:#EEF1F0}
+.dist-lg{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:10px 22px;font-size:.85rem}
+.dist-lg li{display:flex;align-items:center;gap:6px}
+.dist-lg i{width:10px;height:10px;border-radius:3px}
+.cardh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 14px}
+.cardh h2{font-size:1.19rem}
+.duo{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.duo > .a{flex:999 1 560px;min-width:0} .duo > .b{flex:1 1 440px;min-width:0}
+/* بطاقات مواثيق المراقبين عند المشرف */
+details.emp{border-color:#E2EAE8;border-radius:20px;overflow:hidden}
+details.emp summary{background:#EEF3F2;padding:16px 20px;gap:8px 14px}
+details.emp[open] summary{border-bottom:1px solid #E2EAE8}
+details.emp summary b.nm{font-family:var(--font-display);font-weight:800;font-size:1.19rem;margin-inline-end:auto}
+details.emp summary::after{content:"";width:9px;height:9px;border-inline-end:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg);transition:transform .2s}
+details.emp[open] summary::after{transform:rotate(-135deg)}
+details.emp .body{padding:20px;flex-direction:row;flex-wrap:wrap;gap:24px}
+details.emp .body > .l{flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:12px}
+details.emp .body > .r{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:12px}
+details.emp h3{font-size:.94rem}
+details.emp textarea{min-height:120px}
+.btn.line{border-color:var(--accent);color:var(--accent);background:#fff;font-weight:700}
+@media (max-width:760px){
+  .wrap{padding:0 16px} .brand .wm,.brand .vr{display:none} .brand img{width:40px;height:40px} .brand h1{font-size:1.06rem}
+  .who{display:none} .band{padding:22px 20px}
+}
 @media (max-width:520px){.summary{grid-template-columns:1fr}.mini{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.fill,#toast{transition:none}}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <div class="brand"><img src="assets/moc-emblem.svg" alt="شعار وزارة التجارة"><div class="bt"><h1>ميثاق الأداء للمراقبين</h1><small>الشؤون الرقابية بمنطقة جازان</small></div></div>
+  <div class="brand"><img src="assets/moc-emblem.svg" alt="شعار وزارة التجارة"><img class="wm" src="assets/moc-wordmark.svg" alt="" aria-hidden="true"><span class="vr" aria-hidden="true"></span><div class="bt"><h1>ميثاق الأداء للمراقبين</h1><small>الشؤون الرقابية بمنطقة جازان</small></div></div>
   <div id="views" class="seg" role="group" aria-label="الواجهة"></div>
   <div id="who" class="row" style="gap:8px"></div>
 </div></header>
 <main class="wrap" id="app"><div class="card muted">جارٍ التحميل…</div></main>
-<footer class="site">إعداد: م. عبدالعزيز قمعي</footer>
+<footer class="site">إعداد: م. عبدالعزيز قمعي · للاستخدام الداخلي · وزارة التجارة</footer>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -377,33 +545,54 @@ function paceText(r){
   const t = r.targets.find(x => x.ops); if (!t) return "";
   if (t.rem === 0) return "حقق هدف العمليات";
   if (r.fr <= 0 || r.fr >= 1) return `باقي ${t.rem} عملية`;
+  if (Math.abs(t.diff) < 0.5) return "على المسار";
   return t.diff >= 0 ? `متقدم ${Math.round(t.diff)} عملية` : `متأخر ${Math.round(-t.diff)} عملية`;
 }
 function paceClass(r){ const t = r.targets.find(x => x.ops); return !t || t.rem === 0 || t.diff >= 0 ? "rem ok" : "rem todo"; }
+const IC = {
+  ops:'<path d="M4 20V14M10 20V10M16 20V12M22 20H2"/><path d="M4 9l6-5 5 4 6-5"/>',
+  read:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+  seize:'<path d="M12 3l7 3v5c0 5-3.2 8.3-7 10-3.8-1.7-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+  check:'<path d="M4 12l5 5L20 6"/>', bars:'<path d="M4 20V14M10 20V10M16 20V6M22 20H2"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+  clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',
+  down:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>' };
+function icon(k, sz, col){ return `<svg aria-hidden="true" width="${sz || 18}" height="${sz || 18}" viewBox="0 0 24 24" fill="none" stroke="${col || "#fff"}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>`; }
+function secHead(nu, title, extra){ return `<div class="sec">${nu ? `<span class="nu">${nu}</span>` : ""}<div class="st"><h2>${title}</h2></div>${extra || ""}</div>`; }
+const LV_COL = ["#C0473A","#D9A84A","#00524D","#1E4E79","#0E3B36"];
+function bandRange(i){ const b = S.config.bands, f = x => String(Math.round(n(x) * 100) / 100);
+  return i === b.length - 1 ? f(b[i].from) + " فأكثر" : i === 0 ? "أقل من " + f(b[1].from) : f(b[i].from) + " – " + f(n(b[i+1].from) - 0.01); }
 function targetsHTML(r){
   if (!r.targets.length) return `<p class="muted small">لم يحدد المدير أهدافاً سنوية بعد.</p>`;
-  return r.targets.map(t => {
+  let h = "", q = "";
+  for (const t of r.targets){
     let msg;
     if (t.q){
-      msg = !t.has ? "لم تُدخل أعمال في هذا المحور بعد." : t.rem === 0 ? "تحققت الجودة المطلوبة." : `نسبتك ${f0(t.done)}% والمطلوب ${f0(t.target)}%. باقي ${t.rem} نقطة.`;
-      return `<div class="stack" style="gap:6px"><div class="row between"><b>${esc(t.label)}</b><span class="num">${f0(t.done)}% / ${f0(t.target)}%</span></div>
-        <div class="track"><div class="fill" style="width:${Math.min(100, t.done / t.target * 100)}%"></div></div>
-        <p class="small rem ${t.has && t.rem === 0 ? "ok" : t.has ? "todo" : ""}">${esc(msg)}</p></div>`;
+      msg = !t.has ? "لم تُدخل أعمال بعد." : t.rem === 0 ? "المطلوب " + f0(t.target) + "%، وتحقق." : "المطلوب " + f0(t.target) + "%. باقي " + t.rem + " نقطة.";
+      const st = t.has && t.rem === 0 ? "ok" : t.has ? "todo" : "";
+      q += `<div class="tg"><span class="lb">${esc(t.label)}</span><span class="num pc ${st === "todo" ? "todo" : ""}">${f0(t.done)}%</span><span class="msg ${st}">${esc(msg)}</span></div>`;
+      continue;
     }
     if (t.rem === 0) msg = "تحقق المطلوب. كل زيادة بعده تُحسب لك في الدرجة.";
     else {
       msg = `باقي ${t.rem}${t.unit ? " " + t.unit : ""}.`;
       if (r.fr > 0 && r.fr < 1 && Math.abs(t.diff) >= 0.5) msg += t.diff >= 0 ? ` متقدم عن المسار بـ ${Math.round(t.diff)}.` : ` متأخر عن المسار بـ ${Math.round(-t.diff)}.`;
       if (r.daysLeft >= 1){
-        if (t.ops) msg += ` تحتاج ${f0(t.rem / r.daysLeft)} عملية يومياً فيما تبقى من السنة.`;
+        if (t.ops) msg += ` تحتاج ${f0(t.rem / r.daysLeft)} عملية يومياً فيما تبقى.`;
         else if (t.rem / (r.daysLeft / 5) >= 1) msg += ` أي نحو ${Math.ceil(t.rem / (r.daysLeft / 5))} في الأسبوع فيما تبقى.`;
       }
     }
-    const behind = t.rem > 0 && r.fr > 0 && r.fr < 1 && t.diff <= -0.5;
-    return `<div class="stack" style="gap:6px"><div class="row between"><span><b>${esc(t.label)}</b>${t.parts ? ` <span class="muted small">(${esc(t.parts.join(" + "))})</span>` : ""}</span><span class="num">${f0(t.done)} / ${f0(t.target)}</span></div>
+    const behind = t.rem > 0 && r.fr > 0 && r.fr < 1 && t.diff <= -0.5, ahead = t.rem === 0 || (r.fr > 0 && r.fr < 1 && t.diff >= 0.5);
+    h += `<div class="tg"><div class="tg-h"><span class="ic">${icon(t.ops ? "ops" : /قراء/.test(t.label) ? "read" : "seize")}</span><strong>${esc(t.label)}${t.parts ? ` <span class="muted small" style="font-weight:400">(${esc(t.parts.join(" + "))})</span>` : ""}</strong><span class="num">${f0(t.done)} / ${f0(t.target)}</span></div>
       <div class="track"><div class="fill" style="width:${Math.min(100, t.done / t.target * 100)}%"></div>${r.fr > 0 && r.fr < 1 ? `<div class="mark" style="inset-inline-start:${r.fr * 100}%"></div>` : ""}</div>
-      <p class="small rem ${t.rem === 0 ? "ok" : behind ? "todo" : ""}">${esc(msg)}</p></div>`;
-  }).join("");
+      <span class="msg ${behind ? "todo" : ahead ? "ok" : ""}">${esc(msg)}</span></div>`;
+  }
+  return h + (q ? `<div class="tg-q">${q}</div>` : "");
+}
+function targetsTable(r){
+  if (!r.targets.length) return "";
+  return `<div class="scroll"><table><thead><tr><th>الهدف</th><th>المنجز</th><th>المطلوب</th><th>الحالة</th></tr></thead><tbody>` + r.targets.map(t => { const st = pdfStatus(r, t), ok = t.rem === 0 || st === "على المسار";
+    return `<tr><td>${esc(t.label)}</td><td class="num">${f0(t.done)}${t.q ? "%" : ""}</td><td class="num">${f0(t.target)}${t.q ? "%" : ""}</td><td class="rem ${ok ? "ok" : "todo"}">${esc(st)}</td></tr>`; }).join("") + `</tbody></table></div>`;
 }
 /* بصمة الأداء: محاور من 100 لكل مراقب مقارنة بمتوسط الفريق */
 function fpAxes(r, team){
@@ -418,10 +607,10 @@ function fingerprintHTML(r, team){
   ax.forEach((a, i) => { const vs = others.map(o => o[i] ? o[i].v : 0); a.avg = vs.length ? vs.reduce((s,v) => s + v, 0) / vs.length : a.v; });
   const C = 190, R = 86, pt = (i, v) => { const ang = -Math.PI / 2 + i * 2 * Math.PI / N, rr = R * v / 100; return [C + rr * Math.cos(ang), 130 + rr * Math.sin(ang)]; };
   const poly = k => ax.map((a, i) => pt(i, a[k]).map(x => x.toFixed(1)).join(",")).join(" ");
-  let svg = `<svg viewBox="0 0 380 270" role="img" aria-label="مخطط بصمة الأداء" style="width:100%;max-width:420px;height:auto;font:500 11px var(--font-body)">`;
+  let svg = `<svg viewBox="0 0 380 270" role="img" aria-label="مخطط بصمة الأداء" style="width:100%;max-width:400px;height:auto;font:500 11px var(--font-body)">`;
   for (const g of [25, 50, 75, 100]) svg += `<polygon points="${ax.map((a, i) => pt(i, g).map(x => x.toFixed(1)).join(",")).join(" ")}" style="fill:none;stroke:var(--line);stroke-width:1"/>`;
   ax.forEach((a, i) => { const [x, y] = pt(i, 100); svg += `<line x1="${C}" y1="130" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" style="stroke:var(--line);stroke-width:1"/>`; });
-  svg += `<polygon points="${poly("avg")}" style="fill:none;stroke:var(--gold);stroke-width:1.5;stroke-dasharray:4 3"/>`;
+  svg += `<polygon points="${poly("avg")}" style="fill:none;stroke:var(--gold-line);stroke-width:1.5;stroke-dasharray:4 3"/>`;
   svg += `<polygon points="${poly("v")}" style="fill:var(--accent);fill-opacity:.18;stroke:var(--accent);stroke-width:2"/>`;
   ax.forEach((a, i) => { const [x, y] = pt(i, a.v); svg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" style="fill:var(--accent)"/>`;
     const [lx, ly] = pt(i, 128); svg += `<text x="${lx.toFixed(1)}" y="${(ly - 4).toFixed(1)}" text-anchor="middle" style="fill:var(--muted)">${esc(a.label.length > 22 ? a.label.slice(0, 21) + "…" : a.label)}</text><text x="${lx.toFixed(1)}" y="${(ly + 10).toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:700;font-size:13px">${Math.round(a.v)}</text>`; });
@@ -431,10 +620,10 @@ function fingerprintHTML(r, team){
   const wLine = a => a.kind === "t" ? `${a.label}: أنجزت ${f0(a.t.done)} من ${f0(a.t.target)}، باقي ${a.t.rem}.`
     : a.kind === "q" ? `${a.label}: نسبتك ${f0(a.t.done)}% والمطلوب ${f0(a.t.target)}%. رفعها يزيد عملياتك المحتسبة دون عمل إضافي.`
     : `${a.label}: ${f0(a.val)} مقابل ${f0(a.mx)} لأعلى مراقب.`;
-  return `<div class="fp">${svg}<div class="stack" style="flex:1 1 240px">
-    <div><b style="color:var(--good)">نقاط القوة</b><ul>${(strong.length ? strong : [sorted[0]]).map(a => `<li>${esc(sLine(a))}</li>`).join("")}</ul></div>
-    ${weak.v < 100 ? `<div><b style="color:var(--warn)">أولوية التحسين</b><ul><li>${esc(wLine(weak))}</li></ul></div>` : ""}
-    <p class="muted small">كل محور من 100. الخط الأخضر أداء المراقب، والمتقطع الذهبي متوسط الفريق. محاور الأهداف تُقاس بما يُفترض إنجازه حتى اليوم.</p></div></div>`;
+  return `<div class="fp">${svg}
+    <div class="fp-lg"><span>━ أداء المراقب</span><span>┅ متوسط الفريق</span></div>
+    <div class="fp-ok"><strong>${strong.length > 1 ? "نقاط القوة:" : "نقطة القوة:"}</strong> ${(strong.length ? strong : [sorted[0]]).map(a => esc(sLine(a))).join(" ")}</div>
+    ${weak.v < 100 ? `<div class="fp-warn"><strong>أولوية التحسين:</strong> ${esc(wLine(weak))}</div>` : ""}</div>`;
 }
 /* مصفوفة الكم والجودة: نسبة تحقيق هدف العمليات (أفقي) مقابل نسبة الجودة (رأسي) */
 function matrixHTML(rows){
@@ -444,13 +633,13 @@ function matrixHTML(rows){
     if (!t || !(sum > 0)) continue;
     const pace = x.r.fr > 0 && x.r.fr < 1 ? x.r.fr : 1;
     pts.push({ name: nameOf(x.id), x: t.done / (t.target * pace) * 100, y: eff / sum * 100 }); }
-  if (!pts.length) return `<section class="card stack"><h2>مصفوفة الكم والجودة</h2><p class="muted small">تظهر بعد أن يدخل المراقبون عملياتهم ونسب الجودة.</p></section>`;
+  if (!pts.length) return `<section class="card stack b">${secHead("", "مصفوفة الكم والجودة")}<p class="muted small">تظهر بعد أن يدخل المراقبون عملياتهم ونسب الجودة.</p></section>`;
   const avg = pts.reduce((s,p) => s + p.y, 0) / pts.length;
   const x0 = Math.min(40, Math.floor(Math.min(...pts.map(p => p.x)) / 10) * 10), x1 = Math.max(120, Math.ceil(Math.max(...pts.map(p => p.x)) / 10) * 10);
   const y0 = Math.max(0, Math.floor(Math.min(avg, ...pts.map(p => p.y)) - 4)), y1 = 100 + (100 - y0) * 0.06;
   const W = 680, H = 360, L = 46, Rm = 16, T = 16, B = 40, px = v => L + (v - x0) / (x1 - x0) * (W - L - Rm), py = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
-  let g = `<svg viewBox="0 0 ${W} ${H}" direction="ltr" role="img" aria-label="مصفوفة الكم والجودة" style="direction:ltr;width:100%;min-width:520px;height:auto;font:500 11px var(--font-body)">`;
-  g += `<rect x="${px(100).toFixed(1)}" y="${T}" width="${(W - Rm - px(100)).toFixed(1)}" height="${(py(avg) - T).toFixed(1)}" style="fill:var(--accent-soft)"/>`;
+  let g = `<svg viewBox="0 0 ${W} ${H}" direction="ltr" role="img" aria-label="مصفوفة الكم والجودة" style="direction:ltr;width:100%;min-width:440px;height:auto;font:500 11px var(--font-body)">`;
+  g += `<rect x="${px(100).toFixed(1)}" y="${T}" width="${(W - Rm - px(100)).toFixed(1)}" height="${(py(avg) - T).toFixed(1)}" style="fill:#DCEFE9"/>`;
   g += `<rect x="${L}" y="${T}" width="${W - L - Rm}" height="${H - T - B}" style="fill:none;stroke:var(--line)"/>`;
   g += `<line x1="${px(100).toFixed(1)}" y1="${T}" x2="${px(100).toFixed(1)}" y2="${H - B}" style="stroke:var(--gold);stroke-dasharray:4 3"/><line x1="${L}" y1="${py(avg).toFixed(1)}" x2="${W - Rm}" y2="${py(avg).toFixed(1)}" style="stroke:var(--gold);stroke-dasharray:4 3"/>`;
   for (let v = x0; v <= x1; v += (x1 - x0) > 120 ? 20 : 10) g += `<text x="${px(v).toFixed(1)}" y="${H - B + 16}" text-anchor="middle" style="fill:var(--muted)">${v}%</text>`;
@@ -462,9 +651,9 @@ function matrixHTML(rows){
   for (const p of pts){ const cx = px(Math.min(x1, Math.max(x0, p.x))), cy = py(p.y); let ly = cy - 9;
     while (placed.some(q => Math.abs(q.x - cx) < 90 && Math.abs(q.y - ly) < 13)) ly -= 13;
     placed.push({ x: cx, y: ly });
-    g += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="4.5" style="fill:var(--accent)"/><text x="${cx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${esc(p.name)}</text>`; }
+    g += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="4.5" style="fill:var(--accent)"/><text x="${Math.max(L + 50, Math.min(W - Rm - 50, cx)).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${esc(p.name)}</text>`; }
   g += `</svg>`;
-  return `<section class="card stack"><div><h2>مصفوفة الكم والجودة</h2><p class="muted small">المحور الأفقي نسبة تحقيق هدف العمليات، والرأسي نسبة الجودة. الخطان المتقطعان هما حد المستهدف (100%) ومتوسط جودة الفريق (<span class="num">${Math.round(avg)}</span>).</p></div><div class="scroll" dir="ltr">${g}</div></section>`;
+  return `<section class="card stack b">${secHead("", "مصفوفة الكم والجودة")}<div><p class="muted small">المحور الأفقي نسبة تحقيق هدف العمليات، والرأسي نسبة الجودة. الخطان المتقطعان هما حد المستهدف (100%) ومتوسط جودة الفريق (<span class="num">${Math.round(avg)}</span>).</p></div><div class="scroll" dir="ltr">${g}</div></section>`;
 }
 function teamCalcs(year, skipId){ return employeeIds().filter(id => id !== skipId).map(id => yearCalc(id, year)).filter(Boolean).concat(anonCalcs(year)); }
 /* ما يدخله المراقب لا يُحفظ: يحسب ويرى ثم يغلق. الإرسال للمشرف يفتح نهاية كل شهر فقط */
@@ -535,7 +724,8 @@ function render(){
     document.body.classList.toggle("is-login", !!S.loaded);
     app.innerHTML = (S.slow ? `<div class="banner">تعذر الاتصال بقاعدة البيانات. تحقق من الإنترنت ثم حدّث الصفحة.</div>` : "") + (S.loaded ? viewLogin() : `<div class="card muted">جارٍ التحميل…</div>`); return; }
   document.body.classList.remove("is-login");
-  whoEl.innerHTML = `<span class="muted small">${esc(S.me.manager ? "المدير" : nameOf(S.me.id))}</span><button type="button" class="btn ghost" data-act="logout">خروج</button>`;
+  { const nm = S.me.manager ? "المدير" : nameOf(S.me.id), rl = S.me.manager ? "" : isSupervisor(S.me.id) ? "مشرف" : "مراقب";
+    whoEl.innerHTML = `<span class="who"><span class="av" aria-hidden="true">${esc(nm.trim().charAt(0))}</span><span class="nm">${esc(nm)}${rl ? " · " + rl : ""}</span></span><button type="button" class="btn out" data-act="logout">خروج</button>`; }
   if (S.me.mustChange){ document.getElementById("views").hidden = true; app.innerHTML = viewChangePin(); return; }
   const views = allowedViews();
   if (!views.includes(S.view)) S.view = views[0];
@@ -589,54 +779,50 @@ function scheduleRender(){
   render();
 }
 function monthPicker(lbl){ const y = charterYear(); let o = ""; for (let m = 1; m <= 12; m++){ const k = y + "-" + String(m).padStart(2, "0"); o += `<option value="${k}"${k === S.month ? " selected" : ""}>${esc(monthLabel(k))}</option>`; }
-  return `<label class="fld" style="max-width:190px">${lbl || "الفترة"}<select id="month">${o}</select></label>`; }
+  const sel = `<select id="month">${o}</select>`; return lbl === null ? sel : `<label class="fld" style="max-width:190px">${lbl || "الفترة"}${sel}</label>`; }
 
 /* --- واجهة المراقب --- */
 function viewEmployee(){
   const rec = valuesOf(S.me.id, S.month), rv = reviewFor(S.me.id, S.month);
   const sw = sendWindow(S.month), sup = supervisorOf(S.me.id), me = claimOf(S.me.id);
-  let h = "";
-  h += `<section class="card stack hero-card">
-    <div class="row between"><div><h2>${me ? esc(me.name) + ": ميثاق سنة" : "ميثاقي لسنة"} <span class="num">${esc(yearOf())}</span></h2>
-      <p class="muted small">أدخل أعمالك في أي وقت لترى أين وصلت. ما تدخله لا يُحفظ ولا يراه أحد، ويختفي عند إغلاق الصفحة. الإرسال إلى ${sup ? "مشرفك " + esc(nameOf(sup)) : "المشرف"} يفتح نهاية كل شهر فقط.</p></div></div>
-    <div class="summary">
-      <div><div class="score num"><span id="sum-score">0.00</span> <small>/ <span id="sum-max">5</span></small></div><span id="sum-level" class="pill lv-none"></span></div>
-      <div><div class="track"><div class="fill" id="sum-fill"></div><div class="mark" id="sum-mark"></div><div class="mark" id="sum-mark2"></div></div>
-        <div class="legend"><span>0</span><b id="sum-exp"></b><b id="sum-ideal"></b></div></div>
-    </div>
-    <p id="sum-msg" style="font-weight:600"></p>
-    <p id="sum-eq" class="muted small"></p>
-    <p id="sum-rank" class="small" style="font-weight:600;color:var(--gold)"></p>
+  let h = `<div class="emp-view">
+  <section class="hero" aria-label="الملخص"><div class="dA" aria-hidden="true"></div><div class="dB" aria-hidden="true"></div>
+    <div class="hero-top"><div><span class="hero-name">${me ? esc(me.name) : "ميثاقي"}</span><strong class="hero-ttl">ميثاق سنة <span class="num">${esc(yearOf())}</span></strong></div><span class="hero-rank" id="sum-rank" hidden></span></div>
+    <div class="hero-score"><span class="num" id="sum-score">0.00</span><span class="of">من <span id="sum-max">5</span></span></div>
+    <span id="sum-level" class="hero-level none"></span>
+    <div><div class="track"><div class="fill" id="sum-fill"></div><div class="mark" id="sum-mark"></div><div class="mark" id="sum-mark2"></div></div>
+      <div class="legend"><span>0</span><b id="sum-exp"></b><b id="sum-ideal"></b></div></div>
+    <p id="sum-msg"></p><p id="sum-eq"></p>
     ${rv && (rv.note || rv.seen) ? `<div class="banner"><b>ملاحظة المشرف ${esc(nameOf(rv.by))}:</b> ${rv.note ? esc(rv.note) : "تم الاطلاع على ميثاقك."}</div>` : ""}
   </section>
-  <section class="card stack"><div><h2>المطلوب منك هذه السنة</h2>
-    <p class="muted small">تحقيق هذه الأهداف مع الجودة المطلوبة هو ما يجعلك توافق التوقعات. ما زاد عنها يرفعك إلى المستويات الأعلى. العلامة الذهبية تبيّن أين يُفترض أن تكون اليوم.</p></div>
-    <div class="stack" id="targets" style="gap:16px"></div></section>
-  <section class="card stack"><h2>بصمة أدائك</h2><div id="fp"></div></section>
-  <section class="card row between"><div><h2>أعمال شهر ${esc(monthLabel(S.month))}</h2>
-    <p class="muted small">أدخل إجمالي أعمالك لهذا الشهر، وعدّلها متى شئت.</p></div>${monthPicker("شهر الإدخال")}</section>
-  <div class="banner"><b>تنبيه:</b> أدخل أعمال شهر ${esc(monthLabel(S.month))} فقط، ولا تضف إليها أعمال الأشهر السابقة. النظام يجمع الأشهر تلقائياً ويحسب درجتك السنوية.</div>`;
+  <section class="blk">${secHead(1, "المطلوب منك هذه السنة")}
+    <p class="lead">تحقيق هذه الأهداف مع الجودة المطلوبة يجعلك توافق التوقعات، وما زاد عنها يرفعك. العلامة الذهبية مكانك المفترض اليوم.</p>
+    <div class="stack" id="targets" style="gap:12px"></div></section>
+  <section class="blk">${secHead(2, "بصمة أدائك")}<div class="box" id="fp"></div></section>
+  <section class="blk">${secHead(3, "أعمال الشهر", `<label><span style="position:absolute;width:1px;height:1px;overflow:hidden">شهر الإدخال</span>${monthPicker(null)}</label>`)}
+    <p class="lead">أدخل أعمالك في أي وقت لترى أين وصلت. ما تدخله لا يُحفظ ولا يراه أحد، ويختفي عند إغلاق الصفحة. الإرسال إلى ${sup ? "مشرفك " + esc(nameOf(sup)) : "المشرف"} يفتح نهاية كل شهر فقط.</p>
+    <p class="banner"><b>تنبيه:</b> أدخل أعمال ${esc(monthLabel(S.month))} فقط، ولا تضف إليها أعمال الأشهر السابقة. النظام يجمع الأشهر تلقائياً ويحسب درجتك السنوية.</p>`;
   const qAxes = S.config.axes.filter(a => a.quality), lastQ = qAxes.length ? qAxes[qAxes.length-1].id : null;
   for (const a of S.config.axes){
-    h += `<section class="card stack"><div class="axis-head"><h3>${esc(a.name)}</h3></div><div class="fields">` +
-      a.fields.map(f => `<label class="fld">${esc(f.label)}<input class="num" type="number" min="0" inputmode="numeric" id="in-${esc(f.id)}" data-val="${esc(f.id)}" placeholder="0" value="${esc(S.draft[f.id] ?? "")}">${a.quality ? "" : `<span class="small tn" id="fg-${esc(f.id)}"></span>`}</label>`).join("") +
-      (a.quality ? `<label class="fld">أدخل نسبة الجودة المسجلة في مؤشر الأداء %<input class="num" type="number" min="0" max="100" inputmode="decimal" id="in-${esc(a.id)}_q" data-val="${esc(a.id)}_q" placeholder="100" value="${esc(S.draft[a.id + "_q"] ?? "")}"></label>` : "") +
+    h += `<div class="box"><h3>${esc(a.name)}</h3><div class="fields">` +
+      a.fields.map(f => `<label class="fld">${esc(f.label)}<input class="num" type="number" min="0" inputmode="numeric" id="in-${esc(f.id)}" data-val="${esc(f.id)}" placeholder="0" value="${esc(S.draft[f.id] ?? "")}">${a.quality ? "" : `<span class="small tn muted" style="font-weight:400" id="fg-${esc(f.id)}"></span>`}</label>`).join("") +
+      (a.quality ? `<label class="fld wide">أدخل نسبة الجودة المسجلة في مؤشر الأداء %<input class="num" type="number" min="0" max="100" inputmode="decimal" id="in-${esc(a.id)}_q" data-val="${esc(a.id)}_q" placeholder="100" value="${esc(S.draft[a.id + "_q"] ?? "")}"></label>` : "") +
       `</div>` + (a.quality
-        ? `<div class="res"><div><b>ناتج ${esc(a.name)} هذا الشهر</b><p class="muted small tn" id="ax-${esc(a.id)}-how"></p></div><b class="num big" id="ax-${esc(a.id)}-res">0</b></div>`
-        : `<div class="res"><div><b>درجة ${esc(a.name)}</b><p class="muted small">تراكمي السنة</p></div><b class="num big" id="ax-${esc(a.id)}-res">0</b></div>`) + `</section>`;
-    if (a.id === lastQ) h += `<section class="card stack opsbox"><div class="ops"><div><h3>مجموع العمليات هذا الشهر</h3>
+        ? `<div class="res"><div><b>ناتج ${esc(a.name)}</b><p class="muted small tn" id="ax-${esc(a.id)}-how"></p></div><b class="num big" id="ax-${esc(a.id)}-res">0</b></div>`
+        : `<div class="res"><div><b>درجة ${esc(a.name)}</b><p class="muted small">تراكمي السنة</p></div><b class="num big" id="ax-${esc(a.id)}-res">0</b></div>`) + `</div>`;
+    if (a.id === lastQ) h += `<div class="stack opsbox"><div class="ops"><div><h3>مجموع العمليات هذا الشهر</h3>
       <p class="muted small" id="ops-parts"></p></div><b class="num" id="ops-total">0</b></div>
-      <div class="res"><div><b>درجة مجموع العمليات</b><p class="muted small tn" id="ops-how"></p></div><b class="num big" id="ops-got">0</b></div></section>`;
+      <div class="res"><div><span>درجة مجموع العمليات</span><p class="muted small tn" id="ops-how"></p></div><b class="num big" id="ops-got">0</b></div></div>`;
   }
-  h += `<section class="card stack">
-    ${S.roster.length ? "" : `<label class="fld" style="max-width:320px">اسمك كما يظهر للمشرف والمدير<input type="text" id="my-name" maxlength="60" value="${esc(S.myName)}" placeholder="الاسم الثلاثي"></label>`}
-    <div class="row"><button type="button" class="btn primary" data-act="save" ${S.readOnly || sw.state !== "open" ? "disabled" : ""}>إرسال للمشرف</button>
-      <button type="button" class="btn ghost" data-act="reset">مسح الحقول</button></div>
-    <p class="small ${sw.state === "open" ? "rem ok" : "rem todo"}">${sw.state === "early" ? "إرسال أعمال هذا الشهر يفتح في " + esc(dayLabel(sw.open)) + ". حتى ذلك الحين تستطيع الإدخال لترى نتيجتك فقط."
+  h += `<div class="box send">
+    ${S.roster.length ? "" : `<label class="fld">اسمك كما يظهر للمشرف والمدير<input type="text" id="my-name" maxlength="60" value="${esc(S.myName)}" placeholder="الاسم الثلاثي"></label>`}
+    <button type="button" class="btn primary" data-act="save" ${S.readOnly || sw.state !== "open" ? "disabled" : ""}>إرسال للمشرف</button>
+    <span class="st ${sw.state === "open" ? "rem ok" : "rem todo"}">${sw.state === "early" ? "إرسال أعمال هذا الشهر يفتح في " + esc(dayLabel(sw.open)) + ". حتى ذلك الحين تستطيع الإدخال لترى نتيجتك فقط."
       : sw.state === "late" ? "انتهت مهلة إرسال هذا الشهر في " + esc(dayLabel(sw.close)) + ". راجع المدير إن احتجت إلى الإرسال."
-      : sw.forced ? "الإرسال مفتوح الآن باستثناء من المدير." : "الإرسال مفتوح حتى " + esc(dayLabel(sw.close)) + "."}</p>
-    <p class="small muted" id="saved-at">${rec ? "آخر ما وصل المشرف عن هذا الشهر كان في " + esc(when(rec.updatedAt)) + "." : "لم يُرسل شيء للمشرف عن هذا الشهر بعد."}</p>
-  </section>`;
+      : sw.forced ? "الإرسال مفتوح الآن باستثناء من المدير." : "الإرسال مفتوح حتى " + esc(dayLabel(sw.close))}</span>
+    <span class="st muted" style="font-weight:400" id="saved-at">${rec ? "آخر ما وصل المشرف عن هذا الشهر كان في " + esc(when(rec.updatedAt)) + "." : "لم يُرسل شيء للمشرف عن هذا الشهر بعد."}</span>
+    <button type="button" class="btn ghost" data-act="reset" style="align-self:center;min-height:36px;border:0;color:var(--muted);font-size:.82rem">مسح الحقول</button>
+  </div></section></div>`;
   return h;
 }
 function updateEmployee(){
@@ -644,7 +830,7 @@ function updateEmployee(){
   if (!$("sum-score")) return;
   const m = monthCalc(S.config, S.draft), r = calc(S.config, selfList(yearOf(), S.draft), yearFrac(yearOf()));
   $("sum-score").textContent = f2(r.total); $("sum-max").textContent = f0(r.max);
-  const lv = $("sum-level"); lv.className = "pill lv-" + r.dLevel; lv.textContent = (r.projected ? "المتوقع: " : "") + r.dLabel;
+  const lv = $("sum-level"); lv.className = "hero-level" + (r.dLevel === "none" ? " none" : ""); lv.textContent = (r.projected ? "المتوقع نهاية السنة: " : "") + r.dLabel;
   $("sum-fill").style.width = (r.max ? r.total / r.max * 100 : 0) + "%";
   $("sum-mark").style.insetInlineStart = (r.max ? r.expScore / r.max * 100 : 0) + "%";
   $("sum-mark2").style.insetInlineStart = (r.max ? r.idealScore / r.max * 100 : 0) + "%";
@@ -659,7 +845,7 @@ function updateEmployee(){
   $("sum-eq").textContent = r.proj === null ? (r.dLevel === "none" ? "الدرجة تراكمية وتبدأ من الصفر. يظهر مستواك المتوقع بعد مرور أسابيع من بداية السنة." : "")
     : `الدرجة تراكمية حتى اليوم. إذا استمررت على وتيرتك الحالية ستنهي السنة بدرجة ${f2(r.proj)}، أي «${r.projLabel}»، وهو المستوى المعروض.`;
   const rk = rankMap(yearOf(), S.me.id, r, selfList(yearOf(), S.draft));
-  $("sum-rank").textContent = rk.n > 1 && r.total > 0 ? `ترتيبك بين المراقبين: ${rk[S.me.id]} من ${rk.n}.` : "";
+  { const el = $("sum-rank"), on = rk.n > 1 && r.total > 0; el.hidden = !on; el.innerHTML = on ? `الترتيب <span class="num">${rk[S.me.id]} / ${rk.n}</span>` : ""; }
   $("targets").innerHTML = targetsHTML(r);
   if ($("fp")) $("fp").innerHTML = fingerprintHTML(r, teamCalcs(yearOf(), S.me.id).concat([r]));
   if ($("ops-total")){
@@ -677,10 +863,10 @@ function updateEmployee(){
 
 /* --- تفاصيل ميثاق (للمشرف والمدير) --- */
 function breakdown(r, team){
-  let h = (team ? fingerprintHTML(r, team) : "") + `<div class="stack" style="gap:16px">${targetsHTML(r)}</div><div class="scroll"><table><thead><tr><th>البند (تراكمي السنة)</th><th>المنجز</th><th>المطلوب</th><th>الوزن</th><th>الدرجة</th></tr></thead><tbody>`;
-  for (const a of r.axes) if (a.quality) h += `<tr><td>ناتج ${esc(a.name)}</td><td class="num">${f0(a.eff)} (من ${f0(a.sum)})</td><td></td><td></td><td></td></tr>`;
-  h += `<tr><td><b>مجموع العمليات</b></td><td class="num"><b>${f0(r.ops)}</b></td><td class="num">${n(S.config.opsTarget) ? f0(n(S.config.opsTarget)) : ""}</td><td class="num">${n(S.config.opsWeight)}</td><td class="num"><b>${f3(r.opsGot)}</b></td></tr>`;
-  for (const a of r.axes) if (!a.quality) for (const f of a.fields) h += `<tr><td>${esc(f.label)}</td><td class="num">${f0(f.val)}</td><td class="num">${f.t && !f.g ? f0(f.t) : ""}</td><td class="num">${f.w}</td><td class="num">${f3(f.got)}</td></tr>`;
+  let h = `<h3>المطلوب السنوي</h3>` + targetsTable(r) + `<h3>تفاصيل الدرجة (تراكمي السنة)</h3><div class="scroll"><table><thead><tr><th>البند</th><th>المنجز</th><th>الوزن</th><th>الدرجة</th></tr></thead><tbody>`;
+  for (const a of r.axes) if (a.quality) h += `<tr><td>ناتج ${esc(a.name)}</td><td class="num">${f0(a.eff)} (من ${f0(a.sum)})</td><td></td><td></td></tr>`;
+  h += `<tr><td><b>مجموع العمليات</b></td><td class="num"><b>${f0(r.ops)}</b></td><td class="num">${n(S.config.opsWeight)}</td><td class="num"><b>${f3(r.opsGot)}</b></td></tr>`;
+  for (const a of r.axes) if (!a.quality) for (const f of a.fields) h += `<tr><td>${esc(f.label)}</td><td class="num">${f0(f.val)}</td><td class="num">${f.w}</td><td class="num">${f3(f.got)}</td></tr>`;
   h += `</tbody></table></div>` + (r.proj === null ? "" : `<p class="small muted">على وتيرته الحالية سينهي السنة بدرجة ${f2(r.proj)} («${esc(r.projLabel)}»).</p>`);
   return h;
 }
@@ -688,24 +874,32 @@ function breakdown(r, team){
 /* --- واجهة المشرف --- */
 function viewSupervisor(){
   const y = yearOf(), mine = S.me.manager ? employeeIds() : employeeIds().filter(id => supervisorOf(id) === S.me.id);
-  let h = `<section class="card row between"><div><h2>مواثيق فريقي لسنة <span class="num">${esc(y)}</span></h2>
-    <p class="muted small">${S.me.manager ? "تعرض هنا جميع المراقبين لأنك المدير." : "تصلك أعمال كل مراقب مرتبط بك عند إرسالها."} الأكثر تأخراً عن المسار يظهر أولاً.</p>
-    <div class="row" style="margin-top:10px"><button type="button" class="btn primary" data-act="pdf-team">تنزيل تقرير الفريق PDF</button></div></div>${monthPicker("الفترة")}</section>`;
+  let h = `<section class="band"><div class="dA" aria-hidden="true"></div><div class="dB" aria-hidden="true"></div>
+    <div class="tt"><span class="gbar" aria-hidden="true"></span><h1>مواثيق فريقي لسنة <span class="num">${esc(y)}</span></h1>
+      <p><span class="num">${mine.length}</span> مراقباً · الأرقام تراكمية من بداية السنة · الأكثر تأخراً عن المسار يظهر أولاً${S.me.manager ? " · تعرض هنا جميع المراقبين لأنك المدير" : ""}</p></div>
+    ${monthPicker("الفترة")}
+    <button type="button" class="btn gold" data-act="pdf-team">${icon("down", 18, "#2A1F08")}تنزيل تقرير الفريق PDF</button></section>`;
   if (!mine.length) return h + `<div class="card muted">لا يوجد مراقبون مرتبطون بك بعد. يربطهم المدير من تبويب «الأعضاء».</div>`;
   const dv = r => { const t = r && r.targets.find(x => x.ops); return !r ? Infinity : t ? t.diff : 0; };
   const rows = mine.map(id => ({ id, r: yearCalc(id, y) })).sort((a,b) => dv(a.r) - dv(b.r)), rk = rankMap(y), team = teamCalcs(y);
-  h += statTiles(rows, y) + matrixHTML(rows);
+  h += statTiles(rows, y);
+  h += `<section class="card stack">${secHead(1, "مراقبو الفريق")}<div class="scroll"><table><thead><tr><th>الترتيب</th><th>المراقب</th><th>الدرجة</th><th>${rows.some(x => x.r && x.r.projected) ? "المستوى المتوقع" : "المستوى"}</th><th>المسار</th><th>آخر إرسال</th></tr></thead><tbody>` +
+    rows.map(x => x.r ? `<tr><td class="num">${rk[x.id] || ""}</td><td><b>${esc(nameOf(x.id))}</b></td><td class="num">${f2(x.r.total)}</td><td><span class="pill lv-${finalTone(x.id, x.r, rk)}">${esc(finalLabel(x.id, x.r, rk))}</span></td><td class="${paceClass(x.r)}">${esc(paceText(x.r))}</td><td class="muted">${lastSaved(x.id, y) ? esc(dayLabel(new Date(lastSaved(x.id, y)))) : ""}</td></tr>`
+      : `<tr><td class="num">–</td><td><b>${esc(nameOf(x.id))}</b></td><td class="num muted">0.00</td><td><span class="pill lv-none">لم يرسل</span></td><td></td><td></td></tr>`).join("") +
+    `</tbody></table></div></section>${matrixHTML(rows)}`;
+  h += secHead(2, "مواثيق المراقبين", `<span class="muted small">اضغط على الاسم لفتح ميثاقه</span>`);
   for (const x of rows){
     const key = x.id + "__" + S.month, mineRv = S.reviews[key];
     const note = S.notes[key] !== undefined ? S.notes[key] : (mineRv && mineRv.note) || "";
-    h += `<details class="emp"><summary><b style="margin-inline-end:auto">${esc(nameOf(x.id))}</b>
-      ${x.r ? `<span class="muted small">الترتيب <span class="num">${rk[x.id]} / ${rk.n}</span></span><span class="${paceClass(x.r)}">${esc(paceText(x.r))}</span><span class="num"><b>${f2(x.r.total)}</b> / ${f0(x.r.max)}</span><span class="pill lv-${finalTone(x.id, x.r, rk)}">${esc(finalLabel(x.id, x.r, rk))}</span><span class="muted small">${esc(when(lastSaved(x.id, y)))}</span>` : `<span class="pill lv-none">${LEVELS.none}</span>`}
+    h += `<details class="emp"><summary><b class="nm">${esc(nameOf(x.id))}</b>
+      ${x.r ? `<span class="pill lv-${finalTone(x.id, x.r, rk)}">${esc(finalLabel(x.id, x.r, rk))}</span><span class="num"><b>${f2(x.r.total)}</b> / ${f0(x.r.max)}</span><span class="muted small">الترتيب <span class="num">${rk[x.id]} / ${rk.n}</span></span><span class="${paceClass(x.r)} small">${esc(paceText(x.r))}</span>` : `<span class="pill lv-none">لم يرسل</span>`}
       ${mineRv && mineRv.seen ? `<span class="muted small">تم الاطلاع</span>` : ""}</summary>
-      <div class="body">${x.r ? breakdown(x.r, team) + tieNote(x.id, rk) + tieDetail(x.id, rk) + `
-        <label class="fld" style="max-width:420px">عدد المنتجات المختلفة التي قرأها في سنة ${esc(y)} (من ${productsTotal()})، بعد التأكد من نظام العمل. تُستخدم للمفاضلة فقط${covInput(x.id, y)}</label>
+      <div class="body">${x.r ? `<div class="l">${breakdown(x.r, team)}${tieNote(x.id, rk)}${tieDetail(x.id, rk)}</div>
+        <div class="r">${fingerprintHTML(x.r, team)}
+        <label class="fld">عدد المنتجات المختلفة التي قرأها في سنة ${esc(y)} (من ${productsTotal()})، بعد التأكد من نظام العمل. تُستخدم للمفاضلة فقط${covInput(x.id, y)}</label>
         <label class="fld">ملاحظتك للمراقب عن شهر ${esc(monthLabel(S.month))}<textarea id="note-${esc(x.id)}" data-note="${esc(key)}" maxlength="600" placeholder="تظهر للمراقب في ميثاقه">${esc(note)}</textarea></label>
         <div class="row"><button type="button" class="btn primary" data-act="review" data-key="${esc(key)}" ${S.readOnly ? "disabled" : ""}>حفظ الملاحظة وتأكيد الاطلاع</button>
-          <button type="button" class="btn" data-act="pdf-one" data-id="${esc(x.id)}">تنزيل ميثاقه PDF</button></div>` : `<p class="muted">لم يُدخل هذا المراقب أعمالاً في هذه السنة.</p>`}</div></details>`;
+          <button type="button" class="btn line" data-act="pdf-one" data-id="${esc(x.id)}">تنزيل ميثاقه PDF</button></div></div>` : `<p class="muted">لم يُدخل هذا المراقب أعمالاً في هذه السنة.</p>`}</div></details>`;
   }
   return h;
 }
@@ -717,39 +911,42 @@ function viewManager(){
   return h + (S.mgrTab === "equation" ? mgrEquation() : S.mgrTab === "members" ? mgrMembers() : mgrOverview());
 }
 /* عدّادات الملخص: تظهر للمدير عن الجميع وللمشرف عن فريقه */
+function teamStats(rows, y){
+  const done = rows.filter(x => x.r), avg = done.length ? done.reduce((s,x) => s + x.r.total, 0) / done.length : 0, rkT = rankMap(y);
+  return { done, avg, max: calc(S.config, [], 1).max, cnt: i => done.filter(x => finalIdx(x.id, x.r, rkT) === i).length,
+    behind: done.filter(x => paceClass(x.r) === "rem todo").length, met: done.filter(x => x.r.reqMet).length };
+}
 function statTiles(rows, y){
-  const done = rows.filter(x => x.r), avg = done.length ? done.reduce((s,x) => s + x.r.total, 0) / done.length : 0;
-  const rkT = rankMap(y), cnt = i => done.filter(x => finalIdx(x.id, x.r, rkT) === i).length, max = calc(S.config, [], 1).max;
-  const behind = done.filter(x => paceClass(x.r) === "rem todo").length, met = done.filter(x => x.r.reqMet).length;
-  return `<div class="tiles">
-    <div class="tile"><span class="muted small">أدخلوا أعمالهم</span><b class="num">${done.length} / ${rows.length}</b></div>
-    <div class="tile"><span class="muted small">متوسط الدرجة</span><b class="num">${f2(avg)} / ${f0(max)}</b></div>
-    <div class="tile"><span class="muted small">حققوا المطلوب</span><b class="num">${met}</b></div>
-    <div class="tile"><span class="muted small">متأخرون عن المسار</span><b class="num">${behind}</b></div>
-  </div><div class="tiles">` + S.config.bands.map((b,i) => `<div class="tile"><span class="pill lv-${TONES[i]}">${esc(b.label)}</span><b class="num">${cnt(i)}</b></div>`).reverse().join("") + `</div>`;
+  const t = teamStats(rows, y), tile = (ic, lb, v, cls) => `<div class="tile ${cls || ""}"><span class="ic">${icon(ic, 22)}</span><div class="tx"><span>${lb}</span><b class="num">${v}</b></div></div>`;
+  return `<section class="tiles" aria-label="ملخص الفريق">` + tile("check", "أرسلوا أعمالهم", t.done.length + " / " + rows.length) + tile("bars", "متوسط الدرجة", f2(t.avg) + " / " + f0(t.max)) + tile("target", "حققوا المطلوب", t.met) + tile("clock", "متأخرون عن المسار", t.behind, t.behind ? "warn" : "") + `</section>
+  <section class="lvls" aria-label="المستويات">` + S.config.bands.map((b,i) => `<div class="lvl"><div class="hd lv-${TONES[i]}"${i === 3 ? ` style="background:#1E4E79;color:#fff"` : i === 2 ? ` style="background:#00524D;color:#fff"` : ""}>${esc(b.label)}</div><div class="bd"><b class="num">${t.cnt(i)}</b><span>${esc(bandRange(i))}</span></div></div>`).reverse().join("") + `</section>`;
+}
+function mgrStats(rows, y){
+  const t = teamStats(rows, y), none = rows.length - t.done.length, tile = (lb, v, cls) => `<div class="tile plain ${cls || ""}"><div class="tx"><span>${lb}</span><b class="num">${v}</b></div></div>`;
+  const segs = S.config.bands.map((b,i) => ({ label: b.label, c: LV_COL[i], k: t.cnt(i) })).reverse().concat([{ label: "لم يرسل", c: "#DCE3E1", k: none }]);
+  return `<section class="tiles" aria-label="ملخص">` + tile("متوسط الدرجة", f2(t.avg) + " / " + f0(t.max), "green") + tile("أرسلوا أعمالهم", t.done.length + " / " + rows.length) + tile("حققوا المطلوب", t.met) + tile("متأخرون عن المسار", t.behind, t.behind ? "warn" : "") + `</section>
+  <section class="card stack"><div class="cardh"><h2>توزيع المستويات</h2><span class="muted small"><span class="num">${t.done.length}</span> مراقباً أرسلوا · <span class="num">${none}</span> لم يرسلوا</span></div>
+    <div class="dist" aria-hidden="true">${segs.filter(x => x.k > 0).map(x => `<div style="flex:${x.k};background:${x.c}"></div>`).join("")}</div>
+    <ul class="dist-lg">${segs.map(x => `<li><i aria-hidden="true" style="background:${x.c}"></i>${esc(x.label)} <strong class="num">${x.k}</strong></li>`).join("")}</ul></section>`;
 }
 function mgrOverview(){
   const y = yearOf(), dv = r => { const t = r && r.targets.find(x => x.ops); return !r ? Infinity : t ? t.diff : 0; };
   const rk = rankMap(y), rows = employeeIds().map(id => ({ id, r: yearCalc(id, y) })).sort((a,b) => (rk[a.id] || 1e9) - (rk[b.id] || 1e9) || dv(a.r) - dv(b.r));
-  const done = rows.filter(x => x.r), avg = done.length ? done.reduce((s,x) => s + x.r.total, 0) / done.length : 0;
-  const cnt = i => done.filter(x => x.r.dIdx === i).length, base = calc(S.config, [], yearFrac(y));
-  const behind = done.filter(x => paceClass(x.r) === "rem todo").length, met = done.filter(x => x.r.reqMet).length;
-  let h = `<section class="card row between"><div><h2>أداء المراقبين لسنة <span class="num">${esc(y)}</span></h2>
-    <p class="muted small">الأرقام تراكمية من بداية السنة، والترتيب بالدرجة من الأعلى. عند تساوي الدرجة تُطبَّق المفاضلة بالترتيب: ${TIE_CRIT.map(c => c.label).join("، ثم ")}.${n(S.config.quotaIdeal) > 0 || n(S.config.quotaAbove) > 0 ? ` حصص هذه السنة: «${esc(S.config.bands[4].label)}» ${n(S.config.quotaIdeal) > 0 ? f0(S.config.quotaIdeal) : "بلا حد"}، «${esc(S.config.bands[3].label)}» ${n(S.config.quotaAbove) > 0 ? f0(S.config.quotaAbove) : "بلا حد"}.` : ""}</p>
-    <div class="row" style="margin-top:10px"><button type="button" class="btn primary" data-act="pdf-team">تنزيل تقرير الجميع PDF</button></div></div>${monthPicker("الفترة")}</section>
-`;
-  h += statTiles(rows, y);
-  h += matrixHTML(rows);
+  const base = calc(S.config, [], yearFrac(y)), hasQ = n(S.config.quotaIdeal) > 0 || n(S.config.quotaAbove) > 0;
+  let h = `<section class="mgr-head"><div class="tt"><span class="yr num">${esc(y)}</span><div class="st"><h1>أداء المراقبين</h1><span class="gbar" aria-hidden="true"></span></div></div>
+    ${monthPicker("الفترة")}<button type="button" class="btn primary" data-act="pdf-team">تنزيل تقرير الجميع PDF</button></section>`;
+  h += mgrStats(rows, y);
   if (!rows.length) return h + `<div class="card muted">لا توجد أسماء بعد. أضفها من تبويب «الأعضاء».</div>`;
-  h += `<section class="card scroll"><table><thead><tr><th>الترتيب</th><th>المراقب</th><th>المشرف</th><th>الدرجة</th><th>${base.fr > 0 && base.fr < 1 ? "المستوى المتوقع" : "المستوى"}</th><th>المسار</th>` + base.targets.map(t => `<th>${esc(t.label)}</th>`).join("") + `<th>المنتجات المقروءة</th><th>أنواع الزيارات</th><th>المتوقع نهاية السنة</th><th>آخر حفظ</th></tr></thead><tbody>`;
+  h += `<section class="card stack"><div class="cardh"><h2>ترتيب المراقبين بالدرجة</h2><span class="muted small">المنجز من المطلوب السنوي، تراكمي من بداية السنة</span></div>
+    <p class="lead">عند تساوي الدرجة تُطبَّق المفاضلة بالترتيب: ${TIE_CRIT.map(c => c.label).join("، ثم ")}.${hasQ ? ` حصص هذه السنة: «${esc(S.config.bands[4].label)}» ${n(S.config.quotaIdeal) > 0 ? f0(S.config.quotaIdeal) : "بلا حد"}، «${esc(S.config.bands[3].label)}» ${n(S.config.quotaAbove) > 0 ? f0(S.config.quotaAbove) : "بلا حد"}.` : ""}</p>
+    <div class="scroll"><table><thead><tr><th>#</th><th>المراقب</th><th>المشرف</th><th>الدرجة</th><th>${base.fr > 0 && base.fr < 1 ? "المستوى المتوقع" : "المستوى"}</th><th>المسار</th>` + base.targets.map(t => `<th class="g">${esc(t.label)}</th>`).join("") + `<th class="g">المنتجات المقروءة</th><th class="g">أنواع الزيارات</th><th>المتوقع نهاية السنة</th><th>آخر إرسال</th></tr></thead><tbody>`;
   for (const x of rows){
-    const sup = supervisorOf(x.id);
-    const ti = rk.info[x.id];
-    h += `<tr><td class="num">${rk[x.id] || ""}</td><td><b>${esc(nameOf(x.id))}</b>${tieNote(x.id, rk)}</td><td>${sup ? esc(nameOf(sup)) : `<span class="muted">غير محدد</span>`}</td>` +
-      (x.r ? `<td class="num"><b>${f2(x.r.total)}</b></td><td><span class="pill lv-${finalTone(x.id, x.r, rk)}">${esc(finalLabel(x.id, x.r, rk))}</span></td><td class="${paceClass(x.r)}">${esc(paceText(x.r))}</td>` + x.r.targets.map(t => `<td class="num">${f0(t.done)}${t.q ? "%" : ""} / ${f0(t.target)}${t.q ? "%" : ""}</td>`).join("") + `<td>${covInput(x.id, y)}</td><td class="num">${ti ? ti.s.visT + " / " + ti.s.visN : ""}</td><td class="num">${x.r.proj === null ? "" : f2(x.r.proj)}</td><td class="muted">${esc(when(lastSaved(x.id, y)))}</td>`
-           : `<td class="num muted">0.00</td><td><span class="pill lv-none">${LEVELS.none}</span></td><td></td>` + base.targets.map(t => `<td class="num muted">0 / ${f0(t.target)}${t.q ? "%" : ""}</td>`).join("") + `<td></td><td></td><td></td><td></td>`) + `</tr>`;
+    const sup = supervisorOf(x.id), ti = rk.info[x.id];
+    h += `<tr><td class="num">${rk[x.id] || "–"}</td><td><b>${esc(nameOf(x.id))}</b>${tieNote(x.id, rk)}</td><td>${sup ? esc(nameOf(sup)) : `<span class="muted">غير محدد</span>`}</td>` +
+      (x.r ? `<td class="num"><b>${f2(x.r.total)}</b></td><td><span class="pill lv-${finalTone(x.id, x.r, rk)}">${esc(finalLabel(x.id, x.r, rk))}</span></td><td class="${paceClass(x.r)}">${esc(paceText(x.r))}</td>` + x.r.targets.map(t => `<td class="num${t.q && t.has && t.rem > 0 ? " rem todo" : ""}">${t.q ? f0(t.done) + "%" : f0(t.done) + " / " + f0(t.target)}</td>`).join("") + `<td>${covInput(x.id, y)}</td><td class="num">${ti ? ti.s.visT + " / " + ti.s.visN : ""}</td><td class="num">${x.r.proj === null ? "" : f2(x.r.proj)}</td><td class="muted">${esc(when(lastSaved(x.id, y)))}</td>`
+           : `<td class="num muted">0.00</td><td><span class="pill lv-none">لم يرسل</span></td><td></td>` + base.targets.map(t => `<td class="num muted">${t.q ? "" : "0 / " + f0(t.target)}</td>`).join("") + `<td></td><td></td><td></td><td></td>`) + `</tr>`;
   }
-  return h + `</tbody></table></section>`;
+  return h + `</tbody></table></div></section>` + matrixHTML(rows);
 }
 function mgrEquation(){
   if (!S.cfgDraft) S.cfgDraft = clone(S.config);
@@ -831,14 +1028,14 @@ function pdfPage(title, sub){
   const c = document.createElement("canvas"); c.width = PW; c.height = PH;
   const x = c.getContext("2d"); x.direction = "rtl"; x.textBaseline = "alphabetic";
   x.fillStyle = "#ffffff"; x.fillRect(0, 0, PW, PH);
-  x.fillStyle = "#0f6b4a"; x.fillRect(0, 0, PW, 124);
+  x.fillStyle = "#00524D"; x.fillRect(0, 0, PW, 124);
   x.fillStyle = "#ffffff"; x.textAlign = "right"; x.font = PF(34, 700); x.fillText(title, PR, 60);
   x.font = PF(20, 400); x.fillText(sub, PR, 98);
   x.textAlign = "left"; x.fillText("تاريخ الإصدار: " + dayLabel(new Date()), PM, 98);
   return { c, x };
 }
 function pdfFit(x, t, w){ t = String(t); if (x.measureText(t).width <= w) return t; while (t.length > 2 && x.measureText(t + "…").width > w) t = t.slice(0, -1); return t + "…"; }
-function pdfTitle(x, y, t){ x.fillStyle = "#0f6b4a"; x.textAlign = "right"; x.font = PF(24, 700); x.fillText(t, PR, y); x.fillRect(PM, y + 12, PCW, 2); return y + 34; }
+function pdfTitle(x, y, t){ x.fillStyle = "#00524D"; x.textAlign = "right"; x.font = PF(24, 700); x.fillText(t, PR, y); x.fillRect(PM, y + 12, PCW, 2); return y + 34; }
 function pdfTable(x, y, cols, head, rows, opt){
   opt = opt || {}; const rh = opt.rh || 42, fs = opt.fs || 19;
   const draw = (cells, yy, bold, fill) => {
@@ -870,7 +1067,7 @@ function pdfEmployee(id, r, rk, y0){
   yy += 30;
   if (!r){ x.fillStyle = "#5a6b64"; x.textAlign = "right"; x.font = PF(24, 400); x.fillText("لم يرسل هذا المراقب أعمالاً في سنة " + y + ".", PR, yy + 60); return c; }
   x.fillStyle = "#eef4f1"; x.fillRect(PM, yy, PCW, 110);
-  const box = (cx, label, val) => { x.textAlign = "center"; x.fillStyle = "#5a6b64"; x.font = PF(18, 400); x.fillText(label, cx, yy + 38); x.fillStyle = "#0f6b4a"; x.font = PF(34, 700); x.fillText(val, cx, yy + 84); };
+  const box = (cx, label, val) => { x.textAlign = "center"; x.fillStyle = "#5a6b64"; x.font = PF(18, 400); x.fillText(label, cx, yy + 38); x.fillStyle = "#00524D"; x.font = PF(34, 700); x.fillText(val, cx, yy + 84); };
   box(PR - PCW / 6, "الدرجة التراكمية", f2(r.total) + " / " + f0(r.max)); box(PW / 2, r.projected ? "المستوى المتوقع نهاية السنة" : "المستوى", finalLabel(id, r, rk)); box(PM + PCW / 6, "المطلوب", r.reqMet ? "تحقق" : "لم يتحقق بعد");
   yy += 150;
   { const e = rk.info && rk.info[id], ln = tieLines(id, rk);
