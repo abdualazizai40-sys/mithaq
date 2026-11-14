@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ميثاق الأداء للمراقبين</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#00524D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ميثاق الأداء">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
@@ -333,6 +341,24 @@ details.emp textarea{min-height:120px}
   .wrap{padding:0 16px} .brand .wm,.brand .vr{display:none} .brand img{width:40px;height:40px} .brand h1{font-size:1.06rem}
   .who{display:none} .band{padding:22px 20px}
 }
+
+/* ---- شريط التنقل السفلي (الجوال) ---- */
+#tabbar{display:none}
+.blk,.hero,#sec-ch,#sec-top{scroll-margin-top:84px}
+.inst{font-size:.8rem;color:var(--muted);border-top:1px solid #E2EAE8;padding-top:10px}
+.inst summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.inst p{margin-top:6px;line-height:1.8}
+@media (max-width:760px){
+  #tabbar:not([hidden]){display:grid;grid-auto-flow:column;grid-auto-columns:1fr;position:fixed;inset-inline:0;bottom:0;z-index:6;background:#fff;border-top:1px solid #E2EAE8;padding:6px 6px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -2px 10px rgba(0,40,36,.06)}
+  #tabbar button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;justify-content:center;font:600 .7rem var(--font-body);color:#5A6E6B;cursor:pointer;border-radius:10px;position:relative}
+  #tabbar button[aria-current="true"]{color:var(--accent)}
+  #tabbar button[aria-current="true"]::before{content:"";position:absolute;top:-6px;width:28px;height:3px;border-radius:2px;background:var(--gold-line)}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px} .tile{padding:12px;gap:10px} .tile .ic{width:38px;height:38px} .tile b{font-size:1.3rem} .tile.plain b{font-size:1.5rem}
+  body.has-tabbar main{padding-bottom:28px}
+  body.has-tabbar footer.site{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+  body.has-tabbar #views,body.has-tabbar .mgr-tabs{display:none}
+  body.has-tabbar #toast{bottom:calc(84px + env(safe-area-inset-bottom))}
+}
 @media (max-width:520px){.summary{grid-template-columns:1fr}.mini{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.fill,#toast{transition:none}}
 </style>
@@ -345,6 +371,7 @@ details.emp textarea{min-height:120px}
 </div></header>
 <main class="wrap" id="app"><div class="card muted">جارٍ التحميل…</div></main>
 <footer class="site">إعداد: م. عبدالعزيز قمعي · للاستخدام الداخلي · وزارة التجارة</footer>
+<nav id="tabbar" aria-label="التنقل" hidden></nav>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -556,7 +583,13 @@ const IC = {
   check:'<path d="M4 12l5 5L20 6"/>', bars:'<path d="M4 20V14M10 20V10M16 20V6M22 20H2"/>',
   target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
   clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',
-  down:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>' };
+  down:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.900 1.900 6.500 5.500"/><circle cx="17.500" cy="9" r="2.500"/><path d="M17 14.500c2.400.200 4 1.700 4.500 4.500"/>',
+  sliders:'<path d="M4 6h10M18 6h2M4 12h3M11 12h9M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+  radar:'<path d="M12 3l8.500 6.200-3.200 10H6.700L3.500 9.200z"/><path d="M12 8l3.800 2.800-1.400 4.400H9.600l-1.400-4.400z"/>',
+  doc:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>' };
 function icon(k, sz, col){ return `<svg aria-hidden="true" width="${sz || 18}" height="${sz || 18}" viewBox="0 0 24 24" fill="none" stroke="${col || "#fff"}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>`; }
 function secHead(nu, title, extra){ return `<div class="sec">${nu ? `<span class="nu">${nu}</span>` : ""}<div class="st"><h2>${title}</h2></div>${extra || ""}</div>`; }
 const LV_COL = ["#C0473A","#D9A84A","#00524D","#1E4E79","#0E3B36"];
@@ -718,7 +751,8 @@ async function put(path, data, apply){
 
 /* ---------- العرض ---------- */
 const app = document.getElementById("app");
-function render(){
+function render(){ render0(); renderTabbar(); }
+function render0(){
   const whoEl = document.getElementById("who");
   if (!S.me){ document.getElementById("views").hidden = true; whoEl.innerHTML = "";
     document.body.classList.toggle("is-login", !!S.loaded);
@@ -739,6 +773,29 @@ function render(){
   if (S.view === "employee") updateEmployee();
   if (S.view === "manager" && S.mgrTab === "equation") updateEquation();
 }
+function tabbarItems(){
+  if (!S.me || S.me.mustChange) return [];
+  const views = allowedViews(), out = [];
+  if (S.me.manager){
+    out.push({ ic:"grid", lb:"نظرة عامة", v:"manager", t:"overview" }, { ic:"sliders", lb:"المعادلة", v:"manager", t:"equation" }, { ic:"users", lb:"الأعضاء", v:"manager", t:"members" });
+    if (views.includes("supervisor")) out.push({ ic:"doc", lb:"المواثيق", v:"supervisor" });
+    return out.map(o => Object.assign(o, { on: S.view === o.v && (!o.t || S.mgrTab === o.t) }));
+  }
+  if (S.view === "supervisor"){
+    out.push({ ic:"grid", lb:"الفريق", to:"sec-top" }, { ic:"doc", lb:"المواثيق", to:"sec-ch" });
+    if (views.includes("employee")) out.push({ ic:"edit", lb:"ميثاقي", v:"employee" });
+  } else {
+    out.push({ ic:"grid", lb:"ميثاقي", to:"sec-sum" }, { ic:"target", lb:"المطلوب", to:"sec-tg" }, { ic:"radar", lb:"البصمة", to:"sec-fp" }, { ic:"edit", lb:"أعمال الشهر", to:"sec-mo" });
+    if (views.includes("supervisor")) out.push({ ic:"users", lb:"فريقي", v:"supervisor" });
+  }
+  out[0].on = true; return out;
+}
+function renderTabbar(){
+  const el = document.getElementById("tabbar"), it = tabbarItems();
+  el.hidden = !it.length; document.body.classList.toggle("has-tabbar", !!it.length);
+  el.innerHTML = it.map(o => `<button type="button" data-act="nav"${o.v ? ` data-v="${o.v}"` : ""}${o.t ? ` data-t="${o.t}"` : ""}${o.to ? ` data-to="${o.to}"` : ""} aria-current="${o.on ? "true" : "false"}">${icon(o.ic, 22, "currentColor")}<span>${o.lb}</span></button>`).join("");
+}
+function isStandalone(){ try { return matchMedia("(display-mode: standalone)").matches || navigator.standalone === true; } catch (e) { return false; } }
 function viewLogin(){
   const emps = S.roster.filter(p => p.role !== "supervisor"), sups = S.roster.filter(p => p.role === "supervisor");
   const opt = p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`, mgr = S.lgMode === "mgr";
@@ -758,6 +815,9 @@ function viewLogin(){
         <button type="button" data-act="lg-mode" data-m="staff" aria-pressed="${!mgr}">مراقب أو مشرف</button>
         <button type="button" data-act="lg-mode" data-m="mgr" aria-pressed="${mgr}">المدير</button></div>
       <div class="stack" style="gap:14px">${form}</div>
+      ${isStandalone() ? "" : `<details class="inst"><summary>تثبيت التطبيق على الجوال</summary>
+        <p><b>آيفون:</b> افتح هذا الرابط في Safari، اضغط زر المشاركة، ثم «إضافة إلى الشاشة الرئيسية».</p>
+        <p><b>أندرويد:</b> افتحه في Chrome، اضغط القائمة (النقاط الثلاث)، ثم «إضافة إلى الشاشة الرئيسية» أو «تثبيت التطبيق».</p></details>`}
       <p class="by">إعداد: م. عبدالعزيز قمعي</p>
     </section>
     <div class="login-side"><img src="assets/moc-logo-white.svg" alt="" aria-hidden="true">
@@ -786,7 +846,7 @@ function viewEmployee(){
   const rec = valuesOf(S.me.id, S.month), rv = reviewFor(S.me.id, S.month);
   const sw = sendWindow(S.month), sup = supervisorOf(S.me.id), me = claimOf(S.me.id);
   let h = `<div class="emp-view">
-  <section class="hero" aria-label="الملخص"><div class="dA" aria-hidden="true"></div><div class="dB" aria-hidden="true"></div>
+  <section class="hero" id="sec-sum" aria-label="الملخص"><div class="dA" aria-hidden="true"></div><div class="dB" aria-hidden="true"></div>
     <div class="hero-top"><div><span class="hero-name">${me ? esc(me.name) : "ميثاقي"}</span><strong class="hero-ttl">ميثاق سنة <span class="num">${esc(yearOf())}</span></strong></div><span class="hero-rank" id="sum-rank" hidden></span></div>
     <div class="hero-score"><span class="num" id="sum-score">0.00</span><span class="of">من <span id="sum-max">5</span></span></div>
     <span id="sum-level" class="hero-level none"></span>
@@ -795,11 +855,11 @@ function viewEmployee(){
     <p id="sum-msg"></p><p id="sum-eq"></p>
     ${rv && (rv.note || rv.seen) ? `<div class="banner"><b>ملاحظة المشرف ${esc(nameOf(rv.by))}:</b> ${rv.note ? esc(rv.note) : "تم الاطلاع على ميثاقك."}</div>` : ""}
   </section>
-  <section class="blk">${secHead(1, "المطلوب منك هذه السنة")}
+  <section class="blk" id="sec-tg">${secHead(1, "المطلوب منك هذه السنة")}
     <p class="lead">تحقيق هذه الأهداف مع الجودة المطلوبة يجعلك توافق التوقعات، وما زاد عنها يرفعك. العلامة الذهبية مكانك المفترض اليوم.</p>
     <div class="stack" id="targets" style="gap:12px"></div></section>
-  <section class="blk">${secHead(2, "بصمة أدائك")}<div class="box" id="fp"></div></section>
-  <section class="blk">${secHead(3, "أعمال الشهر", `<label><span style="position:absolute;width:1px;height:1px;overflow:hidden">شهر الإدخال</span>${monthPicker(null)}</label>`)}
+  <section class="blk" id="sec-fp">${secHead(2, "بصمة أدائك")}<div class="box" id="fp"></div></section>
+  <section class="blk" id="sec-mo">${secHead(3, "أعمال الشهر", `<label><span style="position:absolute;width:1px;height:1px;overflow:hidden">شهر الإدخال</span>${monthPicker(null)}</label>`)}
     <p class="lead">أدخل أعمالك في أي وقت لترى أين وصلت. ما تدخله لا يُحفظ ولا يراه أحد، ويختفي عند إغلاق الصفحة. الإرسال إلى ${sup ? "مشرفك " + esc(nameOf(sup)) : "المشرف"} يفتح نهاية كل شهر فقط.</p>
     <p class="banner"><b>تنبيه:</b> أدخل أعمال ${esc(monthLabel(S.month))} فقط، ولا تضف إليها أعمال الأشهر السابقة. النظام يجمع الأشهر تلقائياً ويحسب درجتك السنوية.</p>`;
   const qAxes = S.config.axes.filter(a => a.quality), lastQ = qAxes.length ? qAxes[qAxes.length-1].id : null;
@@ -874,7 +934,7 @@ function breakdown(r, team){
 /* --- واجهة المشرف --- */
 function viewSupervisor(){
   const y = yearOf(), mine = S.me.manager ? employeeIds() : employeeIds().filter(id => supervisorOf(id) === S.me.id);
-  let h = `<section class="band"><div class="dA" aria-hidden="true"></div><div class="dB" aria-hidden="true"></div>
+  let h = `<section class="band" id="sec-top"><div class="dA" aria-hidden="true"></div><div class="dB" aria-hidden="true"></div>
     <div class="tt"><span class="gbar" aria-hidden="true"></span><h1>مواثيق فريقي لسنة <span class="num">${esc(y)}</span></h1>
       <p><span class="num">${mine.length}</span> مراقباً · الأرقام تراكمية من بداية السنة · الأكثر تأخراً عن المسار يظهر أولاً${S.me.manager ? " · تعرض هنا جميع المراقبين لأنك المدير" : ""}</p></div>
     ${monthPicker("الفترة")}
@@ -887,7 +947,7 @@ function viewSupervisor(){
     rows.map(x => x.r ? `<tr><td class="num">${rk[x.id] || ""}</td><td><b>${esc(nameOf(x.id))}</b></td><td class="num">${f2(x.r.total)}</td><td><span class="pill lv-${finalTone(x.id, x.r, rk)}">${esc(finalLabel(x.id, x.r, rk))}</span></td><td class="${paceClass(x.r)}">${esc(paceText(x.r))}</td><td class="muted">${lastSaved(x.id, y) ? esc(dayLabel(new Date(lastSaved(x.id, y)))) : ""}</td></tr>`
       : `<tr><td class="num">–</td><td><b>${esc(nameOf(x.id))}</b></td><td class="num muted">0.00</td><td><span class="pill lv-none">لم يرسل</span></td><td></td><td></td></tr>`).join("") +
     `</tbody></table></div></section>${matrixHTML(rows)}`;
-  h += secHead(2, "مواثيق المراقبين", `<span class="muted small">اضغط على الاسم لفتح ميثاقه</span>`);
+  h += `<div id="sec-ch"></div>` + secHead(2, "مواثيق المراقبين", `<span class="muted small">اضغط على الاسم لفتح ميثاقه</span>`);
   for (const x of rows){
     const key = x.id + "__" + S.month, mineRv = S.reviews[key];
     const note = S.notes[key] !== undefined ? S.notes[key] : (mineRv && mineRv.note) || "";
@@ -907,7 +967,7 @@ function viewSupervisor(){
 /* --- واجهة المدير --- */
 function viewManager(){
   const tabs = { overview:"نظرة عامة", equation:"المعادلة والمستهدفات", members:"الأعضاء" };
-  let h = `<div class="seg" role="group" aria-label="أقسام المدير" style="align-self:flex-start">` + Object.keys(tabs).map(t => `<button type="button" data-act="tab" data-t="${t}" aria-pressed="${S.mgrTab === t}">${tabs[t]}</button>`).join("") + `</div>`;
+  let h = `<div class="seg mgr-tabs" role="group" aria-label="أقسام المدير" style="align-self:flex-start">` + Object.keys(tabs).map(t => `<button type="button" data-act="tab" data-t="${t}" aria-pressed="${S.mgrTab === t}">${tabs[t]}</button>`).join("") + `</div>`;
   return h + (S.mgrTab === "equation" ? mgrEquation() : S.mgrTab === "members" ? mgrMembers() : mgrOverview());
 }
 /* عدّادات الملخص: تظهر للمدير عن الجميع وللمشرف عن فريقه */
@@ -1185,6 +1245,11 @@ document.addEventListener("click", async e => {
   const act = b.dataset.act;
   if (act === "view"){ S.view = b.dataset.v; render(); }
   else if (act === "lg-mode"){ S.lgMode = b.dataset.m; render(); }
+  else if (act === "nav"){
+    if (b.dataset.to){ const t = document.getElementById(b.dataset.to); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.querySelectorAll("#tabbar button").forEach(x => x.setAttribute("aria-current", x === b ? "true" : "false")); }
+    else { S.view = b.dataset.v; if (b.dataset.t) S.mgrTab = b.dataset.t; render(); window.scrollTo(0, 0); }
+  }
   else if (act === "tab"){ S.mgrTab = b.dataset.t; render(); }
   else if (act === "reset"){ S.draft = {}; S.dirty = true; render(); }
   else if (act === "save"){
