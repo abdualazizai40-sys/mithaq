@@ -2,8 +2,18 @@
 <rect width="512" height="512" fill="#00524D"/>
 <rect x="-70" y="-70" width="230" height="230" rx="40" transform="rotate(45 45 45)" fill="#0B6A63"/>
 <g transform="translate(256 256) scale(1.0) translate(-256 -256)">
-<g fill="none" stroke="#7FE3D8" stroke-opacity=".55" stroke-width="5" stroke-linejoin="round">
-<polygon points="256.0,116.0 398.7,219.6 344.2,387.4 167.8,387.4 113.3,219.6"/><polygon points="256.0,167.0 350.2,235.4 314.2,346.1 197.8,346.1 161.8,235.4"/><polygon points="256.0,216.5 303.1,250.7 285.1,306.0 226.9,306.0 208.9,250.7"/><line x1="256" y1="266" x2="256.0" y2="116.0"/><line x1="256" y1="266" x2="398.7" y2="219.6"/><line x1="256" y1="266" x2="344.2" y2="387.4"/><line x1="256" y1="266" x2="167.8" y2="387.4"/><line x1="256" y1="266" x2="113.3" y2="219.6"/></g>
-<polygon points="256.0,123.5 370.1,228.9 308.9,338.8 178.4,372.8 153.3,232.6" fill="#ffffff" fill-opacity=".22" stroke="#ffffff" stroke-width="12" stroke-linejoin="round"/>
-<circle cx="256.0" cy="123.5" r="11" fill="#C9A45C"/><circle cx="370.1" cy="228.9" r="11" fill="#C9A45C"/><circle cx="308.9" cy="338.8" r="11" fill="#C9A45C"/><circle cx="178.4" cy="372.8" r="11" fill="#C9A45C"/><circle cx="153.3" cy="232.6" r="11" fill="#C9A45C"/>
+<!-- الميثاق: ورقة -->
+<path d="M176 84h150l58 58v262a26 26 0 0 1-26 26H176a26 26 0 0 1-26-26V110a26 26 0 0 1 26-26z" fill="#fff"/>
+<path d="M326 84v40a18 18 0 0 0 18 18h40z" fill="#BFE0DB"/>
+<g stroke="#00524D" stroke-opacity=".28" stroke-width="16" stroke-linecap="round"><path d="M196 150h92M196 200h148M196 250h148"/></g>
+<!-- الهدف -->
+<circle cx="214" cy="352" r="112" fill="#00524D"/>
+<circle cx="214" cy="352" r="98" fill="#C9A45C"/>
+<circle cx="214" cy="352" r="70" fill="#fff"/>
+<circle cx="214" cy="352" r="42" fill="#C9A45C"/>
+<circle cx="214" cy="352" r="15" fill="#0E3B36"/>
+<!-- السهم يصيب المركز -->
+<g stroke="#0E3B36" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<path d="M214 352L352 214"/></g>
+<path d="M352 214v-44l40-40v44h44l-40 40z" fill="#E9CF94" stroke="#00524D" stroke-width="8" stroke-linejoin="round"/>
 </g></svg>
