@@ -369,6 +369,24 @@ details.emp textarea{min-height:120px}
   body.has-tabbar #views,body.has-tabbar .mgr-tabs{display:none}
   body.has-tabbar #toast{bottom:calc(84px + env(safe-area-inset-bottom))}
 }
+
+/* ---- عناوين أقسام الإدخال ---- */
+.box{padding-top:0;overflow:hidden}
+.box h3.axh{margin:0 -14px;padding:12px 16px;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#003B37,#00524D);color:#fff;border-bottom:3px solid var(--gold-line);font-family:var(--font-display);font-weight:800;font-size:1.13rem}
+.box h3.axh .ic{width:36px;height:36px;flex:none;border-radius:10px;background:var(--gold-line);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px rgba(201,164,92,.25)}
+.box h3.axh .tx{display:flex;flex-direction:column;line-height:1.3}
+.box h3.axh small{font-family:var(--font-body);font-weight:500;font-size:.72rem;color:#E9CF94}
+.box h3.axh + .fields{margin-top:4px}
+
+/* ---- مربعات النتائج ---- */
+.box .res{position:relative;overflow:hidden;background:linear-gradient(90deg,#003B37,#00524D);color:#fff;border-radius:12px;padding:12px 16px;border-inline-start:5px solid var(--gold-line);display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:12px}
+.box .res::after{content:"";position:absolute;top:-36px;left:-30px;width:90px;height:90px;border:1.5px solid #2EC4B6;border-radius:18px;transform:rotate(45deg);opacity:.35}
+.box .res > *{position:relative;z-index:1}
+.box .res b:not(.big){color:#fff;font-family:var(--font-display);font-weight:700}
+.box .res .muted{color:#BFE0DB}
+.box .res .big{min-width:72px;text-align:center;background:var(--gold-line);color:#2A1F08;border-radius:10px;padding:4px 12px;font-family:var(--font-display);font-weight:800;font-size:1.6rem}
+.opsbox .res{border-inline-start:5px solid var(--gold-line)}
+.opsbox .res .big{background:var(--gold-line);color:#2A1F08;border-radius:10px;padding:4px 12px;font-size:1.4rem}
 @media (max-width:520px){.summary{grid-template-columns:1fr}.mini{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.fill,#toast{transition:none}}
 </style>
@@ -599,8 +617,10 @@ const IC = {
   users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.900 1.900 6.500 5.500"/><circle cx="17.500" cy="9" r="2.500"/><path d="M17 14.500c2.400.200 4 1.700 4.500 4.500"/>',
   sliders:'<path d="M4 6h10M18 6h2M4 12h3M11 12h9M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
   radar:'<path d="M12 3l8.500 6.200-3.200 10H6.700L3.500 9.200z"/><path d="M12 8l3.800 2.800-1.400 4.400H9.600l-1.400-4.400z"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
   doc:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>' };
 function icon(k, sz, col){ return `<svg aria-hidden="true" width="${sz || 18}" height="${sz || 18}" viewBox="0 0 24 24" fill="none" stroke="${col || "#fff"}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>`; }
+function axIcon(a){ return a.id === "vis" ? "pin" : a.id === "rep" ? "doc" : /قراء/.test(a.name) ? "read" : /قضا|ضبط/.test(a.name) ? "seize" : "edit"; }
 function secHead(nu, title, extra){ return `<div class="sec">${nu ? `<span class="nu">${nu}</span>` : ""}<div class="st"><h2>${title}</h2></div>${extra || ""}</div>`; }
 const LV_COL = ["#C0473A","#D9A84A","#00524D","#1E4E79","#0E3B36"];
 function bandRange(i){ const b = S.config.bands, f = x => String(Math.round(n(x) * 100) / 100);
@@ -874,7 +894,7 @@ function viewEmployee(){
     <p class="banner"><b>تنبيه:</b> أدخل أعمال ${esc(monthLabel(S.month))} فقط، ولا تضف إليها أعمال الأشهر السابقة. النظام يجمع الأشهر تلقائياً ويحسب درجتك السنوية.</p>`;
   const qAxes = S.config.axes.filter(a => a.quality), lastQ = qAxes.length ? qAxes[qAxes.length-1].id : null;
   for (const a of S.config.axes){
-    h += `<div class="box"><h3>${esc(a.name)}</h3><div class="fields">` +
+    h += `<div class="box"><h3 class="axh"><span class="ic">${icon(axIcon(a), 20, "#2A1F08")}</span><span class="tx">${esc(a.name)}<small>${a.quality ? "أدخل أعداد الشهر ونسبة الجودة" : "أدخل أعداد الشهر"}</small></span></h3><div class="fields">` +
       a.fields.map(f => `<label class="fld">${esc(f.label)}<input class="num" type="number" min="0" inputmode="numeric" id="in-${esc(f.id)}" data-val="${esc(f.id)}" placeholder="0" value="${esc(S.draft[f.id] ?? "")}">${a.quality ? "" : `<span class="small tn muted" style="font-weight:400" id="fg-${esc(f.id)}"></span>`}</label>`).join("") +
       (a.quality ? `<label class="fld wide">أدخل نسبة الجودة المسجلة في مؤشر الأداء %<input class="num" type="number" min="0" max="100" inputmode="decimal" id="in-${esc(a.id)}_q" data-val="${esc(a.id)}_q" placeholder="100" value="${esc(S.draft[a.id + "_q"] ?? "")}"></label>` : "") +
       `</div>` + (a.quality
